@@ -3,6 +3,7 @@ package ru.myitschool.volleyball;
 import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
 import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -27,6 +28,23 @@ public class ScreenIntro implements Screen {
 
     @Override
     public void render(float delta) {
+        // обработка касаний экрана
+        if(Gdx.input.justTouched()) {
+            gdx.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            gdx.camera.unproject(gdx.touch);
+            if(btnPlay.hit(gdx.touch.x, gdx.touch.y)) {
+                gdx.setScreen(gdx.screenGame);
+            }
+            if(btnSettings.hit(gdx.touch.x, gdx.touch.y)) {
+                gdx.setScreen(gdx.screenSettings);
+            }
+            if(btnAbout.hit(gdx.touch.x, gdx.touch.y)) {
+                gdx.setScreen(gdx.screenAbout);
+            }
+            if(btnExit.hit(gdx.touch.x, gdx.touch.y)) {
+                Gdx.app.exit();
+            }
+        }
 
         // отрисовка всей графики
         gdx.camera.update();

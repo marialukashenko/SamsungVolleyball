@@ -39,6 +39,6 @@ public class TextButton {
     }
 
     boolean hit(float tx, float ty){
-        return x < tx && tx < x+width && y-height < ty && ty < y;
+        return x/100f < tx && tx < (x+width)/100f && (y-height)/100f < ty && ty < y/100f;
     }
 }
