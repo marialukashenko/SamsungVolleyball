@@ -32,12 +32,19 @@ public class DynamicBodyBall {
                 fixtureDef.restitution = 0.6f; // Make it bounce a little bit
                 Fixture fixture = body.createFixture(fixtureDef);
                 circle.dispose();
-                body.setFixedRotation(true);
-                body.setAngularVelocity(-1);
         }
 
         boolean hit(float tx, float ty) {
                 return Math.pow(tx-getX(),2) + Math.pow(ty-getY(),2) < r*r;
+        }
+
+        public void move(float tx, float ty){
+                if(tx > getX()){
+                        body.setLinearVelocity(4, 0);
+                }
+                else {
+                        body.setLinearVelocity(-4, 0);
+                }
         }
 
         float getX(){
