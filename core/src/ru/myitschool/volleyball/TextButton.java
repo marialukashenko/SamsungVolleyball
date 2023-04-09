@@ -28,14 +28,14 @@ public class TextButton {
         GlyphLayout gl = new GlyphLayout(font, text);
         width = gl.width;
         height = gl.height;
-        this.x = SCR_WIDTH/2f - width/2;
+        this.x = SCR_WIDTH*100/2f - width/2;
     }
 
     public void setText(String text) {
         this.text = text;
         GlyphLayout gl = new GlyphLayout(font, text);
         width = gl.width;
-        this.x = SCR_WIDTH/2f - width/2;
+        this.x = SCR_WIDTH*100/2f - width/2;
     }
 
     boolean hit(float tx, float ty){
