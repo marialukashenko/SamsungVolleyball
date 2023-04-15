@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class MyGdx extends Game {
 	public static final float SCR_WIDTH = 12.8f, SCR_HEIGHT = 7.2f;
-	public static final int TYPE_BALL = 0, TYPE_PERS = 1;
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	OrthographicCamera camera2;
