@@ -46,6 +46,10 @@ public class DynamicBodyBall {
                 return body.getPosition().y;
         }
 
+        boolean isGoal(){
+                return getY()<=0.3f+r;
+        }
+
         Vector2 getCenter(){
                 return body.getPosition();
         }

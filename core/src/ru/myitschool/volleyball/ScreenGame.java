@@ -1,12 +1,15 @@
 package ru.myitschool.volleyball;
 
+import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
 import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import org.graalvm.compiler.loop.MathUtil;
 
@@ -18,6 +21,9 @@ public class ScreenGame implements Screen {
     StaticBodyBox net;
     DynamicBodyPlayer person1, person2;
     DynamicBodyBall ball;
+    int countGoals_1, countGoals_2;
+    long timeGoal, timeInterval=3000;
+    boolean isGoal;
 
     public ScreenGame(MyGdx myGdx) {
         gdx = myGdx;
@@ -58,6 +64,31 @@ public class ScreenGame implements Screen {
         // события
         person1.checkLevel();
         person2.checkLevel();
+        if(isGoal) {
+            if(TimeUtils.millis()>timeGoal+timeInterval){
+                isGoal = false;
+                ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT+1, 0);
+                //ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
+            }
+        } else {
+            if (ball.isGoal()) {
+                isGoal = true;
+                timeGoal = TimeUtils.millis();
+                if (ball.getX() < SCR_WIDTH / 2) {
+                    countGoals_2++;
+                } else {
+                    countGoals_1++;
+                }
+            }
+        }
+
+        // отрисовка
+        gdx.batch.setProjectionMatrix(gdx.camera2.combined);
+        gdx.batch.begin();
+        gdx.font.draw(gdx.batch, ":", 0, SCR_HEIGHT*100-40, SCR_WIDTH*100, Align.center, true);
+        gdx.font.draw(gdx.batch, countGoals_1+"", 0, SCR_HEIGHT*100-40, SCR_WIDTH*100/2-50, Align.right, true);
+        gdx.font.draw(gdx.batch, countGoals_2+"", SCR_WIDTH*100/2+50, SCR_HEIGHT*100-40, SCR_WIDTH*100/2-50, Align.left, true);
+        gdx.batch.end();
     }
 
 
