@@ -11,8 +11,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import org.graalvm.compiler.loop.MathUtil;
-
 public class ScreenGame implements Screen {
 
     MyGdx gdx;
@@ -24,7 +22,12 @@ public class ScreenGame implements Screen {
     int countGoals_1, countGoals_2;
     long timeGoal, timeInterval=3000;
     boolean isGoal;
+    float ballHeight = 2.6f;
+    float netHeight = 6.02f;
     TextButton btnBack;
+    boolean start=true;
+
+
 
     public ScreenGame(MyGdx myGdx) {
         gdx = myGdx;
@@ -33,10 +36,10 @@ public class ScreenGame implements Screen {
         block[0] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f);
         block[1] = new StaticBodyBox(gdx.world, 0, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
         block[2] = new StaticBodyBox(gdx.world, SCR_WIDTH, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
-        net = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 1f, 0.2f, 7.23f);
+        net = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 1f, 0.2f, netHeight);
 
         //задание тел
-        ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0.4f);
+        ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/4+ (MathUtils.randomBoolean()?0:SCR_WIDTH/2), ballHeight, 0.4f);
         person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH/4, 0.65f, 0.5f);
         person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH/4*3, 0.65f, 0.5f);
     }
@@ -52,7 +55,7 @@ public class ScreenGame implements Screen {
         ball.body.setAngularVelocity(0);
         person1.body.setAngularVelocity(0);
         person2.body.setAngularVelocity(0);
-        ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
+        ball.body.setTransform(SCR_WIDTH/4+ (MathUtils.randomBoolean()?0:SCR_WIDTH/2), ballHeight, 0);
         person1.body.setTransform(SCR_WIDTH/4, 0.65f, 0);
         person2.body.setTransform(SCR_WIDTH/4*3, 0.65f, 0);
     }
@@ -64,6 +67,7 @@ public class ScreenGame implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         gdx.debugRenderer.render(gdx.world, gdx.camera.combined);
 
+        // касания
         if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
             gdx.setScreen(gdx.screenIntro);
 
@@ -81,19 +85,35 @@ public class ScreenGame implements Screen {
         }
 
         // события
-        person1.checkLevel();
-        person2.checkLevel();
+        person1.move();
+        person2.move();
+        if(start){
+            if((person1.getX()-ball.getX())*(person1.getX()-ball.getX())+(person1.getY()-ball.getY())*(person1.getY()-ball.getY())>(person1.r+ball.r)*(person1.r+ball.r)){
+                ball.body.setLinearVelocity(0, 0);
+                ball.body.setTransform(ball.getX(), ballHeight, 0);
+            } else{
+                start = false;
+            }
+            if((person2.getX()-ball.getX())*(person2.getX()-ball.getX())+(person2.getY()-ball.getY())*(person2.getY()-ball.getY())>(person2.r+ball.r)*(person2.r+ball.r)){
+                ball.body.setLinearVelocity(0, 0);
+                ball.body.setTransform(ball.getX(), ballHeight, 0);
+            } else {
+                start = false;
+            }
+        }
         if(isGoal) {
             if(TimeUtils.millis()>timeGoal+timeInterval){
                 isGoal = false;
                 if (ball.getX() < SCR_WIDTH / 2) {
                     gdx.world.destroyBody(ball.body);
-                    ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/4*3, MyGdx.SCR_HEIGHT, 0.4f);
+                    ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/4*3, ballHeight, 0.4f);
+                    start = true;
                     //ball.body.setTransform((SCR_WIDTH/2+MathUtils.random(1, 5)), MyGdx.SCR_HEIGHT + 1, 0);
                 }
                 else{
                     gdx.world.destroyBody(ball.body);
-                    ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/4, MyGdx.SCR_HEIGHT, 0.4f);
+                    ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/4, ballHeight, 0.4f);
+                    start = true;
                     //ball.body.setTransform(MathUtils.random(1, 5), MyGdx.SCR_HEIGHT + 1, 0);
                 }
                 //ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
@@ -127,11 +147,11 @@ public class ScreenGame implements Screen {
     void touchScreen() {
         if(gdx.touch.x < SCR_WIDTH/2){
             if(!person1.isJumping) {
-                person1.move(gdx.touch.x, gdx.touch.y);
+                person1.touch(gdx.touch.x, gdx.touch.y);
             }
         } else {
             if(!person2.isJumping) {
-                person2.move(gdx.touch.x, gdx.touch.y);
+                person2.touch(gdx.touch.x, gdx.touch.y);
             }
         }
     }
