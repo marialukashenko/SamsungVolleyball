@@ -1,8 +1,6 @@
 package ru.myitschool.volleyball;
 
 import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
-import static ru.myitschool.volleyball.MyGdx.TYPE_BALL;
-import static ru.myitschool.volleyball.MyGdx.TYPE_PERS;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -18,7 +16,7 @@ public class ScreenGame implements Screen {
     Texture imgBackGround;
     StaticBodyBox[] block = new StaticBodyBox[3];
     StaticBodyBox net;
-    DynamicBodyBall person1, person2;
+    DynamicBodyPlayer person1, person2;
     DynamicBodyBall ball;
 
     public ScreenGame(MyGdx myGdx) {
@@ -27,15 +25,16 @@ public class ScreenGame implements Screen {
 
     @Override
     public void show() {
+        //игровое поле и сетки
         block[0] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f);
         block[1] = new StaticBodyBox(gdx.world, 0, MyGdx.SCR_HEIGHT / 2, 0.3f, MyGdx.SCR_HEIGHT*3);
         block[2] = new StaticBodyBox(gdx.world, SCR_WIDTH, MyGdx.SCR_HEIGHT / 2, 0.3f, MyGdx.SCR_HEIGHT*3);
-        net = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 1f, 0.2f, 8.5f);
-        ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0.4f, TYPE_BALL);
-        //person1 = new KinematicBodyPerson(gdx.world, SCR_WIDTH/4, 0.65f, 0.5f, LEFT);
-        //person2 = new KinematicBodyPerson(gdx.world, SCR_WIDTH/4*3, 0.65f, 0.5f, RIGHT);
-        person1 = new DynamicBodyBall(gdx.world, SCR_WIDTH/4, 0.65f, 0.5f, TYPE_PERS);
-        person2 = new DynamicBodyBall(gdx.world, SCR_WIDTH/4*3, 0.65f, 0.5f, TYPE_PERS);
+        net = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 1f, 0.2f, 7.23f);
+
+        //задание тел
+        ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0.4f);
+        person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH/4, 0.65f, 0.5f);
+        person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH/4*3, 0.65f, 0.5f);
     }
 
     @Override
@@ -44,36 +43,35 @@ public class ScreenGame implements Screen {
         gdx.world.step(1 / 60f, 6, 2);
         ScreenUtils.clear(0, 0, 0, 1);
         gdx.debugRenderer.render(gdx.world, gdx.camera.combined);
+
         if(Gdx.input.isTouched(0)) {
             gdx.touch.set(Gdx.input.getX(0), Gdx.input.getY(0), 0);
             gdx.camera.unproject(gdx.touch);
-            if(gdx.touch.x < SCR_WIDTH/2){
-                person1.move(gdx.touch.x, gdx.touch.y);
-                person1.hit(gdx.touch.x, gdx.touch.y);
-            }
-            else{
-                person2.move(gdx.touch.x, gdx.touch.y);
-                person2.hit(gdx.touch.x, gdx.touch.y);
-            }
+            touchScreen();
         }
         if(Gdx.input.isTouched(1)) {
             gdx.touch.set(Gdx.input.getX(1), Gdx.input.getY(1), 0);
             gdx.camera.unproject(gdx.touch);
-            if(gdx.touch.x < SCR_WIDTH/2){
-                person1.move(gdx.touch.x, gdx.touch.y);
-                person1.hit(gdx.touch.x, gdx.touch.y);
-            }
-            else{
-                person2.move(gdx.touch.x, gdx.touch.y);
-                person2.hit(gdx.touch.x, gdx.touch.y);
-            }
+            touchScreen();
         }
 
         // события
-        //person1.move();
-        //person2.move();
+        person1.checkLevel();
+        person2.checkLevel();
     }
 
+
+    void touchScreen() {
+        if(gdx.touch.x < SCR_WIDTH/2){
+            if(!person1.isJumping) {
+                person1.move(gdx.touch.x, gdx.touch.y);
+            }
+        } else {
+            if(!person2.isJumping) {
+                person2.move(gdx.touch.x, gdx.touch.y);
+            }
+        }
+    }
     @Override
     public void resize(int width, int height) {
 
