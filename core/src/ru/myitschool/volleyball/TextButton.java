@@ -28,17 +28,17 @@ public class TextButton {
         GlyphLayout gl = new GlyphLayout(font, text);
         width = gl.width;
         height = gl.height;
-        this.x = SCR_WIDTH/2f - width/2;
+        this.x = SCR_WIDTH*100/2f - width/2;
     }
 
     public void setText(String text) {
         this.text = text;
         GlyphLayout gl = new GlyphLayout(font, text);
         width = gl.width;
-        this.x = SCR_WIDTH/2f - width/2;
+        this.x = SCR_WIDTH*100/2f - width/2;
     }
 
     boolean hit(float tx, float ty){
-        return x < tx && tx < x+width && y-height < ty && ty < y;
+        return x/100f < tx && tx < (x+width)/100f && (y-height)/100f < ty && ty < y/100f;
     }
 }
