@@ -15,27 +15,29 @@ public class ScreenGame implements Screen {
 
     MyGdx gdx;
     Texture imgBackGround;
-    StaticBodyBox[] block = new StaticBodyBox[3];
+    StaticBodyBox[] block = new StaticBodyBox[4];
     StaticBodyBox net;
     DynamicBodyPlayer person1, person2;
     DynamicBodyBall ball;
     int countGoals_1, countGoals_2;
     long timeGoal, timeInterval=3000;
-    boolean isGoal;
+    boolean isGoal, isWin;
     float ballHeight = 2.6f;
     float netHeight = 6.02f;
-    TextButton btnBack;
-    boolean start=true;
+    TextButton btnBack, btnRerun;
+    boolean startGame =true;
 
 
 
     public ScreenGame(MyGdx myGdx) {
         gdx = myGdx;
         btnBack = new TextButton(gdx.fontLarge, "BACK", SCR_WIDTH*100-200, SCR_HEIGHT*100-30);
+        btnRerun = new TextButton(gdx.fontLarge, "REPLAY", 20, SCR_HEIGHT*100-30);
         //игровое поле и сетки
         block[0] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f);
         block[1] = new StaticBodyBox(gdx.world, 0, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
         block[2] = new StaticBodyBox(gdx.world, SCR_WIDTH, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
+        block[3] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, SCR_HEIGHT+0.4f, SCR_WIDTH, 0.3f);
         net = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 1f, 0.2f, netHeight);
 
         //задание тел
@@ -49,15 +51,7 @@ public class ScreenGame implements Screen {
         isGoal = false;
         countGoals_2 = 0;
         countGoals_1 = 0;
-        ball.body.setLinearVelocity(0, 0);
-        person1.body.setLinearVelocity(0, 0);
-        person2.body.setLinearVelocity(0, 0);
-        ball.body.setAngularVelocity(0);
-        person1.body.setAngularVelocity(0);
-        person2.body.setAngularVelocity(0);
-        ball.body.setTransform(SCR_WIDTH/4+ (MathUtils.randomBoolean()?0:SCR_WIDTH/2), ballHeight, 0);
-        person1.body.setTransform(SCR_WIDTH/4, 0.65f, 0);
-        person2.body.setTransform(SCR_WIDTH/4*3, 0.65f, 0);
+        create();
     }
 
     @Override
@@ -68,11 +62,6 @@ public class ScreenGame implements Screen {
         gdx.debugRenderer.render(gdx.world, gdx.camera.combined);
 
         // касания
-        if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
-            gdx.setScreen(gdx.screenIntro);
-
-        }
-
         if(Gdx.input.isTouched(0)) {
             gdx.touch.set(Gdx.input.getX(0), Gdx.input.getY(0), 0);
             gdx.camera.unproject(gdx.touch);
@@ -83,49 +72,65 @@ public class ScreenGame implements Screen {
             gdx.camera.unproject(gdx.touch);
             touchScreen();
         }
+        if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
+            if(isWin){
+                isWin = false;
+            }
+            gdx.setScreen(gdx.screenIntro);
+        }
+
+        if (isWin && btnRerun.hit(gdx.touch.x, gdx.touch.y)){
+            startGame();
+        }
+
 
         // события
         person1.move();
         person2.move();
-        if(start){
-            if((person1.getX()-ball.getX())*(person1.getX()-ball.getX())+(person1.getY()-ball.getY())*(person1.getY()-ball.getY())>(person1.r+ball.r)*(person1.r+ball.r)){
-                ball.body.setLinearVelocity(0, 0);
-                ball.body.setTransform(ball.getX(), ballHeight, 0);
-            } else{
-                start = false;
+        if(startGame) {
+            if(person1.overlap(ball) || person2.overlap(ball)) {
+                startGame = false;
             }
-            if((person2.getX()-ball.getX())*(person2.getX()-ball.getX())+(person2.getY()-ball.getY())*(person2.getY()-ball.getY())>(person2.r+ball.r)*(person2.r+ball.r)){
+            else{
                 ball.body.setLinearVelocity(0, 0);
                 ball.body.setTransform(ball.getX(), ballHeight, 0);
-            } else {
-                start = false;
             }
         }
-        if(isGoal) {
+        if(isGoal && !isWin) {
             if(TimeUtils.millis()>timeGoal+timeInterval){
                 isGoal = false;
                 if (ball.getX() < SCR_WIDTH / 2) {
                     gdx.world.destroyBody(ball.body);
                     ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/4*3, ballHeight, 0.4f);
-                    start = true;
+                    startGame = true;
                     //ball.body.setTransform((SCR_WIDTH/2+MathUtils.random(1, 5)), MyGdx.SCR_HEIGHT + 1, 0);
                 }
                 else{
                     gdx.world.destroyBody(ball.body);
                     ball = new DynamicBodyBall(gdx.world, SCR_WIDTH/4, ballHeight, 0.4f);
-                    start = true;
+                    startGame = true;
                     //ball.body.setTransform(MathUtils.random(1, 5), MyGdx.SCR_HEIGHT + 1, 0);
                 }
+                gdx.world.destroyBody(person1.body);
+                person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH/4, 0.65f, 0.5f);
+                gdx.world.destroyBody(person2.body);
+                person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH/4*3, 0.65f, 0.5f);
                 //ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
             }
         } else {
-            if (ball.isGoal()) {
+            if (ball.isGoal() && !isWin) {
                 isGoal = true;
                 timeGoal = TimeUtils.millis();
                 if (ball.getX() < SCR_WIDTH / 2) {
                     countGoals_2++;
+                    if (countGoals_2 == 3){
+                        isWin=true;
+                    }
                 } else {
                     countGoals_1++;
+                    if (countGoals_1 == 3){
+                        isWin=true;
+                    }
                 }
             }
         }
@@ -137,8 +142,13 @@ public class ScreenGame implements Screen {
         gdx.font.draw(gdx.batch, ":", 0, SCR_HEIGHT*100-40, SCR_WIDTH*100, Align.center, true);
         gdx.font.draw(gdx.batch, countGoals_1+"", 0, SCR_HEIGHT*100-40, SCR_WIDTH*100/2-50, Align.right, true);
         gdx.font.draw(gdx.batch, countGoals_2+"", SCR_WIDTH*100/2+50, SCR_HEIGHT*100-40, SCR_WIDTH*100/2-50, Align.left, true);
-        if(isGoal){
+        if(isGoal && !isWin){
             gdx.fontLarge.draw(gdx.batch, "ГОЛ!", 0, SCR_HEIGHT*100/2, SCR_WIDTH*100, Align.center, true);
+        }
+        if (isWin){
+            String winner = countGoals_1>countGoals_2?"Выиграл левый чувак!":"Выиграл правый чувак!";
+            gdx.fontLarge.draw(gdx.batch, winner, 0, SCR_HEIGHT*100/2, SCR_WIDTH*100, Align.center, true);
+            btnRerun.font.draw(gdx.batch, btnRerun.text, btnRerun.x, btnRerun.y);
         }
         gdx.batch.end();
     }
@@ -155,6 +165,7 @@ public class ScreenGame implements Screen {
             }
         }
     }
+
     @Override
     public void resize(int width, int height) {
 
@@ -178,5 +189,27 @@ public class ScreenGame implements Screen {
     @Override
     public void dispose() {
 
+    }
+
+    void startGame(){
+        isWin = false;
+        isGoal = false;
+        startGame = true;
+        countGoals_1 = 0;
+        countGoals_2 = 0;
+        create();
+        gdx.sleep();
+    }
+
+    void create(){
+        ball.body.setLinearVelocity(0, 0);
+        ball.body.setAngularVelocity(0);
+        ball.body.setTransform(SCR_WIDTH/4+ (MathUtils.randomBoolean()?0:SCR_WIDTH/2), ballHeight, 0);
+        person1.body.setLinearVelocity(0, 0);
+        person1.body.setAngularVelocity(0);
+        person1.body.setTransform(SCR_WIDTH/4, 0.65f, 0);
+        person2.body.setLinearVelocity(0, 0);
+        person2.body.setAngularVelocity(0);
+        person2.body.setTransform(SCR_WIDTH/4*3, 0.65f, 0);
     }
 }

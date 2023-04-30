@@ -77,6 +77,14 @@ public class MyGdx extends Game {
 		generator.dispose();
 	}
 
+	public void sleep(){
+		try {
+			Thread.sleep(150);
+		} catch (Exception ignored){
+
+		}
+	}
+
 
 }
 

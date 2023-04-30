@@ -86,4 +86,8 @@ public class DynamicBodyPlayer {
     Vector2 getCenter(){
         return body.getPosition();
     }
+
+    boolean overlap(DynamicBodyBall b) {
+        return (getX()-b.getX())*(getX()-b.getX())+(getY()-b.getY())*(getY()-b.getY())<=(r+b.r)*(r+b.r);
+    }
 }
