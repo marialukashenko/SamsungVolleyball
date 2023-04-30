@@ -32,7 +32,7 @@ public class DynamicBodyBall {
 
                 fixtureDef.density = 0.3f;
                 fixtureDef.friction = 0.4f;
-                fixtureDef.restitution = 0.8f;
+                fixtureDef.restitution = 0.7f;
 
                 Fixture fixture = body.createFixture(fixtureDef);
                 circle.dispose();
