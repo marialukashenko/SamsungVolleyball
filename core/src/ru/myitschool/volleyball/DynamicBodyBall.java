@@ -1,6 +1,7 @@
 package ru.myitschool.volleyball;
 
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -44,6 +45,27 @@ public class DynamicBodyBall {
 
         float getY(){
                 return body.getPosition().y;
+        }
+
+        float scrX(){
+                return body.getPosition().x-r;
+        }
+
+        float scrY(){
+                return body.getPosition().y-r;
+        }
+
+        float width(){
+                return r*2;
+        }
+
+        float height(){
+                return r*2;
+        }
+
+        float getRotation() {
+                return body.getAngle()*MathUtils.radiansToDegrees;
+
         }
 
         boolean isGoal(){

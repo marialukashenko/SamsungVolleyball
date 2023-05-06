@@ -20,7 +20,10 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class ScreenGame implements Screen {
 
     MyGdx gdx;
-    Texture imgBackGround, imgBall, imgPerson1, imgPerson2;
+    Texture imgBackGround;
+    Texture imgBall;
+    Texture imgPerson1, imgPerson2;
+    Texture imgShadow;
     StaticBodyBox[] block = new StaticBodyBox[4];
     StaticBodyBox net;
     DynamicBodyPlayer person1, person2;
@@ -32,17 +35,18 @@ public class ScreenGame implements Screen {
     float netHeight = 6.02f;
     TextButton btnBack, btnRerun;
     boolean startGame =true;
-
+    float floor = 0.3f/2;
 
 
     public ScreenGame(MyGdx myGdx) {
         imgBackGround = new Texture("background_beach.jpg");
         imgBall = new Texture("ball1.png");
+        imgShadow = new Texture("shadow.png");
         gdx = myGdx;
         btnBack = new TextButton(gdx.fontLarge, "BACK", SCR_WIDTH*100-200, SCR_HEIGHT*100-30);
         btnRerun = new TextButton(gdx.fontLarge, "REPLAY", 20, SCR_HEIGHT*100-30);
         //игровое поле и сетки
-        block[0] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f);
+        block[0] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
         block[1] = new StaticBodyBox(gdx.world, 0, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
         block[2] = new StaticBodyBox(gdx.world, SCR_WIDTH, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
         block[3] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, SCR_HEIGHT+0.4f, SCR_WIDTH, 0.3f);
@@ -147,9 +151,14 @@ public class ScreenGame implements Screen {
         gdx.camera.update();
         gdx.batch.setProjectionMatrix(gdx.camera.combined);
         gdx.batch.begin();
-//        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
-        gdx.batch.draw(imgBall, ball.getX()-ball.r-0.125f, ball.getY()-ball.r-0.125f, 1.05f, 1.05f);
-        gdx.batch.draw(imgBall, person1.getX()-person1.r-0.128f, person1.getY()-person1.r-0.128f, 1.3f, 1.3f);
+        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        gdx.batch.draw(imgShadow, ball.scrX(), floor-ball.height()/8, ball.width(), ball.height()/4);
+        gdx.batch.draw(imgShadow, person1.scrX(), floor-ball.height()/8, person1.width(), person1.height()/4);
+        gdx.batch.draw(imgShadow, person2.scrX(), floor-ball.height()/8, person2.width(), person2.height()/4);
+
+        gdx.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
+        gdx.batch.draw(imgBall, person1.scrX(), person1.scrY(), person1.width(), person1.height());
+        gdx.batch.draw(imgBall, person2.scrX(), person2.scrY(), person2.width(), person2.height());
         gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
         gdx.batch.begin();

@@ -53,12 +53,12 @@ public class DynamicBodyPlayer {
         }
         if(tx > getX()){
             float vx = (tx - getX()) * 8;
-            if(vx > 9) vx = 9;
+            if(vx > 10) vx = 10;
             body.setLinearVelocity(vx, 0);
         }
         else {
             float vx = (tx - getX()) * 8;
-            if(vx < -9) vx = -9;
+            if(vx < -10) vx = -10;
             body.setLinearVelocity(vx, 0);
         }
 
@@ -81,6 +81,22 @@ public class DynamicBodyPlayer {
 
     float getY(){
         return body.getPosition().y;
+    }
+
+    float scrX(){
+        return body.getPosition().x-r;
+    }
+
+    float scrY(){
+        return body.getPosition().y-r;
+    }
+
+    float width(){
+        return r*2;
+    }
+
+    float height(){
+        return r*2;
     }
 
     Vector2 getCenter(){
