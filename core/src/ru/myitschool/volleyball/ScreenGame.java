@@ -6,15 +6,21 @@ import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
+
+
 public class ScreenGame implements Screen {
 
     MyGdx gdx;
-    Texture imgBackGround;
+    Texture imgBackGround, imgBall, imgPerson1, imgPerson2;
     StaticBodyBox[] block = new StaticBodyBox[4];
     StaticBodyBox net;
     DynamicBodyPlayer person1, person2;
@@ -30,6 +36,8 @@ public class ScreenGame implements Screen {
 
 
     public ScreenGame(MyGdx myGdx) {
+        imgBackGround = new Texture("background_beach.jpg");
+        imgBall = new Texture("ball1.png");
         gdx = myGdx;
         btnBack = new TextButton(gdx.fontLarge, "BACK", SCR_WIDTH*100-200, SCR_HEIGHT*100-30);
         btnRerun = new TextButton(gdx.fontLarge, "REPLAY", 20, SCR_HEIGHT*100-30);
@@ -136,6 +144,13 @@ public class ScreenGame implements Screen {
         }
 
         // отрисовка
+        gdx.camera.update();
+        gdx.batch.setProjectionMatrix(gdx.camera.combined);
+        gdx.batch.begin();
+//        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        gdx.batch.draw(imgBall, ball.getX()-ball.r-0.125f, ball.getY()-ball.r-0.125f, 1.05f, 1.05f);
+        gdx.batch.draw(imgBall, person1.getX()-person1.r-0.128f, person1.getY()-person1.r-0.128f, 1.3f, 1.3f);
+        gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
         gdx.batch.begin();
         btnBack.font.draw(gdx.batch, btnBack.text, btnBack.x, btnBack.y);
@@ -212,4 +227,5 @@ public class ScreenGame implements Screen {
         person2.body.setAngularVelocity(0);
         person2.body.setTransform(SCR_WIDTH/4*3, 0.65f, 0);
     }
+
 }
