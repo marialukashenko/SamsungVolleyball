@@ -12,6 +12,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class MyGdx extends Game {
 	public static final float SCR_WIDTH = 12.8f, SCR_HEIGHT = 7.2f;
@@ -33,9 +34,11 @@ public class MyGdx extends Game {
 		// создание системных объектов
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
+
 		camera2 = new OrthographicCamera();
 		camera.setToOrtho(false, SCR_WIDTH, SCR_HEIGHT);
 		camera2.setToOrtho(false, SCR_WIDTH*100, SCR_HEIGHT*100);
+
 		world = new World(new Vector2(0, -10), false);
 		touch = new Vector3();
 		Box2D.init();

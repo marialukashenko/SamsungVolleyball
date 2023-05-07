@@ -16,7 +16,6 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 
-
 public class ScreenGame implements Screen {
 
     MyGdx gdx;
@@ -24,6 +23,7 @@ public class ScreenGame implements Screen {
     Texture imgBall;
     Texture imgPerson1, imgPerson2;
     Texture imgShadow;
+    Texture imgNet;
     StaticBodyBox[] block = new StaticBodyBox[4];
     StaticBodyBox net;
     DynamicBodyPlayer person1, person2;
@@ -42,6 +42,7 @@ public class ScreenGame implements Screen {
         imgBackGround = new Texture("background_beach.jpg");
         imgBall = new Texture("ball1.png");
         imgShadow = new Texture("shadow.png");
+        imgNet = new Texture("net.png");
         gdx = myGdx;
         btnBack = new TextButton(gdx.fontLarge, "BACK", SCR_WIDTH*100-200, SCR_HEIGHT*100-30);
         btnRerun = new TextButton(gdx.fontLarge, "REPLAY", 20, SCR_HEIGHT*100-30);
@@ -89,6 +90,7 @@ public class ScreenGame implements Screen {
                 isWin = false;
             }
             gdx.setScreen(gdx.screenIntro);
+            startGame = true;
         }
 
         if (isWin && btnRerun.hit(gdx.touch.x, gdx.touch.y)){
@@ -152,9 +154,11 @@ public class ScreenGame implements Screen {
         gdx.batch.setProjectionMatrix(gdx.camera.combined);
         gdx.batch.begin();
         gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        gdx.batch.draw(imgNet, SCR_WIDTH / 2 - 0.1f, -netHeight/3, 0.2f, netHeight);
         gdx.batch.draw(imgShadow, ball.scrX(), floor-ball.height()/8, ball.width(), ball.height()/4);
         gdx.batch.draw(imgShadow, person1.scrX(), floor-ball.height()/8, person1.width(), person1.height()/4);
         gdx.batch.draw(imgShadow, person2.scrX(), floor-ball.height()/8, person2.width(), person2.height()/4);
+
 
         gdx.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
         gdx.batch.draw(imgBall, person1.scrX(), person1.scrY(), person1.width(), person1.height());
