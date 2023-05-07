@@ -48,7 +48,7 @@ public class DynamicBodyPlayer {
 
     public void touch(float tx, float ty) {
         if (state != GO) return;
-        if (ty > getY() + r) {
+        if (ty > getY() + r*2) {
             state = JUMP;
             float a = MathUtils.atan2((tx - getX()),(ty - getY()));
             float vx = 40*MathUtils.sin(a);

@@ -42,9 +42,11 @@ public class ScreenGame implements Screen {
 
     public ScreenGame(MyGdx myGdx) {
         imgBackGround = new Texture("background_beach.jpg");
-        imgBall = new Texture("ball1.png");
+        imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
         imgNet = new Texture("net.png");
+        imgPerson1 = new Texture("ball2.png");
+        imgPerson2 = new Texture("ball2.png");
         gdx = myGdx;
         MyInput myInput = new MyInput();
         Gdx.input.setInputProcessor(myInput);
@@ -141,8 +143,8 @@ public class ScreenGame implements Screen {
 
 
         gdx.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
-        gdx.batch.draw(imgBall, person1.scrX(), person1.scrY(), person1.width(), person1.height());
-        gdx.batch.draw(imgBall, person2.scrX(), person2.scrY(), person2.width(), person2.height());
+        gdx.batch.draw(imgPerson1, person1.scrX(), person1.scrY(), person1.width(), person1.height());
+        gdx.batch.draw(imgPerson2, person2.scrX(), person2.scrY(), person2.width(), person2.height());
         gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
         gdx.batch.begin();
