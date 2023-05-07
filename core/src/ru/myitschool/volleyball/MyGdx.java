@@ -21,7 +21,7 @@ public class MyGdx extends Game {
 	OrthographicCamera camera2;
 	World world;
 	Box2DDebugRenderer debugRenderer;
-	Vector3 touch, touch0, touch1;
+	Vector3 touch;
 	BitmapFont font, fontLarge;
 
 	ScreenIntro screenIntro;
@@ -41,8 +41,6 @@ public class MyGdx extends Game {
 
 		world = new World(new Vector2(0, -10), false);
 		touch = new Vector3();
-		/*touch0 = new Vector3();
-		touch1 = new Vector3();*/
 		Box2D.init();
 		debugRenderer = new Box2DDebugRenderer();
 
