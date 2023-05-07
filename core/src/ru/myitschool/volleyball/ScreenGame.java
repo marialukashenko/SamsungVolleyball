@@ -4,12 +4,14 @@ import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
 import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -44,6 +46,8 @@ public class ScreenGame implements Screen {
         imgShadow = new Texture("shadow.png");
         imgNet = new Texture("net.png");
         gdx = myGdx;
+        MyInput myInput = new MyInput();
+        Gdx.input.setInputProcessor(myInput);
         btnBack = new TextButton(gdx.fontLarge, "BACK", SCR_WIDTH*100-200, SCR_HEIGHT*100-30);
         btnRerun = new TextButton(gdx.fontLarge, "REPLAY", 20, SCR_HEIGHT*100-30);
         //игровое поле и сетки
@@ -75,26 +79,21 @@ public class ScreenGame implements Screen {
         gdx.debugRenderer.render(gdx.world, gdx.camera.combined);
 
         // касания
-        if(Gdx.input.isTouched(0)) {
-            gdx.touch.set(Gdx.input.getX(0), Gdx.input.getY(0), 0);
+        if(Gdx.input.isTouched()) {
+            gdx.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             gdx.camera.unproject(gdx.touch);
-            touchScreen();
-        }
-        if(Gdx.input.isTouched(1)) {
-            gdx.touch.set(Gdx.input.getX(1), Gdx.input.getY(1), 0);
-            gdx.camera.unproject(gdx.touch);
-            touchScreen();
-        }
-        if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
-            if(isWin){
-                isWin = false;
-            }
-            gdx.setScreen(gdx.screenIntro);
-            startGame = true;
-        }
 
-        if (isWin && btnRerun.hit(gdx.touch.x, gdx.touch.y)){
-            startGame();
+            if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
+                if(isWin){
+                    isWin = false;
+                }
+                gdx.setScreen(gdx.screenIntro);
+                startGame = true;
+            }
+
+            if (isWin && btnRerun.hit(gdx.touch.x, gdx.touch.y)) {
+                startGame();
+            }
         }
 
 
@@ -182,15 +181,11 @@ public class ScreenGame implements Screen {
     }
 
 
-    void touchScreen() {
-        if(gdx.touch.x < SCR_WIDTH/2){
-            if(!person1.isJumping) {
-                person1.touch(gdx.touch.x, gdx.touch.y);
-            }
+    void touchScreen(Vector3 touch) {
+        if(touch.x < SCR_WIDTH/2){
+            person1.touch(touch.x, touch.y);
         } else {
-            if(!person2.isJumping) {
-                person2.touch(gdx.touch.x, gdx.touch.y);
-            }
+            person2.touch(touch.x, touch.y);
         }
     }
 
@@ -241,4 +236,61 @@ public class ScreenGame implements Screen {
         person2.body.setTransform(SCR_WIDTH/4*3, 0.65f, 0);
     }
 
+    class MyInput implements InputProcessor {
+
+        @Override
+        public boolean keyDown(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyUp(int keycode) {
+            return false;
+        }
+
+        @Override
+        public boolean keyTyped(char character) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+            touchColobs(screenX, screenY, pointer);
+            return false;
+        }
+
+        @Override
+        public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+            return false;
+        }
+
+        @Override
+        public boolean touchDragged(int screenX, int screenY, int pointer) {
+            touchColobs(screenX, screenY, pointer);
+            return false;
+        }
+
+        @Override
+        public boolean mouseMoved(int screenX, int screenY) {
+            return false;
+        }
+
+        @Override
+        public boolean scrolled(float amountX, float amountY) {
+            return false;
+        }
+    }
+
+    void touchColobs(int screenX, int screenY, int pointer) {
+        if(pointer == 0) {
+            gdx.touch.set(screenX, screenY, 0);
+            gdx.camera.unproject(gdx.touch);
+            touchScreen(gdx.touch);
+        }
+        if(pointer==1) {
+            gdx.touch.set(screenX, screenY, 0);
+            gdx.camera.unproject(gdx.touch);
+            touchScreen(gdx.touch);
+        }
+    }
 }

@@ -10,13 +10,16 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class DynamicBodyPlayer {
 
     Body body;
     float r;
     float lowLevel;
-    boolean isJumping;
+    private static final int GO = 0, JUMP = 1, FALL = 2;
+    int state;
+    long timeStartJump, timeJump = 100;
 
     DynamicBodyPlayer(World world, float x, float y, float radius) {
         r = radius;
@@ -43,67 +46,72 @@ public class DynamicBodyPlayer {
         circle.dispose();
     }
 
-    public void touch(float tx, float ty){
-        if(isJumping) return;
-        if(ty > getY()+r && tx > getX()-r*3 && tx < getX()+r*3) {
-            //body.applyLinearImpulse(new Vector2(0, (float) (10*Math.sqrt(2*ty/10)*1.3)), body.getPosition(), true);
-            body.applyLinearImpulse(new Vector2(0, 11f), body.getPosition(), true);
-            isJumping = true;
+    public void touch(float tx, float ty) {
+        if (state != GO) return;
+        if (ty > getY() + r) {
+            state = JUMP;
+            float a = MathUtils.atan2((tx - getX()),(ty - getY()));
+            float vx = 60*MathUtils.sin(a);
+            float vy = 60*MathUtils.cos(a);
+            vy=vy<0?-1*vy:vy;
+            System.out.println("a: "+a+"vx: "+vx+"vy: "+vy);
+            body.applyLinearImpulse(new Vector2(vx, vy), body.getPosition(), true);
+            timeStartJump = TimeUtils.millis();
             return;
         }
-        if(tx > getX()){
-            float vx = (tx - getX()) * 8;
-            if(vx > 10) vx = 10;
-            body.setLinearVelocity(vx, 0);
-        }
-        else {
-            float vx = (tx - getX()) * 8;
-            if(vx < -10) vx = -10;
-            body.setLinearVelocity(vx, 0);
-        }
 
+        if (tx > getX()) {
+            float vx = (tx - getX()) * 8;
+            if (vx > 10) vx = 10;
+            body.setLinearVelocity(vx, 0);
+        } else {
+            float vx = (tx - getX()) * 8;
+            if (vx < -10) vx = -10;
+            body.setLinearVelocity(vx, 0);
+        }
     }
 
     void move() {
-        if(getY()>SCR_HEIGHT/2+r) {
-            body.setLinearVelocity(body.getLinearVelocity().x, -(0.9f*body.getLinearVelocity().y));
-            //body.applyLinearImpulse(new Vector2(0, -15f), body.getPosition(), true);
+        if (timeStartJump + timeJump < TimeUtils.millis() && state == JUMP) {
+            body.setLinearVelocity(body.getLinearVelocity().x>5?5:body.getLinearVelocity().x, -4.9f);
+            state = FALL;
         }
 
-        if(getY() <= lowLevel + 0.1f) {
-            isJumping = false;
+        if (getY() <= lowLevel + 0.1f) {
+            body.setLinearVelocity(0, 0);
+            state = GO;
         }
     }
 
-    float getX(){
+    float getX() {
         return body.getPosition().x;
     }
 
-    float getY(){
+    float getY() {
         return body.getPosition().y;
     }
 
-    float scrX(){
-        return body.getPosition().x-r;
+    float scrX() {
+        return body.getPosition().x - r;
     }
 
-    float scrY(){
-        return body.getPosition().y-r;
+    float scrY() {
+        return body.getPosition().y - r;
     }
 
-    float width(){
-        return r*2;
+    float width() {
+        return r * 2;
     }
 
-    float height(){
-        return r*2;
+    float height() {
+        return r * 2;
     }
 
-    Vector2 getCenter(){
+    Vector2 getCenter() {
         return body.getPosition();
     }
 
     boolean overlap(DynamicBodyBall b) {
-        return (getX()-b.getX())*(getX()-b.getX())+(getY()-b.getY())*(getY()-b.getY())<=(r+b.r)*(r+b.r);
+        return (getX() - b.getX()) * (getX() - b.getX()) + (getY() - b.getY()) * (getY() - b.getY()) <= (r + b.r) * (r + b.r);
     }
 }
