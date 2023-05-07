@@ -19,7 +19,7 @@ public class DynamicBodyPlayer {
     float lowLevel;
     private static final int GO = 0, JUMP = 1, FALL = 2;
     int state;
-    long timeStartJump, timeJump = 100;
+    long timeStartJump, timeJump = 200;
 
     DynamicBodyPlayer(World world, float x, float y, float radius) {
         r = radius;
@@ -51,8 +51,8 @@ public class DynamicBodyPlayer {
         if (ty > getY() + r) {
             state = JUMP;
             float a = MathUtils.atan2((tx - getX()),(ty - getY()));
-            float vx = 60*MathUtils.sin(a);
-            float vy = 60*MathUtils.cos(a);
+            float vx = 40*MathUtils.sin(a);
+            float vy = 40*MathUtils.cos(a);
             vy=vy<0?-1*vy:vy;
             System.out.println("a: "+a+"vx: "+vx+"vy: "+vy);
             body.applyLinearImpulse(new Vector2(vx, vy), body.getPosition(), true);

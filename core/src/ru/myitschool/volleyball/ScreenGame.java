@@ -215,8 +215,8 @@ public class ScreenGame implements Screen {
     }
 
     void startGame(){
-        isWin = false;
         isGoal = false;
+        isWin = false;
         startGame = true;
         countGoals_1 = 0;
         countGoals_2 = 0;

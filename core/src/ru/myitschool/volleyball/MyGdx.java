@@ -84,7 +84,7 @@ public class MyGdx extends Game {
 
 	public void sleep(){
 		try {
-			Thread.sleep(150);
+			Thread.sleep(300);
 		} catch (Exception ignored){
 
 		}
