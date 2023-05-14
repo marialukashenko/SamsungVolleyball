@@ -28,6 +28,11 @@ public class MyGdx extends Game {
 	ScreenGame screenGame;
 	ScreenSettings screenSettings;
 	ScreenAbout screenAbout;
+	ScreenBackgrounds screenBackgrounds;
+	ScreenPlayers screenPlayers;
+
+	boolean soundOn = true;
+	boolean musicOn = true;
 
 	@Override
 	public void create() {
@@ -49,6 +54,8 @@ public class MyGdx extends Game {
 		screenGame = new ScreenGame(this);
 		screenSettings = new ScreenSettings(this);
 		screenAbout = new ScreenAbout(this);
+		screenBackgrounds = new ScreenBackgrounds(this);
+		screenPlayers = new ScreenPlayers(this);
 		setScreen(screenIntro);
 	}
 
@@ -60,9 +67,9 @@ public class MyGdx extends Game {
 	}
 
 	void generateFont(){
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("classicfont.otf"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("beautiful_letters.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.color = new Color(1, 0.8f, 0.4f, 1);
+		parameter.color = new Color(1, 1, 0.6f, 1);
 		parameter.size = 45;
 		parameter.borderColor = Color.BLACK;
 		parameter.borderWidth = 2;

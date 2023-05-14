@@ -6,16 +6,24 @@ import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class ScreenSettings implements Screen {
     MyGdx gdx;
     Texture imgBackGround;
-    TextButton btnBack;
+    Texture imgBack;
+    TextButton btnMusic, btnSound, btnBackgrounds, btnPlayers;
+    ImageButton btnBack;
 
     public ScreenSettings(MyGdx myGdx) {
         gdx = myGdx;
         imgBackGround = new Texture("background.jpg");
-        btnBack = new TextButton(gdx.fontLarge, "BACK", SCR_WIDTH*100-200, SCR_HEIGHT*100-30);
+        imgBack = new Texture("back.png");
+        btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
+        btnMusic = new TextButton(gdx.fontLarge, "MUSIC", 500);
+        btnSound = new TextButton(gdx.fontLarge, "SOUND", 430);
+        btnBackgrounds = new TextButton(gdx.fontLarge, "BACKGROUNDS", 360);
+        btnPlayers = new TextButton(gdx.fontLarge, "PLAYERS", 290);
     }
 
     @Override
@@ -31,6 +39,20 @@ public class ScreenSettings implements Screen {
             if (btnBack.hit(gdx.touch.x, gdx.touch.y)) {
                 gdx.setScreen(gdx.screenIntro);
             }
+            if (btnSound.hit(gdx.touch.x, gdx.touch.y)) {
+                gdx.soundOn = !gdx.soundOn;
+                btnSound.setText(gdx.soundOn ? "SOUND ON" : "SOUND OFF");
+            }
+            if (btnMusic.hit(gdx.touch.x, gdx.touch.y)) {
+                gdx.musicOn = !gdx.musicOn;
+                btnMusic.setText(gdx.musicOn ? "MUSIC ON" : "MUSIC OFF");
+            }
+            if (btnBackgrounds.hit(gdx.touch.x, gdx.touch.y)){
+                gdx.setScreen(gdx.screenBackgrounds);
+            }
+            if (btnPlayers.hit(gdx.touch.x, gdx.touch.y)){
+                gdx.setScreen(gdx.screenPlayers);
+            }
         }
 
         //отрисовка
@@ -38,10 +60,14 @@ public class ScreenSettings implements Screen {
         gdx.batch.setProjectionMatrix(gdx.camera.combined);
         gdx.batch.begin();
         gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
         gdx.batch.begin();
-        btnBack.font.draw(gdx.batch, btnBack.text, btnBack.x, btnBack.y);
+        btnMusic.font.draw(gdx.batch, btnMusic.text, btnMusic.x, btnMusic.y);
+        btnSound.font.draw(gdx.batch, btnSound.text, btnSound.x, btnSound.y);
+        btnBackgrounds.font.draw(gdx.batch, btnBackgrounds.text, btnBackgrounds.x, btnBackgrounds.y);
+        btnPlayers.font.draw(gdx.batch, btnPlayers.text, btnPlayers.x, btnPlayers.y);
         gdx.batch.end();
     }
 
@@ -62,7 +88,7 @@ public class ScreenSettings implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override

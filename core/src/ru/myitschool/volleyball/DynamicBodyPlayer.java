@@ -54,7 +54,6 @@ public class DynamicBodyPlayer {
             float vx = 40*MathUtils.sin(a);
             float vy = 40*MathUtils.cos(a);
             vy=vy<0?-1*vy:vy;
-            System.out.println("a: "+a+"vx: "+vx+"vy: "+vy);
             body.applyLinearImpulse(new Vector2(vx, vy), body.getPosition(), true);
             timeStartJump = TimeUtils.millis();
             return;

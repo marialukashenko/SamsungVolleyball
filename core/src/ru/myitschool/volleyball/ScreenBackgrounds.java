@@ -7,27 +7,22 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class ScreenAbout implements Screen {
+public class ScreenBackgrounds implements Screen {
     MyGdx gdx;
     Texture imgBackGround;
     ImageButton btnBack;
     Texture imgBack;
-    String textAbout =  "Эта супер-игра создана\n" +
-            "в IT-школе Samsung\n" +
-            "на java под Android.\n\n" +
-            "Цель игры - победить\n" +
-            "в волейбол.";
 
-    public ScreenAbout(MyGdx myGdx) {
+    public ScreenBackgrounds(MyGdx myGdx) {
         gdx = myGdx;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
-        btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH-1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
     }
 
     @Override
     public void show() {
-
+        gdx.sleep();
     }
 
     @Override
@@ -38,21 +33,15 @@ public class ScreenAbout implements Screen {
             gdx.camera.unproject(gdx.touch);
 
             if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.setScreen(gdx.screenIntro);
+                gdx.setScreen(gdx.screenSettings);
             }
         }
 
-        // события
-
         // отрисовка всей графики
         gdx.camera.update();
-        gdx.batch.setProjectionMatrix(gdx.camera2.combined);
-        gdx.batch.begin();
-        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH*100, SCR_HEIGHT*100);
-        gdx.font.draw(gdx.batch, textAbout, 400, 500);
-        gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera.combined);
         gdx.batch.begin();
+        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         gdx.batch.end();
     }
@@ -74,7 +63,7 @@ public class ScreenAbout implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -82,4 +71,3 @@ public class ScreenAbout implements Screen {
 
     }
 }
-

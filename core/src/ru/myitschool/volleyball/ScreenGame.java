@@ -26,6 +26,7 @@ public class ScreenGame implements Screen {
     Texture imgPerson1, imgPerson2;
     Texture imgShadow;
     Texture imgNet;
+    Texture imgBack;
     StaticBodyBox[] block = new StaticBodyBox[4];
     StaticBodyBox net;
     DynamicBodyPlayer person1, person2;
@@ -35,7 +36,8 @@ public class ScreenGame implements Screen {
     boolean isGoal, isWin;
     float ballHeight = 2.6f;
     float netHeight = 6.02f;
-    TextButton btnBack, btnRerun;
+    ImageButton btnBack;
+    TextButton btnRerun;
     boolean startGame = true;
     float floor = 0.3f / 2;
 
@@ -44,13 +46,14 @@ public class ScreenGame implements Screen {
         imgBackGround = new Texture("background_beach.jpg");
         imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
-        imgNet = new Texture("net.png");
+        imgNet = new Texture("net1.png");
         imgPerson1 = new Texture("ball2.png");
         imgPerson2 = new Texture("ball2.png");
+        imgBack = new Texture("back.png");
         gdx = myGdx;
         MyInput myInput = new MyInput();
         Gdx.input.setInputProcessor(myInput);
-        btnBack = new TextButton(gdx.fontLarge, "BACK", SCR_WIDTH * 100 - 200, SCR_HEIGHT * 100 - 30);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
         btnRerun = new TextButton(gdx.fontLarge, "REPLAY", 20, SCR_HEIGHT * 100 - 30);
         //игровое поле и сетки
         block[0] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
@@ -145,10 +148,10 @@ public class ScreenGame implements Screen {
         gdx.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
         gdx.batch.draw(imgPerson1, person1.scrX(), person1.scrY(), person1.width(), person1.height());
         gdx.batch.draw(imgPerson2, person2.scrX(), person2.scrY(), person2.width(), person2.height());
+        gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
         gdx.batch.begin();
-        btnBack.font.draw(gdx.batch, btnBack.text, btnBack.x, btnBack.y);
         gdx.font.draw(gdx.batch, ":", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100, Align.center, true);
         gdx.font.draw(gdx.batch, countGoals_1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
         gdx.font.draw(gdx.batch, countGoals_2 + "", SCR_WIDTH * 100 / 2 + 50, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.left, true);
