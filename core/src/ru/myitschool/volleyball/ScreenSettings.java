@@ -6,7 +6,6 @@ import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.utils.TimeUtils;
 
 public class ScreenSettings implements Screen {
     MyGdx gdx;

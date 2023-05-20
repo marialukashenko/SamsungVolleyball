@@ -2,6 +2,7 @@ package ru.myitschool.volleyball;
 
 import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
 import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
+import static ru.myitschool.volleyball.MyGdx.number_background;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -12,12 +13,21 @@ public class ScreenBackgrounds implements Screen {
     Texture imgBackGround;
     ImageButton btnBack;
     Texture imgBack;
+    int count_backgrounds = 4;
+    ImageButton[] btnBackground = new ImageButton[count_backgrounds];
+    Texture[] imgBtnBackground = new Texture[count_backgrounds];
 
     public ScreenBackgrounds(MyGdx myGdx) {
         gdx = myGdx;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH-1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
+        for (int i = 0; i < count_backgrounds; i++) {
+            imgBtnBackground[i] = new Texture("background"+i+".jpg");
+        }
+        for (int i = 0; i < count_backgrounds; i++) {
+            btnBackground[i] = new ImageButton(imgBtnBackground[i], 1+4*(i%3), SCR_HEIGHT-3*(i/3+1), 3.5f, 2);
+        }
     }
 
     @Override
@@ -43,6 +53,9 @@ public class ScreenBackgrounds implements Screen {
         gdx.batch.begin();
         gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        for (int i = 0; i < count_backgrounds; i++) {
+            gdx.batch.draw(btnBackground[i].img, btnBackground[i].x, btnBackground[i].y, btnBackground[i].width, btnBackground[i].height);
+        }
         gdx.batch.end();
     }
 

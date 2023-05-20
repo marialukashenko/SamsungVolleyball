@@ -2,17 +2,14 @@ package ru.myitschool.volleyball;
 
 import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
 import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
+import static ru.myitschool.volleyball.MyGdx.number_background;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.MathUtils;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -43,7 +40,7 @@ public class ScreenGame implements Screen {
 
 
     public ScreenGame(MyGdx myGdx) {
-        imgBackGround = new Texture("background_beach.jpg");
+        imgBackGround = new Texture("background"+number_background+".jpg");
         imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
         imgNet = new Texture("net1.png");
