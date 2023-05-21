@@ -45,6 +45,13 @@ public class ScreenBackgrounds implements Screen {
             if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
                 gdx.setScreen(gdx.screenSettings);
             }
+
+            for (int i = 0; i < count_backgrounds; i++) {
+                if(btnBackground[i].hit(gdx.touch.x, gdx.touch.y)){
+                    number_background = i;
+                    break;
+                }
+            }
         }
 
         // отрисовка всей графики

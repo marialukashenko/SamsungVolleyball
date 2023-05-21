@@ -7,6 +7,7 @@ import static ru.myitschool.volleyball.MyGdx.number_background;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
@@ -18,6 +19,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class ScreenGame implements Screen {
 
     MyGdx gdx;
+    Sound ball_hit, goal, win;
     Texture imgBackGround;
     Texture imgBall;
     Texture imgPerson1, imgPerson2;
@@ -47,6 +49,9 @@ public class ScreenGame implements Screen {
         imgPerson1 = new Texture("ball2.png");
         imgPerson2 = new Texture("ball2.png");
         imgBack = new Texture("back.png");
+        ball_hit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
+        goal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
+        win = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
         gdx = myGdx;
         MyInput myInput = new MyInput();
         Gdx.input.setInputProcessor(myInput);
@@ -121,12 +126,25 @@ public class ScreenGame implements Screen {
                     countGoals_2++;
                     if (countGoals_2 == 3) {
                         isWin = true;
+                        if(gdx.soundOn) win.play();
+                    }
+                    else {
+                        if(gdx.soundOn) goal.play();
                     }
                 } else {
                     countGoals_1++;
                     if (countGoals_1 == 3) {
                         isWin = true;
+                        if(gdx.soundOn) win.play();
                     }
+                    else {
+                        if(gdx.soundOn) goal.play();
+                    }
+                }
+            }
+            else{
+                if (person1.overlap(ball) || person2.overlap(ball)) {;
+                    if(gdx.soundOn) ball_hit.play();
                 }
             }
         }
@@ -208,6 +226,7 @@ public class ScreenGame implements Screen {
     }
 
     void create() {
+        imgBackGround = new Texture("background"+number_background+".jpg");
         ball.body.setLinearVelocity(0, 0);
         ball.body.setAngularVelocity(0);
         ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0);
