@@ -46,8 +46,8 @@ public class ScreenGame implements Screen {
         imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
         imgNet = new Texture("net1.png");
-        imgPerson1 = new Texture("ball2.png");
-        imgPerson2 = new Texture("ball2.png");
+        imgPerson1 = new Texture("person1.png");
+        imgPerson2 = new Texture("person2.png");
         imgBack = new Texture("back.png");
         ball_hit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
         goal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
