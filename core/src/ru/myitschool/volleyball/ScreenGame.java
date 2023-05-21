@@ -39,7 +39,7 @@ public class ScreenGame implements Screen {
     TextButton btnRerun;
     boolean startGame = true;
     float floor = 0.3f / 2;
-
+    long timeShowGame, timeStartGameInterval = 300;
 
     public ScreenGame(MyGdx myGdx) {
         imgBackGround = new Texture("background"+number_background+".jpg");
@@ -72,10 +72,13 @@ public class ScreenGame implements Screen {
     @Override
     public void show() {
         create();
+        timeShowGame = TimeUtils.millis();
     }
 
     @Override
     public void render(float delta) {
+        if(timeShowGame+timeStartGameInterval > TimeUtils.millis()) return;
+
         gdx.camera.update();
         gdx.world.step(1 / 60f, 6, 2);
         ScreenUtils.clear(0, 0, 0, 1);
@@ -203,7 +206,7 @@ public class ScreenGame implements Screen {
 
     @Override
     public void hide() {
-
+        Gdx.input.setInputProcessor(null);
     }
 
     @Override
@@ -215,7 +218,6 @@ public class ScreenGame implements Screen {
         isWin = false;
         startGame = true;
         create();
-        gdx.sleep();
     }
 
     void create() {

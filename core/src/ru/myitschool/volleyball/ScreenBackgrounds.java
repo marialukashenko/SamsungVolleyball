@@ -13,7 +13,7 @@ public class ScreenBackgrounds implements Screen {
     Texture imgBackGround;
     ImageButton btnBack;
     Texture imgBack;
-    int count_backgrounds = 4;
+    int count_backgrounds = 5;
     ImageButton[] btnBackground = new ImageButton[count_backgrounds];
     Texture[] imgBtnBackground = new Texture[count_backgrounds];
 
