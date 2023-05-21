@@ -53,8 +53,7 @@ public class ScreenGame implements Screen {
         goal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
         win = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
         gdx = myGdx;
-        MyInput myInput = new MyInput();
-        Gdx.input.setInputProcessor(myInput);
+
         btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
         btnRerun = new TextButton(gdx.fontLarge, "REPLAY", 20, SCR_HEIGHT * 100 - 30);
         //игровое поле и сетки
@@ -72,9 +71,6 @@ public class ScreenGame implements Screen {
 
     @Override
     public void show() {
-        isGoal = false;
-        countGoals_2 = 0;
-        countGoals_1 = 0;
         create();
     }
 
@@ -216,16 +212,18 @@ public class ScreenGame implements Screen {
     }
 
     void startGame() {
-        isGoal = false;
         isWin = false;
         startGame = true;
-        countGoals_1 = 0;
-        countGoals_2 = 0;
         create();
         gdx.sleep();
     }
 
     void create() {
+        isGoal = false;
+        countGoals_2 = 0;
+        countGoals_1 = 0;
+        MyInput myInput = new MyInput();
+        Gdx.input.setInputProcessor(myInput);
         imgBackGround = new Texture("background"+number_background+".jpg");
         ball.body.setLinearVelocity(0, 0);
         ball.body.setAngularVelocity(0);
