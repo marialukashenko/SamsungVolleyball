@@ -6,7 +6,9 @@ import static ru.myitschool.volleyball.MyGdx.number_background;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class ScreenBackgrounds implements Screen {
     MyGdx gdx;
@@ -16,6 +18,7 @@ public class ScreenBackgrounds implements Screen {
     int count_backgrounds = 5;
     ImageButton[] btnBackground = new ImageButton[count_backgrounds];
     Texture[] imgBtnBackground = new Texture[count_backgrounds];
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     public ScreenBackgrounds(MyGdx myGdx) {
         gdx = myGdx;
@@ -60,6 +63,18 @@ public class ScreenBackgrounds implements Screen {
         gdx.batch.begin();
         gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        gdx.batch.end();
+        for (int i = 0; i < count_backgrounds; i++) {
+            if (i == number_background){
+                shapeRenderer.setProjectionMatrix(gdx.camera.combined);
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(Color.YELLOW);
+                shapeRenderer.rect(btnBackground[number_background].x-0.1f, btnBackground[number_background].y - 0.1f, 3.7f, 2.2f);
+                shapeRenderer.end();
+            }
+        }
+        gdx.batch.setProjectionMatrix(gdx.camera.combined);
+        gdx.batch.begin();
         for (int i = 0; i < count_backgrounds; i++) {
             gdx.batch.draw(btnBackground[i].img, btnBackground[i].x, btnBackground[i].y, btnBackground[i].width, btnBackground[i].height);
         }

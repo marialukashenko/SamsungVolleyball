@@ -128,7 +128,7 @@ public class ScreenGame implements Screen {
                 timeGoal = TimeUtils.millis();
                 if (ball.getX() < SCR_WIDTH / 2) {
                     countGoals_2++;
-                    if (countGoals_2 == 3) {
+                    if (countGoals_2 == 5) {
                         isWin = true;
                         if(gdx.soundOn) win.play();
                     }
@@ -137,7 +137,7 @@ public class ScreenGame implements Screen {
                     }
                 } else {
                     countGoals_1++;
-                    if (countGoals_1 == 3) {
+                    if (countGoals_1 == 5) {
                         isWin = true;
                         if(gdx.soundOn) win.play();
                     }

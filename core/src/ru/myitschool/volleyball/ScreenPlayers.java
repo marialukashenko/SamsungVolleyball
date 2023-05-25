@@ -6,7 +6,9 @@ import static ru.myitschool.volleyball.MyGdx.number_players;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class ScreenPlayers implements Screen {
     MyGdx gdx;
@@ -16,6 +18,7 @@ public class ScreenPlayers implements Screen {
     int count_players = 1;
     ImageButton[] btnPlayer = new ImageButton[count_players];
     Texture[] imgBtnPlayer = new Texture[count_players];
+    ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     public ScreenPlayers(MyGdx myGdx) {
         gdx = myGdx;
@@ -60,6 +63,18 @@ public class ScreenPlayers implements Screen {
         gdx.batch.begin();
         gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        gdx.batch.end();
+        for (int i = 0; i < count_players; i++) {
+            if (i == number_players){
+                shapeRenderer.setProjectionMatrix(gdx.camera.combined);
+                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+                shapeRenderer.setColor(Color.YELLOW);
+                shapeRenderer.rect(btnPlayer[number_players].x-0.1f, btnPlayer[number_players].y - 0.1f, 2.7f, 2.7f);
+                shapeRenderer.end();
+            }
+        }
+        gdx.batch.setProjectionMatrix(gdx.camera.combined);
+        gdx.batch.begin();
         for (int i = 0; i < count_players; i++) {
             gdx.batch.draw(btnPlayer[i].img, btnPlayer[i].x, btnPlayer[i].y, btnPlayer[i].width, btnPlayer[i].height);
         }

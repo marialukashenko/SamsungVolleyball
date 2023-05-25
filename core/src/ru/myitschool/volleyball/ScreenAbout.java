@@ -49,7 +49,7 @@ public class ScreenAbout implements Screen {
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
         gdx.batch.begin();
         gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH*100, SCR_HEIGHT*100);
-        gdx.font.draw(gdx.batch, textAbout, 400, 500);
+        gdx.font.draw(gdx.batch, textAbout, 350, 500);
         gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera.combined);
         gdx.batch.begin();
