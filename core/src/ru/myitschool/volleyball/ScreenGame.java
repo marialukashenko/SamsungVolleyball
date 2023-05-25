@@ -22,7 +22,7 @@ public class ScreenGame implements Screen {
     Sound ball_hit, goal, win;
     Texture imgBackGround;
     Texture imgBall;
-    Texture imgPerson1, imgPerson2;
+    //Texture imgPerson1, imgPerson2;
     Texture imgShadow;
     Texture imgNet;
     Texture imgBack;
@@ -48,8 +48,8 @@ public class ScreenGame implements Screen {
         imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
         imgNet = new Texture("net1.png");
-        imgPerson1 = new Texture("person1.png");
-        imgPerson2 = new Texture("person2.png");
+        /*imgPerson1 = new Texture("person1.png");
+        imgPerson2 = new Texture("person2.png");*/
         imgBack = new Texture("back.png");
         for (int i = 0; i < imgPerson.length; i++) {
             imgPerson[i] = new Texture("colob/colobog00"+(i+1)/10+(i+1)%10+".png");
@@ -145,9 +145,8 @@ public class ScreenGame implements Screen {
                         if(gdx.soundOn) goal.play();
                     }
                 }
-            }
-            else{
-                if (person1.overlap(ball) || person2.overlap(ball)) {;
+            } else{
+                if (person1.overlap(ball) || person2.overlap(ball) && !isWin) {;
                     if(gdx.soundOn) ball_hit.play();
                 }
             }

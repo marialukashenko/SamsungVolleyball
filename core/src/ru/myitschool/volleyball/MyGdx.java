@@ -17,6 +17,7 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 public class MyGdx extends Game {
 	public static final float SCR_WIDTH = 12.8f, SCR_HEIGHT = 7.2f;
 	public static int number_background = 0;
+	public static int number_players = 0;
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	OrthographicCamera camera2;
