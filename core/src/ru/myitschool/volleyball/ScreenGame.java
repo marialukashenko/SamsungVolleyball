@@ -146,7 +146,7 @@ public class ScreenGame implements Screen {
                     }
                 }
             } else{
-                if (person1.overlap(ball) || person2.overlap(ball) && !isWin) {;
+                if ((person1.overlap(ball) || person2.overlap(ball)) && !isWin) {;
                     if(gdx.soundOn) ball_hit.play();
                 }
             }
