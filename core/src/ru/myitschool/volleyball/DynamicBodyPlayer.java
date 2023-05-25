@@ -20,10 +20,16 @@ public class DynamicBodyPlayer {
     private static final int GO = 0, JUMP = 1, FALL = 2;
     int state;
     long timeStartJump, timeJump = 200;
+    long timeLastFaza, timeFazaInterval = 50;
+    int faza, nFaz = 18, fazaStay = 17, fazaJumpLeft = 18, fazaJumpRight = 19;
+    boolean isFlip;
+    public static final boolean LEFT = true, RIGHT = false;
+    boolean side;
 
-    DynamicBodyPlayer(World world, float x, float y, float radius) {
+    DynamicBodyPlayer(World world, float x, float y, float radius, boolean side) {
         r = radius;
         lowLevel = y;
+        this.side = side;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -75,10 +81,35 @@ public class DynamicBodyPlayer {
             body.setLinearVelocity(body.getLinearVelocity().x>5?5:body.getLinearVelocity().x, -4.9f);
             state = FALL;
         }
+        changeFaza();
 
         if (getY() <= lowLevel + 0.1f) {
             body.setLinearVelocity(0, 0);
             state = GO;
+        }
+
+
+    }
+
+    void changeFaza(){
+        if(state == GO) {
+            if(Math.abs(body.getLinearVelocity().x)<0.01){
+                isFlip = side;
+                faza = fazaStay;
+            }
+            else if(timeLastFaza+timeFazaInterval<TimeUtils.millis()) {
+                isFlip = body.getLinearVelocity().x>0;
+                if (++faza >= nFaz) faza = 0;
+                timeLastFaza = TimeUtils.millis();
+            }
+        }
+        if(state == JUMP && body.getLinearVelocity().x>0) {
+            if (isFlip) faza = fazaJumpRight;
+            else faza = fazaJumpLeft;
+        }
+        if(state == JUMP && body.getLinearVelocity().x<0) {
+            if (isFlip) faza = fazaJumpLeft;
+            else faza = fazaJumpRight;
         }
     }
 

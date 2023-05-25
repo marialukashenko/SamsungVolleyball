@@ -26,6 +26,8 @@ public class ScreenGame implements Screen {
     Texture imgShadow;
     Texture imgNet;
     Texture imgBack;
+    Texture[] imgPerson = new Texture[20];
+
     StaticBodyBox[] block = new StaticBodyBox[4];
     StaticBodyBox net;
     DynamicBodyPlayer person1, person2;
@@ -49,6 +51,9 @@ public class ScreenGame implements Screen {
         imgPerson1 = new Texture("person1.png");
         imgPerson2 = new Texture("person2.png");
         imgBack = new Texture("back.png");
+        for (int i = 0; i < imgPerson.length; i++) {
+            imgPerson[i] = new Texture("colob/colobog00"+(i+1)/10+(i+1)%10+".png");
+        }
         ball_hit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
         goal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
         win = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
@@ -65,8 +70,8 @@ public class ScreenGame implements Screen {
 
         //задание тел
         ball = new DynamicBodyBall(gdx.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
-        person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4, 0.65f, 0.5f);
-        person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4 * 3, 0.65f, 0.5f);
+        person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
+        person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
     }
 
     @Override
@@ -112,9 +117,9 @@ public class ScreenGame implements Screen {
                     //ball.body.setTransform(MathUtils.random(1, 5), MyGdx.SCR_HEIGHT + 1, 0);
                 }
                 gdx.world.destroyBody(person1.body);
-                person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4, 0.65f, 0.5f);
+                person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
                 gdx.world.destroyBody(person2.body);
-                person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4 * 3, 0.65f, 0.5f);
+                person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
                 //ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
             }
         } else {
@@ -160,8 +165,12 @@ public class ScreenGame implements Screen {
 
 
         gdx.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
-        gdx.batch.draw(imgPerson1, person1.scrX(), person1.scrY(), person1.width(), person1.height());
-        gdx.batch.draw(imgPerson2, person2.scrX(), person2.scrY(), person2.width(), person2.height());
+        //gdx.batch.draw(imgPerson1, person1.scrX(), person1.scrY(), person1.width(), person1.height());
+        //gdx.batch.draw(imgPerson2, person2.scrX(), person2.scrY(), person2.width(), person2.height());
+        gdx.batch.draw(imgPerson[person1.faza], person1.scrX()-0.25f, person1.scrY(), person1.width()*1.5f/2, person1.height()*1.5f/2,
+                person1.width()*1.5f, person1.height()*1.5f, 1, 1, 0, 0, 0, 256, 256, person1.isFlip, false);
+        gdx.batch.draw(imgPerson[person2.faza], person2.scrX()-0.25f, person2.scrY(), person2.width()*1.5f/2, person2.height()*1.5f/2,
+                person2.width()*1.5f, person2.height()*1.5f, 1, 1, 0, 0, 0, 256, 256, person2.isFlip, false);
         gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
