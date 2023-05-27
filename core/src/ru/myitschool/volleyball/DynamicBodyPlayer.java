@@ -87,8 +87,6 @@ public class DynamicBodyPlayer {
             body.setLinearVelocity(0, 0);
             state = GO;
         }
-
-
     }
 
     void changeFaza(){

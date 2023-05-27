@@ -9,6 +9,7 @@ import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
@@ -22,11 +23,12 @@ public class ScreenGame implements Screen {
     Sound ball_hit, goal, win;
     Texture imgBackGround;
     Texture imgBall;
-    //Texture imgPerson1, imgPerson2;
     Texture imgShadow;
     Texture imgNet;
     Texture imgBack;
-    Texture[] imgPerson = new Texture[20];
+    Texture imgPersonAtlas1, imgPersonAtlas2;
+    TextureRegion[] imgPerson1 = new TextureRegion[20];
+    TextureRegion[] imgPerson2 = new TextureRegion[20];
 
     StaticBodyBox[] block = new StaticBodyBox[4];
     StaticBodyBox net;
@@ -42,18 +44,26 @@ public class ScreenGame implements Screen {
     boolean startGame = true;
     float floor = 0.3f / 2;
     long timeShowGame, timeStartGameInterval = 300;
+    long timeSoundPlay, timeSoundInterval = 100;
 
     public ScreenGame(MyGdx myGdx) {
         imgBackGround = new Texture("background"+number_background+".jpg");
         imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
         imgNet = new Texture("net1.png");
-        /*imgPerson1 = new Texture("person1.png");
-        imgPerson2 = new Texture("person2.png");*/
         imgBack = new Texture("back.png");
-        for (int i = 0; i < imgPerson.length; i++) {
-            imgPerson[i] = new Texture("colob/colobog00"+(i+1)/10+(i+1)%10+".png");
+
+        imgPersonAtlas1 = new Texture("colobatlasbeach.png");
+        for (int i = 0; i < imgPerson1.length/2; i++) {
+            imgPerson1[i] = new TextureRegion(imgPersonAtlas1, i*250, 0, 250, 250);
+            imgPerson1[i+imgPerson1.length/2] = new TextureRegion(imgPersonAtlas1, i*250, 250, 250, 250);
         }
+        imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
+        for (int i = 0; i < imgPerson2.length/2; i++) {
+            imgPerson2[i] = new TextureRegion(imgPersonAtlas2, i*250, 0, 250, 250);
+            imgPerson2[i+imgPerson2.length/2] = new TextureRegion(imgPersonAtlas2, i*250, 250, 250, 250);
+        }
+
         ball_hit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
         goal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
         win = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
@@ -146,8 +156,11 @@ public class ScreenGame implements Screen {
                     }
                 }
             } else{
-                if ((person1.overlap(ball) || person2.overlap(ball)) && !isWin) {;
-                    if(gdx.soundOn) ball_hit.play();
+                if ((person1.overlap(ball) || person2.overlap(ball)) && !isWin) {
+                    if(timeSoundPlay+timeSoundInterval < TimeUtils.millis()) {
+                        timeSoundPlay = TimeUtils.millis();
+                        if (gdx.soundOn) ball_hit.play();
+                    }
                 }
             }
         }
@@ -164,12 +177,12 @@ public class ScreenGame implements Screen {
 
 
         gdx.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
-        //gdx.batch.draw(imgPerson1, person1.scrX(), person1.scrY(), person1.width(), person1.height());
-        //gdx.batch.draw(imgPerson2, person2.scrX(), person2.scrY(), person2.width(), person2.height());
-        gdx.batch.draw(imgPerson[person1.faza], person1.scrX()-0.25f, person1.scrY(), person1.width()*1.5f/2, person1.height()*1.5f/2,
-                person1.width()*1.5f, person1.height()*1.5f, 1, 1, 0, 0, 0, 256, 256, person1.isFlip, false);
-        gdx.batch.draw(imgPerson[person2.faza], person2.scrX()-0.25f, person2.scrY(), person2.width()*1.5f/2, person2.height()*1.5f/2,
-                person2.width()*1.5f, person2.height()*1.5f, 1, 1, 0, 0, 0, 256, 256, person2.isFlip, false);
+
+        gdx.batch.draw(imgPerson1[person1.faza], person1.scrX()-0.25f, person1.scrY(), person1.width()*1.5f/2, person1.height()*1.5f/2,
+                person1.width()*1.5f, person1.height()*1.5f, person1.isFlip?-1:1, 1, 0);
+        gdx.batch.draw(imgPerson2[person2.faza], person2.scrX()-0.25f, person2.scrY(), person2.width()*1.5f/2, person2.height()*1.5f/2,
+                person2.width()*1.5f, person2.height()*1.5f, person2.isFlip?-1:1, 1, 0);
+
         gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
