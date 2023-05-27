@@ -248,6 +248,7 @@ public class ScreenGame implements Screen {
         MyInput myInput = new MyInput();
         Gdx.input.setInputProcessor(myInput);
         imgBackGround = new Texture("background"+number_background+".jpg");
+        loadPersons(number_background);
         ball.body.setLinearVelocity(0, 0);
         ball.body.setAngularVelocity(0);
         ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0);
@@ -257,6 +258,26 @@ public class ScreenGame implements Screen {
         person2.body.setLinearVelocity(0, 0);
         person2.body.setAngularVelocity(0);
         person2.body.setTransform(SCR_WIDTH / 4 * 3, 0.65f, 0);
+    }
+
+    void loadPersons(int type) {
+        gdx.screenGame.imgPersonAtlas1.dispose();
+        gdx.screenGame.imgPersonAtlas2.dispose();
+        if(type == 3) {
+            gdx.screenGame.imgPersonAtlas1 = new Texture("colobatlasknight.png");
+            gdx.screenGame.imgPersonAtlas2 = new Texture("colobatlasknight2.png");
+        } else {
+            gdx.screenGame.imgPersonAtlas1 = new Texture("colobatlasbeach.png");
+            gdx.screenGame.imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
+        }
+        for (int i = 0; i < gdx.screenGame.imgPerson1.length/2; i++) {
+            gdx.screenGame.imgPerson1[i] = new TextureRegion(gdx.screenGame.imgPersonAtlas1, i*250, 0, 250, 250);
+            gdx.screenGame.imgPerson1[i+gdx.screenGame.imgPerson1.length/2] = new TextureRegion(gdx.screenGame.imgPersonAtlas1, i*250, 250, 250, 250);
+        }
+        for (int i = 0; i < gdx.screenGame.imgPerson2.length/2; i++) {
+            gdx.screenGame.imgPerson2[i] = new TextureRegion(gdx.screenGame.imgPersonAtlas2, i*250, 0, 250, 250);
+            gdx.screenGame.imgPerson2[i+gdx.screenGame.imgPerson2.length/2] = new TextureRegion(gdx.screenGame.imgPersonAtlas2, i*250, 250, 250, 250);
+        }
     }
 
     class MyInput implements InputProcessor {
