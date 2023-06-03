@@ -17,7 +17,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 
-public class ScreenGame implements Screen {
+public class ScreenTwoPlayersGame implements Screen {
 
     MyGdx gdx;
     Sound ball_hit, goal, win;
@@ -46,7 +46,7 @@ public class ScreenGame implements Screen {
     long timeShowGame, timeStartGameInterval = 300;
     long timeSoundPlay, timeSoundInterval = 100;
 
-    public ScreenGame(MyGdx myGdx) {
+    public ScreenTwoPlayersGame(MyGdx myGdx) {
         imgBackGround = new Texture("background"+number_background+".jpg");
         imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
@@ -72,16 +72,16 @@ public class ScreenGame implements Screen {
         btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
         btnRerun = new TextButton(gdx.fontLarge, "REPLAY", 20, SCR_HEIGHT * 100 - 30);
         //игровое поле и сетки
-        block[0] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
-        block[1] = new StaticBodyBox(gdx.world, 0, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
-        block[2] = new StaticBodyBox(gdx.world, SCR_WIDTH, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
-        block[3] = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, SCR_HEIGHT + 0.4f, SCR_WIDTH, 0.3f);
-        net = new StaticBodyBox(gdx.world, SCR_WIDTH / 2, 1f, 0.2f, netHeight);
+        block[0] = new StaticBodyBox(gdx.worldTwoPlayers, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
+        block[1] = new StaticBodyBox(gdx.worldTwoPlayers, 0, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
+        block[2] = new StaticBodyBox(gdx.worldTwoPlayers, SCR_WIDTH, MyGdx.SCR_HEIGHT / 2, 0.3f, 1000);
+        block[3] = new StaticBodyBox(gdx.worldTwoPlayers, SCR_WIDTH / 2, SCR_HEIGHT + 0.4f, SCR_WIDTH, 0.3f);
+        net = new StaticBodyBox(gdx.worldTwoPlayers, SCR_WIDTH / 2, 1f, 0.2f, netHeight);
 
         //задание тел
-        ball = new DynamicBodyBall(gdx.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
-        person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
-        person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
+        ball = new DynamicBodyBall(gdx.worldTwoPlayers, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+        person1 = new DynamicBodyPlayer(gdx.worldTwoPlayers, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
+        person2 = new DynamicBodyPlayer(gdx.worldTwoPlayers, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
     }
 
     @Override
@@ -95,9 +95,9 @@ public class ScreenGame implements Screen {
         if(timeShowGame+timeStartGameInterval > TimeUtils.millis()) return;
 
         gdx.camera.update();
-        gdx.world.step(1 / 60f, 6, 2);
+        gdx.worldTwoPlayers.step(1 / 60f, 6, 2);
         ScreenUtils.clear(0, 0, 0, 1);
-        gdx.debugRenderer.render(gdx.world, gdx.camera.combined);
+        gdx.debugRenderer.render(gdx.worldTwoPlayers, gdx.camera.combined);
 
         // касания
 
@@ -116,20 +116,20 @@ public class ScreenGame implements Screen {
             if (TimeUtils.millis() > timeGoal + timeInterval) {
                 isGoal = false;
                 if (ball.getX() < SCR_WIDTH / 2) {
-                    gdx.world.destroyBody(ball.body);
-                    ball = new DynamicBodyBall(gdx.world, SCR_WIDTH / 4 * 3, ballHeight, 0.4f);
+                    gdx.worldTwoPlayers.destroyBody(ball.body);
+                    ball = new DynamicBodyBall(gdx.worldTwoPlayers, SCR_WIDTH / 4 * 3, ballHeight, 0.4f);
                     startGame = true;
                     //ball.body.setTransform((SCR_WIDTH/2+MathUtils.random(1, 5)), MyGdx.SCR_HEIGHT + 1, 0);
                 } else {
-                    gdx.world.destroyBody(ball.body);
-                    ball = new DynamicBodyBall(gdx.world, SCR_WIDTH / 4, ballHeight, 0.4f);
+                    gdx.worldTwoPlayers.destroyBody(ball.body);
+                    ball = new DynamicBodyBall(gdx.worldTwoPlayers, SCR_WIDTH / 4, ballHeight, 0.4f);
                     startGame = true;
                     //ball.body.setTransform(MathUtils.random(1, 5), MyGdx.SCR_HEIGHT + 1, 0);
                 }
-                gdx.world.destroyBody(person1.body);
-                person1 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
-                gdx.world.destroyBody(person2.body);
-                person2 = new DynamicBodyPlayer(gdx.world, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
+                gdx.worldTwoPlayers.destroyBody(person1.body);
+                person1 = new DynamicBodyPlayer(gdx.worldTwoPlayers, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
+                gdx.worldTwoPlayers.destroyBody(person2.body);
+                person2 = new DynamicBodyPlayer(gdx.worldTwoPlayers, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
                 //ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
             }
         } else {
@@ -261,22 +261,22 @@ public class ScreenGame implements Screen {
     }
 
     void loadPersons(int type) {
-        gdx.screenGame.imgPersonAtlas1.dispose();
-        gdx.screenGame.imgPersonAtlas2.dispose();
+        gdx.screenTwoPlayersGame.imgPersonAtlas1.dispose();
+        gdx.screenTwoPlayersGame.imgPersonAtlas2.dispose();
         if(type == 3) {
-            gdx.screenGame.imgPersonAtlas1 = new Texture("colobatlasknight.png");
-            gdx.screenGame.imgPersonAtlas2 = new Texture("colobatlasknight2.png");
+            gdx.screenTwoPlayersGame.imgPersonAtlas1 = new Texture("colobatlasknight.png");
+            gdx.screenTwoPlayersGame.imgPersonAtlas2 = new Texture("colobatlasknight2.png");
         } else {
-            gdx.screenGame.imgPersonAtlas1 = new Texture("colobatlasbeach.png");
-            gdx.screenGame.imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
+            gdx.screenTwoPlayersGame.imgPersonAtlas1 = new Texture("colobatlasbeach.png");
+            gdx.screenTwoPlayersGame.imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
         }
-        for (int i = 0; i < gdx.screenGame.imgPerson1.length/2; i++) {
-            gdx.screenGame.imgPerson1[i] = new TextureRegion(gdx.screenGame.imgPersonAtlas1, i*250, 0, 250, 250);
-            gdx.screenGame.imgPerson1[i+gdx.screenGame.imgPerson1.length/2] = new TextureRegion(gdx.screenGame.imgPersonAtlas1, i*250, 250, 250, 250);
+        for (int i = 0; i < gdx.screenTwoPlayersGame.imgPerson1.length/2; i++) {
+            gdx.screenTwoPlayersGame.imgPerson1[i] = new TextureRegion(gdx.screenTwoPlayersGame.imgPersonAtlas1, i*250, 0, 250, 250);
+            gdx.screenTwoPlayersGame.imgPerson1[i+gdx.screenTwoPlayersGame.imgPerson1.length/2] = new TextureRegion(gdx.screenTwoPlayersGame.imgPersonAtlas1, i*250, 250, 250, 250);
         }
-        for (int i = 0; i < gdx.screenGame.imgPerson2.length/2; i++) {
-            gdx.screenGame.imgPerson2[i] = new TextureRegion(gdx.screenGame.imgPersonAtlas2, i*250, 0, 250, 250);
-            gdx.screenGame.imgPerson2[i+gdx.screenGame.imgPerson2.length/2] = new TextureRegion(gdx.screenGame.imgPersonAtlas2, i*250, 250, 250, 250);
+        for (int i = 0; i < gdx.screenTwoPlayersGame.imgPerson2.length/2; i++) {
+            gdx.screenTwoPlayersGame.imgPerson2[i] = new TextureRegion(gdx.screenTwoPlayersGame.imgPersonAtlas2, i*250, 0, 250, 250);
+            gdx.screenTwoPlayersGame.imgPerson2[i+gdx.screenTwoPlayersGame.imgPerson2.length/2] = new TextureRegion(gdx.screenTwoPlayersGame.imgPersonAtlas2, i*250, 250, 250, 250);
         }
     }
 

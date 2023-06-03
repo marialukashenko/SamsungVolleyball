@@ -12,7 +12,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 
 public class MyGdx extends Game {
 	public static final float SCR_WIDTH = 12.8f, SCR_HEIGHT = 7.2f;
@@ -21,17 +20,20 @@ public class MyGdx extends Game {
 	SpriteBatch batch;
 	OrthographicCamera camera;
 	OrthographicCamera camera2;
-	World world;
+	World worldTwoPlayers;
+	World worldComputer;
 	Box2DDebugRenderer debugRenderer;
 	Vector3 touch;
 	BitmapFont font, fontLarge;
 
 	ScreenIntro screenIntro;
-	ScreenGame screenGame;
+	ScreenTwoPlayersGame screenTwoPlayersGame;
 	ScreenSettings screenSettings;
 	ScreenAbout screenAbout;
 	ScreenBackgrounds screenBackgrounds;
 	ScreenPlayers screenPlayers;
+	ScreenChoose screenChoose;
+	ScreenComputerGame screenComputerGame;
 
 	boolean soundOn = true;
 	boolean musicOn = true;
@@ -46,18 +48,21 @@ public class MyGdx extends Game {
 		camera.setToOrtho(false, SCR_WIDTH, SCR_HEIGHT);
 		camera2.setToOrtho(false, SCR_WIDTH*100, SCR_HEIGHT*100);
 
-		world = new World(new Vector2(0, -10), false);
+		worldTwoPlayers = new World(new Vector2(0, -10), false);
+		worldComputer = new World(new Vector2(0, -10), false);
 		touch = new Vector3();
 		Box2D.init();
 		debugRenderer = new Box2DDebugRenderer();
 
 		generateFont();
 		screenIntro = new ScreenIntro(this);
-		screenGame = new ScreenGame(this);
+		screenTwoPlayersGame = new ScreenTwoPlayersGame(this);
 		screenSettings = new ScreenSettings(this);
 		screenAbout = new ScreenAbout(this);
 		screenBackgrounds = new ScreenBackgrounds(this);
 		screenPlayers = new ScreenPlayers(this);
+		screenChoose = new ScreenChoose(this);
+		screenComputerGame = new ScreenComputerGame(this);
 		setScreen(screenIntro);
 	}
 

@@ -7,18 +7,20 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class ScreenIntro implements Screen {
+public class ScreenChoose implements Screen {
     MyGdx gdx;
     Texture imgBackGround;
-    TextButton btnPlay, btnSettings, btnAbout, btnExit;
+    TextButton btnTwoPlayers, btnComputer;
+    Texture imgBack;
+    ImageButton btnBack;
 
-    public ScreenIntro(MyGdx myGdx) {
+    public ScreenChoose(MyGdx myGdx) {
         gdx = myGdx;
         imgBackGround = new Texture("background.jpg");
-        btnPlay = new TextButton(gdx.fontLarge, "PLAY", 550);
-        btnSettings = new TextButton(gdx.fontLarge, "SETTINGS", 450);
-        btnAbout = new TextButton(gdx.fontLarge, "ABOUT", 350);
-        btnExit = new TextButton(gdx.fontLarge, "EXIT", 250);
+        btnTwoPlayers = new TextButton(gdx.fontLarge, "TWO PLAYERS", 450);
+        btnComputer = new TextButton(gdx.fontLarge, "WITH COMPUTER", 350);
+        imgBack = new Texture("back.png");
+        btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
     }
 
     @Override
@@ -32,18 +34,16 @@ public class ScreenIntro implements Screen {
         if(Gdx.input.justTouched()) {
             gdx.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             gdx.camera.unproject(gdx.touch);
-            if(btnPlay.hit(gdx.touch.x, gdx.touch.y)) {
+            if(btnTwoPlayers.hit(gdx.touch.x, gdx.touch.y)) {
                 gdx.sleep();
-                gdx.setScreen(gdx.screenChoose);
+                gdx.setScreen(gdx.screenTwoPlayersGame);
             }
-            if(btnSettings.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.setScreen(gdx.screenSettings);
+            if(btnComputer.hit(gdx.touch.x, gdx.touch.y)) {
+                gdx.sleep();
+                gdx.setScreen(gdx.screenComputerGame);
             }
-            if(btnAbout.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.setScreen(gdx.screenAbout);
-            }
-            if(btnExit.hit(gdx.touch.x, gdx.touch.y)) {
-                Gdx.app.exit();
+            if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
+                gdx.setScreen(gdx.screenIntro);
             }
         }
 
@@ -52,13 +52,12 @@ public class ScreenIntro implements Screen {
         gdx.batch.setProjectionMatrix(gdx.camera.combined);
         gdx.batch.begin();
         gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         gdx.batch.end();
         gdx.batch.setProjectionMatrix(gdx.camera2.combined);
         gdx.batch.begin();
-        btnPlay.font.draw(gdx.batch, btnPlay.text, btnPlay.x, btnPlay.y);
-        btnSettings.font.draw(gdx.batch, btnSettings.text, btnSettings.x, btnSettings.y);
-        btnAbout.font.draw(gdx.batch, btnAbout.text, btnAbout.x, btnAbout.y);
-        btnExit.font.draw(gdx.batch, btnExit.text, btnExit.x, btnExit.y);
+        btnTwoPlayers.font.draw(gdx.batch, btnTwoPlayers.text, btnTwoPlayers.x, btnTwoPlayers.y);
+        btnComputer.font.draw(gdx.batch, btnComputer.text, btnComputer.x, btnComputer.y);
         gdx.batch.end();
     }
 
@@ -87,4 +86,3 @@ public class ScreenIntro implements Screen {
         imgBackGround.dispose();
     }
 }
-
