@@ -79,7 +79,7 @@ public class ScreenComputerGame implements Screen {
         //задание тел
         ball = new DynamicBodyBall(gdx.worldComputer, SCR_WIDTH / 4, ballHeight, 0.4f);
         person1 = new DynamicBodyPlayer(gdx.worldComputer, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
-        person2 = new DynamicBodyComputer(gdx.worldComputer, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
+        person2 = new DynamicBodyComputer(gdx.worldComputer, SCR_WIDTH / 4 * 3+0.8f, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
     }
 
     @Override
@@ -127,7 +127,7 @@ public class ScreenComputerGame implements Screen {
                 gdx.worldComputer.destroyBody(person1.body);
                 person1 = new DynamicBodyPlayer(gdx.worldComputer, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
                 gdx.worldComputer.destroyBody(person2.body);
-                person2 = new DynamicBodyComputer(gdx.worldComputer, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
+                person2 = new DynamicBodyComputer(gdx.worldComputer, SCR_WIDTH / 4 * 3 + 0.8f, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
                 //ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
             }
         } else {
@@ -159,6 +159,9 @@ public class ScreenComputerGame implements Screen {
                         timeSoundPlay = TimeUtils.millis();
                         if (gdx.soundOn) ball_hit.play();
                     }
+                }
+                if (!isWin && !isGoal) {
+                    person2.hitBall(ball);
                 }
             }
         }
@@ -252,7 +255,7 @@ public class ScreenComputerGame implements Screen {
         person1.body.setTransform(SCR_WIDTH / 4, 0.65f, 0);
         person2.body.setLinearVelocity(0, 0);
         person2.body.setAngularVelocity(0);
-        person2.body.setTransform(SCR_WIDTH / 4 * 3, 0.65f, 0);
+        person2.body.setTransform(SCR_WIDTH / 4 * 3 + 0.8f, 0.65f, 0);
     }
 
     void loadPersons(int type) {

@@ -1,6 +1,7 @@
 package ru.myitschool.volleyball;
 
 import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
+import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -51,11 +52,44 @@ public class DynamicBodyComputer {
         circle.dispose();
     }
 
-    void move() {
-        if (timeStartJump + timeJump < TimeUtils.millis() && state == JUMP) {
-            body.setLinearVelocity(body.getLinearVelocity().x>5?5:body.getLinearVelocity().x, -4.9f);
-            state = FALL;
+    void hitBall(DynamicBodyBall ball){
+        if (ball.getX() > SCR_WIDTH/2){
+            Vector2 ballVelocity = ball.body.getLinearVelocity();
+            Vector2 ballPosition = ball.body.getPosition();
+            if (ballVelocity.x == 0 && ballVelocity.y == 0){
+                timeStartJump = TimeUtils.millis();
+                state = JUMP;
+                //body.setLinearVelocity(-8f, MathUtils.random(15f, 20f));
+                body.applyLinearImpulse(new Vector2(-5f, MathUtils.random(15f, 20f)), body.getPosition(), true );
+            }
+            if (ballVelocity.x < 0 && ball.getX() < getX()){
+                body.setLinearVelocity(ballVelocity.x, 0);
+                state = GO;
+            } else if (ballVelocity.x < 0 && ball.getX() > getX()){
+                body.setLinearVelocity(-ballVelocity.x, 0);
+                state = GO;
+            } else if (ballVelocity.x > 0 && ball.getX() < getX()){
+                body.setLinearVelocity(-ballVelocity.x, 0);
+                state = GO;
+            } else if (ballVelocity.x > 0 && ball.getX() > getX()){
+                body.setLinearVelocity(ballVelocity.x, 0);
+                state = GO;
+            }
+            if (ballPosition.y - getY() > 0 && (ballPosition.y - getY()) * (ballPosition.y - getY()) +
+                    (ballPosition.x - getX()) * (ballPosition.x - getX()) <= 1 && ballVelocity.y < 0 && ballVelocity.y > -10){
+                timeStartJump = TimeUtils.millis();
+                state = JUMP;
+                //body.setLinearVelocity(body.getLinearVelocity().x, 20);
+                body.applyLinearImpulse(new Vector2(body.getLinearVelocity().x, 20), body.getPosition(), true );
+            }
+            if (timeStartJump + timeJump < TimeUtils.millis()&& state == JUMP) {
+                body.setLinearVelocity(body.getLinearVelocity().x>5?5:body.getLinearVelocity().x, -10);
+                state = FALL;
+            }
         }
+    }
+
+    void move() {
         changeFaza();
 
         if (getY() <= lowLevel + 0.1f) {
