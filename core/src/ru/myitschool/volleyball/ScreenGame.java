@@ -289,10 +289,10 @@ public class ScreenGame implements Screen {
         public boolean keyDown(int keycode) {
             // левый игрок
             if(keycode == Input.Keys.A) {
-                person1.touch(0, person1.getY());
+                person1.touch(0.1f, person1.getY());
             }
             if(keycode == Input.Keys.D) {
-                person1.touch(SCR_WIDTH/2, person1.getY());
+                person1.touch(SCR_WIDTH/2-0.1f, person1.getY());
             }
             if(keycode == Input.Keys.W) {
                 person1.touch(person1.getX(), person1.getY()+person1.height()*2);
@@ -302,10 +302,10 @@ public class ScreenGame implements Screen {
             }
             // правый игрок
             if(keycode == Input.Keys.LEFT) {
-                person2.touch(SCR_WIDTH/2, person2.getY());
+                person2.touch(SCR_WIDTH/2+0.1f, person2.getY());
             }
             if(keycode == Input.Keys.RIGHT) {
-                person2.touch(SCR_WIDTH, person2.getY());
+                person2.touch(SCR_WIDTH-0.1f, person2.getY());
             }
             if(keycode == Input.Keys.UP) {
                 person2.touch(person2.getX(), person2.getY()+person2.height()*2);
@@ -320,7 +320,7 @@ public class ScreenGame implements Screen {
         public boolean keyUp(int keycode) {
             // левый игрок
             if(keycode == Input.Keys.A || keycode == Input.Keys.D) {
-                person2.touch(person2.getX(), person2.getY());
+                person1.touch(person1.getX(), person1.getY());
             }
             // правый игрок
             if(keycode == Input.Keys.RIGHT || keycode == Input.Keys.LEFT) {
