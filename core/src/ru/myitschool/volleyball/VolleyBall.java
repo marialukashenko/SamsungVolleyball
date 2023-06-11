@@ -13,30 +13,34 @@ import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
-public class MyGdx extends Game {
+public class VolleyBall extends Game {
 	public static final float SCR_WIDTH = 12.8f, SCR_HEIGHT = 7.2f;
 	public static int number_background = 0;
 	public static int number_players = 0;
-	SpriteBatch batch;
-	OrthographicCamera camera;
-	OrthographicCamera camera2;
-	World worldTwoPlayers;
-	World worldComputer;
-	Box2DDebugRenderer debugRenderer;
-	Vector3 touch;
-	BitmapFont font, fontLarge;
+	public SpriteBatch batch;
+	public OrthographicCamera camera;
+	public OrthographicCamera camera2;
+	public World worldTwoPlayers;
+	public World worldComputer;
+	public Box2DDebugRenderer debugRenderer;
+	public Vector3 touch;
+	public BitmapFont font, fontLarge;
 
-	ScreenIntro screenIntro;
-	ScreenTwoPlayersGame screenTwoPlayersGame;
-	ScreenSettings screenSettings;
-	ScreenAbout screenAbout;
-	ScreenBackgrounds screenBackgrounds;
-	ScreenPlayers screenPlayers;
-	ScreenChoose screenChoose;
-	ScreenComputerGame screenComputerGame;
+	public ScreenIntro screenIntro;
+	public ScreenTwoPlayersGame screenTwoPlayersGame;
+	public ScreenSettings screenSettings;
+	public ScreenAbout screenAbout;
+	public ScreenBackgrounds screenBackgrounds;
+	public ScreenPlayers screenPlayers;
+	public ScreenChoose screenChoose;
+	public ScreenComputerGame screenComputerGame;
 
-	boolean soundOn = true;
-	boolean musicOn = true;
+	public static final int STYLE_BEACH = 0, STYLE_KITCHEN = 1, STYLE_STEAM = 2, STYLE_ROOM = 3, STYLE_CASTLE = 4;
+	public int numStyles = 5;
+	public int gameStyle;
+
+	public boolean soundOn = true;
+	public boolean musicOn = true;
 
 	@Override
 	public void create() {
@@ -56,12 +60,12 @@ public class MyGdx extends Game {
 
 		generateFont();
 		screenIntro = new ScreenIntro(this);
-		screenTwoPlayersGame = new ScreenTwoPlayersGame(this);
 		screenSettings = new ScreenSettings(this);
-		screenAbout = new ScreenAbout(this);
 		screenBackgrounds = new ScreenBackgrounds(this);
 		screenPlayers = new ScreenPlayers(this);
 		screenChoose = new ScreenChoose(this);
+		screenAbout = new ScreenAbout(this);
+		screenTwoPlayersGame = new ScreenTwoPlayersGame(this);
 		screenComputerGame = new ScreenComputerGame(this);
 		setScreen(screenIntro);
 	}
@@ -73,7 +77,7 @@ public class MyGdx extends Game {
 		fontLarge.dispose();
 	}
 
-	void generateFont(){
+	private void generateFont(){
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("beautiful_letters.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		parameter.color = new Color(1, 1, 0.6f, 1);
@@ -101,7 +105,5 @@ public class MyGdx extends Game {
 
 		}
 	}
-
-
 }
 

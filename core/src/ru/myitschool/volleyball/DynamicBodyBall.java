@@ -12,8 +12,8 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class DynamicBodyBall {
 
-        Body body;
-        float r;
+        public Body body;
+        public float r;
 
         DynamicBodyBall(World world, float x, float y, float radius) {
                 r = radius;

@@ -3,9 +3,9 @@ package ru.myitschool.volleyball;
 import com.badlogic.gdx.graphics.Texture;
 
 public class ImageButton {
-    Texture img;
-    float x, y;
-    float width, height;
+    public Texture img;
+    public float x, y;
+    public float width, height;
 
     public ImageButton(Texture img, float x, float y, float width, float height) {
         this.img = img;

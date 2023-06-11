@@ -1,7 +1,6 @@
 package ru.myitschool.volleyball;
 
-import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
-import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
+import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
@@ -14,17 +13,17 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
 public class DynamicBodyComputer {
-    Body body;
-    float r;
-    float lowLevel;
+    public Body body;
+    public float r;
+    private float lowLevel;
     private static final int GO = 0, JUMP = 1, FALL = 2;
-    int state;
-    long timeStartJump, timeJump = 200;
-    long timeLastFaza, timeFazaInterval = 50;
-    int faza, nFaz = 18, fazaStay = 17, fazaJumpLeft = 18, fazaJumpRight = 19;
-    boolean isFlip;
+    private int state;
+    private long timeStartJump, timeJump = 200;
+    private long timeLastFaza, timeFazaInterval = 50;
+    public int faza, nFaz = 18, fazaStay = 17, fazaJumpLeft = 18, fazaJumpRight = 19;
+    public boolean isFlip;
     public static final boolean LEFT = true, RIGHT = false;
-    boolean side;
+    private boolean side;
 
     DynamicBodyComputer(World world, float x, float y, float radius, boolean side){
         r = radius;

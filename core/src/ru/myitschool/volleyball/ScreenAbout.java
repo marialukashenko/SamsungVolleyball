@@ -1,25 +1,25 @@
 package ru.myitschool.volleyball;
 
-import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
-import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
+import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
+import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenAbout implements Screen {
-    MyGdx gdx;
-    Texture imgBackGround;
-    ImageButton btnBack;
-    Texture imgBack;
-    String textAbout =  "Эта супер-игра создана\n" +
+    private final VolleyBall iv;
+    private final Texture imgBackGround;
+    private final ImageButton btnBack;
+    private Texture imgBack;
+    private String textAbout =  "Эта супер-игра создана\n" +
             "в IT-школе Samsung\n" +
             "на java под Android.\n\n" +
             "Цель игры - победить\n" +
             "в волейбол.";
 
-    public ScreenAbout(MyGdx myGdx) {
-        gdx = myGdx;
+    public ScreenAbout(VolleyBall volleyBall) {
+        iv = volleyBall;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
@@ -34,27 +34,27 @@ public class ScreenAbout implements Screen {
     public void render(float delta) {
         // обработка касаний экрана
         if(Gdx.input.justTouched()) {
-            gdx.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gdx.camera.unproject(gdx.touch);
+            iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            iv.camera.unproject(iv.touch);
 
-            if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.setScreen(gdx.screenIntro);
+            if(btnBack.hit(iv.touch.x, iv.touch.y)) {
+                iv.setScreen(iv.screenIntro);
             }
         }
 
         // события
 
         // отрисовка всей графики
-        gdx.camera.update();
-        gdx.batch.setProjectionMatrix(gdx.camera2.combined);
-        gdx.batch.begin();
-        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH*100, SCR_HEIGHT*100);
-        gdx.font.draw(gdx.batch, textAbout, 350, 500);
-        gdx.batch.end();
-        gdx.batch.setProjectionMatrix(gdx.camera.combined);
-        gdx.batch.begin();
-        gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
-        gdx.batch.end();
+        iv.camera.update();
+        iv.batch.setProjectionMatrix(iv.camera2.combined);
+        iv.batch.begin();
+        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH*100, SCR_HEIGHT*100);
+        iv.font.draw(iv.batch, textAbout, 350, 500);
+        iv.batch.end();
+        iv.batch.setProjectionMatrix(iv.camera.combined);
+        iv.batch.begin();
+        iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        iv.batch.end();
     }
 
     @Override

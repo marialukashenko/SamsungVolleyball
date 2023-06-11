@@ -1,24 +1,24 @@
 package ru.myitschool.volleyball;
 
-import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
-import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
+import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
+import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenChoose implements Screen {
-    MyGdx gdx;
-    Texture imgBackGround;
-    TextButton btnTwoPlayers, btnComputer;
-    Texture imgBack;
-    ImageButton btnBack;
+    private VolleyBall iv;
+    private Texture imgBackGround;
+    private TextButton btnTwoPlayers, btnComputer;
+    private Texture imgBack;
+    private ImageButton btnBack;
 
-    public ScreenChoose(MyGdx myGdx) {
-        gdx = myGdx;
+    public ScreenChoose(VolleyBall volleyBall) {
+        iv = volleyBall;
         imgBackGround = new Texture("background.jpg");
-        btnTwoPlayers = new TextButton(gdx.fontLarge, "TWO PLAYERS", 450);
-        btnComputer = new TextButton(gdx.fontLarge, "WITH COMPUTER", 350);
+        btnTwoPlayers = new TextButton(iv.fontLarge, "TWO PLAYERS", 450);
+        btnComputer = new TextButton(iv.fontLarge, "WITH COMPUTER", 350);
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
     }
@@ -32,33 +32,33 @@ public class ScreenChoose implements Screen {
     public void render(float delta) {
         // обработка касаний экрана
         if(Gdx.input.justTouched()) {
-            gdx.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gdx.camera.unproject(gdx.touch);
-            if(btnTwoPlayers.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.sleep();
-                gdx.setScreen(gdx.screenTwoPlayersGame);
+            iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            iv.camera.unproject(iv.touch);
+            if(btnTwoPlayers.hit(iv.touch.x, iv.touch.y)) {
+                iv.sleep();
+                iv.setScreen(iv.screenTwoPlayersGame);
             }
-            if(btnComputer.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.sleep();
-                gdx.setScreen(gdx.screenComputerGame);
+            if(btnComputer.hit(iv.touch.x, iv.touch.y)) {
+                iv.sleep();
+                iv.setScreen(iv.screenComputerGame);
             }
-            if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.setScreen(gdx.screenIntro);
+            if(btnBack.hit(iv.touch.x, iv.touch.y)) {
+                iv.setScreen(iv.screenIntro);
             }
         }
 
         // отрисовка всей графики
-        gdx.camera.update();
-        gdx.batch.setProjectionMatrix(gdx.camera.combined);
-        gdx.batch.begin();
-        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
-        gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
-        gdx.batch.end();
-        gdx.batch.setProjectionMatrix(gdx.camera2.combined);
-        gdx.batch.begin();
-        btnTwoPlayers.font.draw(gdx.batch, btnTwoPlayers.text, btnTwoPlayers.x, btnTwoPlayers.y);
-        btnComputer.font.draw(gdx.batch, btnComputer.text, btnComputer.x, btnComputer.y);
-        gdx.batch.end();
+        iv.camera.update();
+        iv.batch.setProjectionMatrix(iv.camera.combined);
+        iv.batch.begin();
+        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        iv.batch.end();
+        iv.batch.setProjectionMatrix(iv.camera2.combined);
+        iv.batch.begin();
+        btnTwoPlayers.font.draw(iv.batch, btnTwoPlayers.text, btnTwoPlayers.x, btnTwoPlayers.y);
+        btnComputer.font.draw(iv.batch, btnComputer.text, btnComputer.x, btnComputer.y);
+        iv.batch.end();
     }
 
     @Override

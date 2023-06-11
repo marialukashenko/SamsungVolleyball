@@ -1,28 +1,27 @@
 package ru.myitschool.volleyball;
 
-import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
-import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
-import static ru.myitschool.volleyball.MyGdx.number_background;
+import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
+import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
+import static ru.myitschool.volleyball.VolleyBall.number_background;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class ScreenBackgrounds implements Screen {
-    MyGdx gdx;
-    Texture imgBackGround;
-    ImageButton btnBack;
-    Texture imgBack;
-    int count_backgrounds = 5;
-    ImageButton[] btnBackground = new ImageButton[count_backgrounds];
-    Texture[] imgBtnBackground = new Texture[count_backgrounds];
-    ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private final VolleyBall iv;
+    private final Texture imgBackGround;
+    private final ImageButton btnBack;
+    private final Texture imgBack;
+    private final int count_backgrounds = 5;
+    private final ImageButton[] btnBackground = new ImageButton[count_backgrounds];
+    private Texture[] imgBtnBackground = new Texture[count_backgrounds];
+    private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-    public ScreenBackgrounds(MyGdx myGdx) {
-        gdx = myGdx;
+    public ScreenBackgrounds(VolleyBall volleyBall) {
+        iv = volleyBall;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH-1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
@@ -36,22 +35,22 @@ public class ScreenBackgrounds implements Screen {
 
     @Override
     public void show() {
-        gdx.sleep();
+        iv.sleep();
     }
 
     @Override
     public void render(float delta) {
         // обработка касаний экрана
         if(Gdx.input.justTouched()) {
-            gdx.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gdx.camera.unproject(gdx.touch);
+            iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            iv.camera.unproject(iv.touch);
 
-            if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.setScreen(gdx.screenSettings);
+            if(btnBack.hit(iv.touch.x, iv.touch.y)) {
+                iv.setScreen(iv.screenSettings);
             }
 
             for (int i = 0; i < count_backgrounds; i++) {
-                if(btnBackground[i].hit(gdx.touch.x, gdx.touch.y)){
+                if(btnBackground[i].hit(iv.touch.x, iv.touch.y)){
                     number_background = i;
                     break;
                 }
@@ -59,27 +58,27 @@ public class ScreenBackgrounds implements Screen {
         }
 
         // отрисовка всей графики
-        gdx.camera.update();
-        gdx.batch.setProjectionMatrix(gdx.camera.combined);
-        gdx.batch.begin();
-        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
-        gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
-        gdx.batch.end();
+        iv.camera.update();
+        iv.batch.setProjectionMatrix(iv.camera.combined);
+        iv.batch.begin();
+        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        iv.batch.end();
         for (int i = 0; i < count_backgrounds; i++) {
             if (i == number_background){
-                shapeRenderer.setProjectionMatrix(gdx.camera.combined);
+                shapeRenderer.setProjectionMatrix(iv.camera.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.YELLOW);
                 shapeRenderer.rect(btnBackground[number_background].x-0.1f, btnBackground[number_background].y - 0.1f, 3.7f, 2.2f);
                 shapeRenderer.end();
             }
         }
-        gdx.batch.setProjectionMatrix(gdx.camera.combined);
-        gdx.batch.begin();
+        iv.batch.setProjectionMatrix(iv.camera.combined);
+        iv.batch.begin();
         for (int i = 0; i < count_backgrounds; i++) {
-            gdx.batch.draw(btnBackground[i].img, btnBackground[i].x, btnBackground[i].y, btnBackground[i].width, btnBackground[i].height);
+            iv.batch.draw(btnBackground[i].img, btnBackground[i].x, btnBackground[i].y, btnBackground[i].width, btnBackground[i].height);
         }
-        gdx.batch.end();
+        iv.batch.end();
     }
 
 

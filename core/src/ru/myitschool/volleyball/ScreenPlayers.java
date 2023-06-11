@@ -1,8 +1,8 @@
 package ru.myitschool.volleyball;
 
-import static ru.myitschool.volleyball.MyGdx.SCR_HEIGHT;
-import static ru.myitschool.volleyball.MyGdx.SCR_WIDTH;
-import static ru.myitschool.volleyball.MyGdx.number_players;
+import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
+import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
+import static ru.myitschool.volleyball.VolleyBall.number_players;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -11,17 +11,17 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class ScreenPlayers implements Screen {
-    MyGdx gdx;
-    Texture imgBackGround;
-    ImageButton btnBack;
-    Texture imgBack;
-    int count_players = 1;
-    ImageButton[] btnPlayer = new ImageButton[count_players];
-    Texture[] imgBtnPlayer = new Texture[count_players];
-    ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private VolleyBall iv;
+    private Texture imgBackGround;
+    private ImageButton btnBack;
+    private Texture imgBack;
+    private int count_players = 1;
+    private ImageButton[] btnPlayer = new ImageButton[count_players];
+    private Texture[] imgBtnPlayer = new Texture[count_players];
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
-    public ScreenPlayers(MyGdx myGdx) {
-        gdx = myGdx;
+    public ScreenPlayers(VolleyBall volleyBall) {
+        iv = volleyBall;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH-1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
@@ -35,22 +35,22 @@ public class ScreenPlayers implements Screen {
 
     @Override
     public void show() {
-        gdx.sleep();
+        iv.sleep();
     }
 
     @Override
     public void render(float delta) {
         // обработка касаний экрана
         if(Gdx.input.justTouched()) {
-            gdx.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
-            gdx.camera.unproject(gdx.touch);
+            iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
+            iv.camera.unproject(iv.touch);
 
-            if(btnBack.hit(gdx.touch.x, gdx.touch.y)) {
-                gdx.setScreen(gdx.screenSettings);
+            if(btnBack.hit(iv.touch.x, iv.touch.y)) {
+                iv.setScreen(iv.screenSettings);
             }
 
             for (int i = 0; i < count_players; i++) {
-                if(btnPlayer[i].hit(gdx.touch.x, gdx.touch.y)){
+                if(btnPlayer[i].hit(iv.touch.x, iv.touch.y)){
                     number_players = i;
                     break;
                 }
@@ -58,27 +58,27 @@ public class ScreenPlayers implements Screen {
         }
 
         // отрисовка всей графики
-        gdx.camera.update();
-        gdx.batch.setProjectionMatrix(gdx.camera.combined);
-        gdx.batch.begin();
-        gdx.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
-        gdx.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
-        gdx.batch.end();
+        iv.camera.update();
+        iv.batch.setProjectionMatrix(iv.camera.combined);
+        iv.batch.begin();
+        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        iv.batch.end();
         for (int i = 0; i < count_players; i++) {
             if (i == number_players){
-                shapeRenderer.setProjectionMatrix(gdx.camera.combined);
+                shapeRenderer.setProjectionMatrix(iv.camera.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.YELLOW);
                 shapeRenderer.rect(btnPlayer[number_players].x-0.1f, btnPlayer[number_players].y - 0.1f, 2.7f, 2.7f);
                 shapeRenderer.end();
             }
         }
-        gdx.batch.setProjectionMatrix(gdx.camera.combined);
-        gdx.batch.begin();
+        iv.batch.setProjectionMatrix(iv.camera.combined);
+        iv.batch.begin();
         for (int i = 0; i < count_players; i++) {
-            gdx.batch.draw(btnPlayer[i].img, btnPlayer[i].x, btnPlayer[i].y, btnPlayer[i].width, btnPlayer[i].height);
+            iv.batch.draw(btnPlayer[i].img, btnPlayer[i].x, btnPlayer[i].y, btnPlayer[i].width, btnPlayer[i].height);
         }
-        gdx.batch.end();
+        iv.batch.end();
     }
 
     @Override
