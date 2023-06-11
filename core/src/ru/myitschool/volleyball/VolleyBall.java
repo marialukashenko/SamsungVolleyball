@@ -26,18 +26,19 @@ public class VolleyBall extends Game {
     public Vector3 touch;
     public BitmapFont font, fontLarge;
 
-    public ScreenIntro screenIntro;
-    public ScreenTwoPlayersGame screenTwoPlayersGame;
-    public ScreenSettings screenSettings;
-    public ScreenAbout screenAbout;
-    public ScreenBackgrounds screenBackgrounds;
-    public ScreenPlayers screenPlayers;
-    public ScreenChoose screenChoose;
-    public ScreenComputerGame screenComputerGame;
+    ScreenIntro screenIntro;
+    ScreenGame screenGame;
+    ScreenSettings screenSettings;
+    ScreenAbout screenAbout;
+    ScreenBackgrounds screenBackgrounds;
+    ScreenPlayers screenPlayers;
 
     public static final int STYLE_BEACH = 0, STYLE_KITCHEN = 1, STYLE_STEAM = 2, STYLE_ROOM = 3, STYLE_CASTLE = 4;
     public int numStyles = 5;
     public int gameStyle;
+
+    public static final int MODE_VS_PLAYER = 0, MODE_VS_COMPUTER = 1;
+    public int gameMode;
 
     public boolean soundOn = true;
     public boolean musicOn = true;
@@ -63,10 +64,8 @@ public class VolleyBall extends Game {
         screenSettings = new ScreenSettings(this);
         screenBackgrounds = new ScreenBackgrounds(this);
         screenPlayers = new ScreenPlayers(this);
-        screenChoose = new ScreenChoose(this);
         screenAbout = new ScreenAbout(this);
-        screenTwoPlayersGame = new ScreenTwoPlayersGame(this);
-        screenComputerGame = new ScreenComputerGame(this);
+        screenGame = new ScreenGame(this);
         setScreen(screenIntro);
     }
 
@@ -102,7 +101,7 @@ public class VolleyBall extends Game {
         try {
             Thread.sleep(300);
         } catch (Exception ignored) {
-
+            //
         }
     }
 }

@@ -1,5 +1,7 @@
 package ru.myitschool.volleyball;
 
+import static ru.myitschool.volleyball.VolleyBall.MODE_VS_COMPUTER;
+import static ru.myitschool.volleyball.VolleyBall.MODE_VS_PLAYER;
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
@@ -11,7 +13,7 @@ public class ScreenSettings implements Screen {
     private VolleyBall iv;
     private Texture imgBackGround;
     private Texture imgBack;
-    private TextButton btnMusic, btnSound, btnBackgrounds, btnPlayers;
+    private TextButton btnMusic, btnSound, btnBackgrounds, btnPlayers, btnModeGame;
     private ImageButton btnBack;
 
     public ScreenSettings(VolleyBall volleyBall) {
@@ -19,10 +21,11 @@ public class ScreenSettings implements Screen {
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
-        btnMusic = new TextButton(iv.fontLarge, "MUSIC", 500);
-        btnSound = new TextButton(iv.fontLarge, "SOUND", 430);
+        btnMusic = new TextButton(iv.fontLarge, "MUSIC ON", 500);
+        btnSound = new TextButton(iv.fontLarge, "SOUND ON", 430);
         btnBackgrounds = new TextButton(iv.fontLarge, "BACKGROUNDS", 360);
         btnPlayers = new TextButton(iv.fontLarge, "PLAYERS", 290);
+        btnModeGame = new TextButton(iv.fontLarge, "MODE: PLAYER vs PLAYER", 220);
     }
 
     @Override
@@ -52,6 +55,10 @@ public class ScreenSettings implements Screen {
             if (btnPlayers.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.screenPlayers);
             }
+            if (btnModeGame.hit(iv.touch.x, iv.touch.y)) {
+                iv.gameMode =  iv.gameMode==MODE_VS_PLAYER ? MODE_VS_COMPUTER : MODE_VS_PLAYER;
+                btnModeGame.setText(iv.gameMode==MODE_VS_PLAYER ? "MODE: PLAYER vs PLAYER" : "MODE: PLAYER vs COMPUTER");
+            }
         }
 
         //отрисовка
@@ -67,6 +74,7 @@ public class ScreenSettings implements Screen {
         btnSound.font.draw(iv.batch, btnSound.text, btnSound.x, btnSound.y);
         btnBackgrounds.font.draw(iv.batch, btnBackgrounds.text, btnBackgrounds.x, btnBackgrounds.y);
         btnPlayers.font.draw(iv.batch, btnPlayers.text, btnPlayers.x, btnPlayers.y);
+        btnModeGame.font.draw(iv.batch, btnModeGame.text, btnModeGame.x, btnModeGame.y);
         iv.batch.end();
     }
 

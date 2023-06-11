@@ -4,6 +4,7 @@ import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class TextButton {
     public BitmapFont font;

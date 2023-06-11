@@ -1,10 +1,12 @@
 package ru.myitschool.volleyball;
 
+import static ru.myitschool.volleyball.VolleyBall.MODE_VS_COMPUTER;
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 import static ru.myitschool.volleyball.VolleyBall.number_background;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Sound;
@@ -17,7 +19,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
 
-public class ScreenTwoPlayersGame implements Screen {
+public class ScreenGame implements Screen {
 
     private VolleyBall iv;
     private Sound soundBallHit, soundGoal, soundWin;
@@ -46,7 +48,7 @@ public class ScreenTwoPlayersGame implements Screen {
     private long timeShowGame, timeStartGameInterval = 300;
     private long timeSoundPlay, timeSoundInterval = 100;
 
-    public ScreenTwoPlayersGame(VolleyBall volleyBall) {
+    public ScreenGame(VolleyBall volleyBall) {
         imgBackGround = new Texture("background" + number_background + ".jpg");
         imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
@@ -162,6 +164,10 @@ public class ScreenTwoPlayersGame implements Screen {
                 }
             }
         }
+        // если играем с компьютером
+        if (iv.gameMode == MODE_VS_COMPUTER && !isWin && !isGoal) {
+            person2.hitBall(ball);
+        }
 
         // отрисовка
         iv.camera.update();
@@ -259,34 +265,67 @@ public class ScreenTwoPlayersGame implements Screen {
     }
 
     private void loadPersons(int type) {
-        iv.screenTwoPlayersGame.imgPersonAtlas1.dispose();
-        iv.screenTwoPlayersGame.imgPersonAtlas2.dispose();
+        iv.screenGame.imgPersonAtlas1.dispose();
+        iv.screenGame.imgPersonAtlas2.dispose();
         if (type == 3) {
-            iv.screenTwoPlayersGame.imgPersonAtlas1 = new Texture("colobatlasknight.png");
-            iv.screenTwoPlayersGame.imgPersonAtlas2 = new Texture("colobatlasknight2.png");
+            iv.screenGame.imgPersonAtlas1 = new Texture("colobatlasknight.png");
+            iv.screenGame.imgPersonAtlas2 = new Texture("colobatlasknight2.png");
         } else {
-            iv.screenTwoPlayersGame.imgPersonAtlas1 = new Texture("colobatlasbeach.png");
-            iv.screenTwoPlayersGame.imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
+            iv.screenGame.imgPersonAtlas1 = new Texture("colobatlasbeach.png");
+            iv.screenGame.imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
         }
-        for (int i = 0; i < iv.screenTwoPlayersGame.imgPerson1.length / 2; i++) {
-            iv.screenTwoPlayersGame.imgPerson1[i] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas1, i * 250, 0, 250, 250);
-            iv.screenTwoPlayersGame.imgPerson1[i + iv.screenTwoPlayersGame.imgPerson1.length / 2] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas1, i * 250, 250, 250, 250);
+        for (int i = 0; i < iv.screenGame.imgPerson1.length / 2; i++) {
+            iv.screenGame.imgPerson1[i] = new TextureRegion(iv.screenGame.imgPersonAtlas1, i * 250, 0, 250, 250);
+            iv.screenGame.imgPerson1[i + iv.screenGame.imgPerson1.length / 2] = new TextureRegion(iv.screenGame.imgPersonAtlas1, i * 250, 250, 250, 250);
         }
-        for (int i = 0; i < iv.screenTwoPlayersGame.imgPerson2.length / 2; i++) {
-            iv.screenTwoPlayersGame.imgPerson2[i] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas2, i * 250, 0, 250, 250);
-            iv.screenTwoPlayersGame.imgPerson2[i + iv.screenTwoPlayersGame.imgPerson2.length / 2] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas2, i * 250, 250, 250, 250);
+        for (int i = 0; i < iv.screenGame.imgPerson2.length / 2; i++) {
+            iv.screenGame.imgPerson2[i] = new TextureRegion(iv.screenGame.imgPersonAtlas2, i * 250, 0, 250, 250);
+            iv.screenGame.imgPerson2[i + iv.screenGame.imgPerson2.length / 2] = new TextureRegion(iv.screenGame.imgPersonAtlas2, i * 250, 250, 250, 250);
         }
     }
 
     class MyInput implements InputProcessor {
-
         @Override
         public boolean keyDown(int keycode) {
+            // левый игрок
+            if(keycode == Input.Keys.A) {
+                person1.touch(0, person1.getY());
+            }
+            if(keycode == Input.Keys.D) {
+                person1.touch(SCR_WIDTH/2, person1.getY());
+            }
+            if(keycode == Input.Keys.W) {
+                person1.touch(person1.getX(), person1.getY()+person1.height()*2);
+            }
+            if(keycode == Input.Keys.S) {
+                person1.touch(person1.getX(), person1.getY());
+            }
+            // правый игрок
+            if(keycode == Input.Keys.LEFT) {
+                person2.touch(SCR_WIDTH/2, person2.getY());
+            }
+            if(keycode == Input.Keys.RIGHT) {
+                person2.touch(SCR_WIDTH, person2.getY());
+            }
+            if(keycode == Input.Keys.UP) {
+                person2.touch(person2.getX(), person2.getY()+person2.height()*2);
+            }
+            if(keycode == Input.Keys.DOWN) {
+                person2.touch(person2.getX(), person2.getY());
+            }
             return false;
         }
 
         @Override
         public boolean keyUp(int keycode) {
+            // левый игрок
+            if(keycode == Input.Keys.A || keycode == Input.Keys.D) {
+                person2.touch(person2.getX(), person2.getY());
+            }
+            // правый игрок
+            if(keycode == Input.Keys.RIGHT || keycode == Input.Keys.LEFT) {
+                person2.touch(person2.getX(), person2.getY());
+            }
             return false;
         }
 

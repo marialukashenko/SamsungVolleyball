@@ -34,7 +34,7 @@ public class ScreenIntro implements Screen {
             iv.camera.unproject(iv.touch);
             if (btnPlay.hit(iv.touch.x, iv.touch.y)) {
                 iv.sleep();
-                iv.setScreen(iv.screenChoose);
+                iv.setScreen(iv.screenGame);
             }
             if (btnSettings.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.screenSettings);

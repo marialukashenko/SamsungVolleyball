@@ -17,7 +17,7 @@ public class DynamicBodyPlayer {
     public Body body;
     public float r;
     private float lowLevel;
-    private static final int GO = 0, JUMP = 1, FALL = 2;
+    private static final int GO = 0, JUMP = 1, FALL = 2, STAY = 3;
     private int state;
     private long timeStartJump, timeJump = 200;
     private long timeLastFaza, timeFazaInterval = 50;
@@ -25,6 +25,7 @@ public class DynamicBodyPlayer {
     public boolean isFlip;
     public static final boolean LEFT = true, RIGHT = false;
     private boolean side;
+    float targetX, targetY;
 
     DynamicBodyPlayer(World world, float x, float y, float radius, boolean side) {
         r = radius;
@@ -53,7 +54,8 @@ public class DynamicBodyPlayer {
     }
 
     public void touch(float tx, float ty) {
-        if (state != GO) return;
+        if (state != GO && state != STAY) return;
+        targetX = tx;
         if (ty > getY() + r * 2) {
             state = JUMP;
             float a = MathUtils.atan2((tx - getX()), (ty - getY()));
@@ -83,10 +85,18 @@ public class DynamicBodyPlayer {
         }
         changeFaza();
 
-        if (getY() <= lowLevel + 0.1f) {
-            body.setLinearVelocity(0, 0);
+        if (state == FALL && getY() <= lowLevel + 0.1f) {
+            body.setLinearVelocity(body.getLinearVelocity().x, 0);
             state = GO;
         }
+
+        if(near(getX(), targetX, 0.1f)) {
+            body.setLinearVelocity(0, body.getLinearVelocity().y);
+        }
+    }
+
+    boolean near(float x1, float x2, float dx){
+        return x1 > x2-dx && x1 < x2+dx;
     }
 
     void changeFaza() {
