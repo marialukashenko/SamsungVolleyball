@@ -1,5 +1,7 @@
 package ru.myitschool.volleyball;
 
+import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
+
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -52,12 +54,12 @@ public class DynamicBodyPlayer {
 
     public void touch(float tx, float ty) {
         if (state != GO) return;
-        if (ty > getY() + r*2) {
+        if (ty > getY() + r * 2) {
             state = JUMP;
-            float a = MathUtils.atan2((tx - getX()),(ty - getY()));
-            float vx = 40*MathUtils.sin(a);
-            float vy = 40*MathUtils.cos(a);
-            vy=vy<0?-1*vy:vy;
+            float a = MathUtils.atan2((tx - getX()), (ty - getY()));
+            float vx = 40 * MathUtils.sin(a);
+            float vy = 40 * MathUtils.cos(a);
+            vy = vy < 0 ? -1 * vy : vy;
             body.applyLinearImpulse(new Vector2(vx, vy), body.getPosition(), true);
             timeStartJump = TimeUtils.millis();
             return;
@@ -76,7 +78,7 @@ public class DynamicBodyPlayer {
 
     void move() {
         if (timeStartJump + timeJump < TimeUtils.millis() && state == JUMP) {
-            body.setLinearVelocity(body.getLinearVelocity().x>5?5:body.getLinearVelocity().x, -4.9f);
+            body.setLinearVelocity(body.getLinearVelocity().x > 5 ? 5 : body.getLinearVelocity().x, -4.9f);
             state = FALL;
         }
         changeFaza();
@@ -87,23 +89,22 @@ public class DynamicBodyPlayer {
         }
     }
 
-    void changeFaza(){
-        if(state == GO) {
-            if(Math.abs(body.getLinearVelocity().x)<0.01){
+    void changeFaza() {
+        if (state == GO) {
+            if (Math.abs(body.getLinearVelocity().x) < 0.01) {
                 isFlip = side;
                 faza = fazaStay;
-            }
-            else if(timeLastFaza+timeFazaInterval<TimeUtils.millis()) {
-                isFlip = body.getLinearVelocity().x>0;
+            } else if (timeLastFaza + timeFazaInterval < TimeUtils.millis()) {
+                isFlip = body.getLinearVelocity().x > 0;
                 if (++faza >= nFaz) faza = 0;
                 timeLastFaza = TimeUtils.millis();
             }
         }
-        if(state == JUMP && body.getLinearVelocity().x>0) {
+        if (state == JUMP && body.getLinearVelocity().x > 0) {
             if (isFlip) faza = fazaJumpRight;
             else faza = fazaJumpLeft;
         }
-        if(state == JUMP && body.getLinearVelocity().x<0) {
+        if (state == JUMP && body.getLinearVelocity().x < 0) {
             if (isFlip) faza = fazaJumpLeft;
             else faza = fazaJumpRight;
         }
@@ -139,5 +140,42 @@ public class DynamicBodyPlayer {
 
     boolean overlap(DynamicBodyBall b) {
         return (getX() - b.getX()) * (getX() - b.getX()) + (getY() - b.getY()) * (getY() - b.getY()) <= (r + b.r) * (r + b.r);
+    }
+
+    void hitBall(DynamicBodyBall ball) {
+        if (ball.getX() > SCR_WIDTH / 2) {
+            Vector2 ballVelocity = ball.body.getLinearVelocity();
+            Vector2 ballPosition = ball.body.getPosition();
+            if (ballVelocity.x == 0 && ballVelocity.y == 0) {
+                timeStartJump = TimeUtils.millis();
+                state = JUMP;
+                //body.setLinearVelocity(-8f, MathUtils.random(15f, 20f));
+                body.applyLinearImpulse(new Vector2(-5f, MathUtils.random(15f, 20f)), body.getPosition(), true);
+            }
+            if (ballVelocity.x < 0 && ball.getX() < getX()) {
+                body.setLinearVelocity(ballVelocity.x, 0);
+                state = GO;
+            } else if (ballVelocity.x < 0 && ball.getX() > getX()) {
+                body.setLinearVelocity(-ballVelocity.x, 0);
+                state = GO;
+            } else if (ballVelocity.x > 0 && ball.getX() < getX()) {
+                body.setLinearVelocity(-ballVelocity.x, 0);
+                state = GO;
+            } else if (ballVelocity.x > 0 && ball.getX() > getX()) {
+                body.setLinearVelocity(ballVelocity.x, 0);
+                state = GO;
+            }
+            if (ballPosition.y - getY() > 0 && (ballPosition.y - getY()) * (ballPosition.y - getY()) +
+                    (ballPosition.x - getX()) * (ballPosition.x - getX()) <= 1 && ballVelocity.y < 0 && ballVelocity.y > -10) {
+                timeStartJump = TimeUtils.millis();
+                state = JUMP;
+                //body.setLinearVelocity(body.getLinearVelocity().x, 20);
+                body.applyLinearImpulse(new Vector2(body.getLinearVelocity().x, 20), body.getPosition(), true);
+            }
+            if (timeStartJump + timeJump < TimeUtils.millis() && state == JUMP) {
+                body.setLinearVelocity(body.getLinearVelocity().x > 5 ? 5 : body.getLinearVelocity().x, -10);
+                state = FALL;
+            }
+        }
     }
 }

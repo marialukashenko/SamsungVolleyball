@@ -29,20 +29,20 @@ public class ScreenIntro implements Screen {
     @Override
     public void render(float delta) {
         // обработка касаний экрана
-        if(Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
-            if(btnPlay.hit(iv.touch.x, iv.touch.y)) {
+            if (btnPlay.hit(iv.touch.x, iv.touch.y)) {
                 iv.sleep();
                 iv.setScreen(iv.screenChoose);
             }
-            if(btnSettings.hit(iv.touch.x, iv.touch.y)) {
+            if (btnSettings.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.screenSettings);
             }
-            if(btnAbout.hit(iv.touch.x, iv.touch.y)) {
+            if (btnAbout.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.screenAbout);
             }
-            if(btnExit.hit(iv.touch.x, iv.touch.y)) {
+            if (btnExit.hit(iv.touch.x, iv.touch.y)) {
                 Gdx.app.exit();
             }
         }

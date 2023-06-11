@@ -20,21 +20,21 @@ import com.badlogic.gdx.utils.TimeUtils;
 public class ScreenTwoPlayersGame implements Screen {
 
     private VolleyBall iv;
-    private Sound ball_hit, goal, win;
+    private Sound soundBallHit, soundGoal, soundWin;
     private Texture imgBackGround;
     private Texture imgBall;
     private Texture imgShadow;
     private Texture imgNet;
     private Texture imgBack;
-    private Texture imgPersonAtlas1, imgPersonAtlas2;
-    private TextureRegion[] imgPerson1 = new TextureRegion[20];
-    private TextureRegion[] imgPerson2 = new TextureRegion[20];
+    public Texture imgPersonAtlas1, imgPersonAtlas2;
+    public TextureRegion[] imgPerson1 = new TextureRegion[20];
+    public TextureRegion[] imgPerson2 = new TextureRegion[20];
 
     private StaticBodyBox[] block = new StaticBodyBox[4];
     private StaticBodyBox net;
     private DynamicBodyPlayer person1, person2;
     private DynamicBodyBall ball;
-    private int countGoals_1, countGoals_2;
+    private int countGoals1, countGoals2;
     private long timeGoal, timeInterval = 3000;
     private boolean isGoal, isWin;
     private float ballHeight = 2.6f;
@@ -47,29 +47,29 @@ public class ScreenTwoPlayersGame implements Screen {
     private long timeSoundPlay, timeSoundInterval = 100;
 
     public ScreenTwoPlayersGame(VolleyBall volleyBall) {
-        imgBackGround = new Texture("background"+number_background+".jpg");
+        imgBackGround = new Texture("background" + number_background + ".jpg");
         imgBall = new Texture("ball2.png");
         imgShadow = new Texture("shadow.png");
         imgNet = new Texture("net1.png");
         imgBack = new Texture("back.png");
 
         imgPersonAtlas1 = new Texture("colobatlasbeach.png");
-        for (int i = 0; i < imgPerson1.length/2; i++) {
-            imgPerson1[i] = new TextureRegion(imgPersonAtlas1, i*250, 0, 250, 250);
-            imgPerson1[i+imgPerson1.length/2] = new TextureRegion(imgPersonAtlas1, i*250, 250, 250, 250);
+        for (int i = 0; i < imgPerson1.length / 2; i++) {
+            imgPerson1[i] = new TextureRegion(imgPersonAtlas1, i * 250, 0, 250, 250);
+            imgPerson1[i + imgPerson1.length / 2] = new TextureRegion(imgPersonAtlas1, i * 250, 250, 250, 250);
         }
         imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
-        for (int i = 0; i < imgPerson2.length/2; i++) {
-            imgPerson2[i] = new TextureRegion(imgPersonAtlas2, i*250, 0, 250, 250);
-            imgPerson2[i+imgPerson2.length/2] = new TextureRegion(imgPersonAtlas2, i*250, 250, 250, 250);
+        for (int i = 0; i < imgPerson2.length / 2; i++) {
+            imgPerson2[i] = new TextureRegion(imgPersonAtlas2, i * 250, 0, 250, 250);
+            imgPerson2[i + imgPerson2.length / 2] = new TextureRegion(imgPersonAtlas2, i * 250, 250, 250, 250);
         }
 
-        ball_hit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
-        goal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
-        win = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
+        soundBallHit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
+        soundGoal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
+        soundWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
         iv = volleyBall;
 
-        btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
         btnRerun = new TextButton(iv.fontLarge, "REPLAY", 20, SCR_HEIGHT * 100 - 30);
         //игровое поле и сетки
         block[0] = new StaticBodyBox(iv.worldTwoPlayers, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
@@ -92,7 +92,7 @@ public class ScreenTwoPlayersGame implements Screen {
 
     @Override
     public void render(float delta) {
-        if(timeShowGame+timeStartGameInterval > TimeUtils.millis()) return;
+        if (timeShowGame + timeStartGameInterval > TimeUtils.millis()) return;
 
         iv.camera.update();
         iv.worldTwoPlayers.step(1 / 60f, 6, 2);
@@ -137,29 +137,27 @@ public class ScreenTwoPlayersGame implements Screen {
                 isGoal = true;
                 timeGoal = TimeUtils.millis();
                 if (ball.getX() < SCR_WIDTH / 2) {
-                    countGoals_2++;
-                    if (countGoals_2 == 5) {
+                    countGoals2++;
+                    if (countGoals2 == 5) {
                         isWin = true;
-                        if(iv.soundOn) win.play();
-                    }
-                    else {
-                        if(iv.soundOn) goal.play();
+                        if (iv.soundOn) soundWin.play();
+                    } else {
+                        if (iv.soundOn) soundGoal.play();
                     }
                 } else {
-                    countGoals_1++;
-                    if (countGoals_1 == 5) {
+                    countGoals1++;
+                    if (countGoals1 == 5) {
                         isWin = true;
-                        if(iv.soundOn) win.play();
-                    }
-                    else {
-                        if(iv.soundOn) goal.play();
+                        if (iv.soundOn) soundWin.play();
+                    } else {
+                        if (iv.soundOn) soundGoal.play();
                     }
                 }
-            } else{
+            } else {
                 if ((person1.overlap(ball) || person2.overlap(ball)) && !isWin) {
-                    if(timeSoundPlay+timeSoundInterval < TimeUtils.millis()) {
+                    if (timeSoundPlay + timeSoundInterval < TimeUtils.millis()) {
                         timeSoundPlay = TimeUtils.millis();
-                        if (iv.soundOn) ball_hit.play();
+                        if (iv.soundOn) soundBallHit.play();
                     }
                 }
             }
@@ -178,23 +176,23 @@ public class ScreenTwoPlayersGame implements Screen {
 
         iv.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
 
-        iv.batch.draw(imgPerson1[person1.faza], person1.scrX()-0.25f, person1.scrY(), person1.width()*1.5f/2, person1.height()*1.5f/2,
-                person1.width()*1.5f, person1.height()*1.5f, person1.isFlip?-1:1, 1, 0);
-        iv.batch.draw(imgPerson2[person2.faza], person2.scrX()-0.25f, person2.scrY(), person2.width()*1.5f/2, person2.height()*1.5f/2,
-                person2.width()*1.5f, person2.height()*1.5f, person2.isFlip?-1:1, 1, 0);
+        iv.batch.draw(imgPerson1[person1.faza], person1.scrX() - 0.25f, person1.scrY(), person1.width() * 1.5f / 2, person1.height() * 1.5f / 2,
+                person1.width() * 1.5f, person1.height() * 1.5f, person1.isFlip ? -1 : 1, 1, 0);
+        iv.batch.draw(imgPerson2[person2.faza], person2.scrX() - 0.25f, person2.scrY(), person2.width() * 1.5f / 2, person2.height() * 1.5f / 2,
+                person2.width() * 1.5f, person2.height() * 1.5f, person2.isFlip ? -1 : 1, 1, 0);
 
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
         iv.font.draw(iv.batch, ":", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100, Align.center, true);
-        iv.font.draw(iv.batch, countGoals_1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
-        iv.font.draw(iv.batch, countGoals_2 + "", SCR_WIDTH * 100 / 2 + 50, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.left, true);
+        iv.font.draw(iv.batch, countGoals1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
+        iv.font.draw(iv.batch, countGoals2 + "", SCR_WIDTH * 100 / 2 + 50, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.left, true);
         if (isGoal && !isWin) {
             iv.fontLarge.draw(iv.batch, "ГОЛ!", 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
         }
         if (isWin) {
-            String winner = countGoals_1 > countGoals_2 ? "Выиграл левый чувак!" : "Выиграл правый чувак!";
+            String winner = countGoals1 > countGoals2 ? "Выиграл левый чувак!" : "Выиграл правый чувак!";
             iv.fontLarge.draw(iv.batch, winner, 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
             btnRerun.font.draw(iv.batch, btnRerun.text, btnRerun.x, btnRerun.y);
         }
@@ -212,17 +210,17 @@ public class ScreenTwoPlayersGame implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        // unused
     }
 
     @Override
     public void pause() {
-
+        // unused
     }
 
     @Override
     public void resume() {
-
+        // unused
     }
 
     @Override
@@ -243,11 +241,11 @@ public class ScreenTwoPlayersGame implements Screen {
 
     private void create() {
         isGoal = false;
-        countGoals_2 = 0;
-        countGoals_1 = 0;
+        countGoals2 = 0;
+        countGoals1 = 0;
         MyInput myInput = new MyInput();
         Gdx.input.setInputProcessor(myInput);
-        imgBackGround = new Texture("background"+number_background+".jpg");
+        imgBackGround = new Texture("background" + number_background + ".jpg");
         loadPersons(number_background);
         ball.body.setLinearVelocity(0, 0);
         ball.body.setAngularVelocity(0);
@@ -263,20 +261,20 @@ public class ScreenTwoPlayersGame implements Screen {
     private void loadPersons(int type) {
         iv.screenTwoPlayersGame.imgPersonAtlas1.dispose();
         iv.screenTwoPlayersGame.imgPersonAtlas2.dispose();
-        if(type == 3) {
+        if (type == 3) {
             iv.screenTwoPlayersGame.imgPersonAtlas1 = new Texture("colobatlasknight.png");
             iv.screenTwoPlayersGame.imgPersonAtlas2 = new Texture("colobatlasknight2.png");
         } else {
             iv.screenTwoPlayersGame.imgPersonAtlas1 = new Texture("colobatlasbeach.png");
             iv.screenTwoPlayersGame.imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
         }
-        for (int i = 0; i < iv.screenTwoPlayersGame.imgPerson1.length/2; i++) {
-            iv.screenTwoPlayersGame.imgPerson1[i] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas1, i*250, 0, 250, 250);
-            iv.screenTwoPlayersGame.imgPerson1[i+ iv.screenTwoPlayersGame.imgPerson1.length/2] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas1, i*250, 250, 250, 250);
+        for (int i = 0; i < iv.screenTwoPlayersGame.imgPerson1.length / 2; i++) {
+            iv.screenTwoPlayersGame.imgPerson1[i] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas1, i * 250, 0, 250, 250);
+            iv.screenTwoPlayersGame.imgPerson1[i + iv.screenTwoPlayersGame.imgPerson1.length / 2] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas1, i * 250, 250, 250, 250);
         }
-        for (int i = 0; i < iv.screenTwoPlayersGame.imgPerson2.length/2; i++) {
-            iv.screenTwoPlayersGame.imgPerson2[i] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas2, i*250, 0, 250, 250);
-            iv.screenTwoPlayersGame.imgPerson2[i+ iv.screenTwoPlayersGame.imgPerson2.length/2] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas2, i*250, 250, 250, 250);
+        for (int i = 0; i < iv.screenTwoPlayersGame.imgPerson2.length / 2; i++) {
+            iv.screenTwoPlayersGame.imgPerson2[i] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas2, i * 250, 0, 250, 250);
+            iv.screenTwoPlayersGame.imgPerson2[i + iv.screenTwoPlayersGame.imgPerson2.length / 2] = new TextureRegion(iv.screenTwoPlayersGame.imgPersonAtlas2, i * 250, 250, 250, 250);
         }
     }
 
@@ -338,18 +336,18 @@ public class ScreenTwoPlayersGame implements Screen {
         public boolean scrolled(float amountX, float amountY) {
             return false;
         }
-    }
 
-    private void touchColobs(int screenX, int screenY, int pointer) {
-        if (pointer == 0) {
-            iv.touch.set(screenX, screenY, 0);
-            iv.camera.unproject(iv.touch);
-            touchScreen(iv.touch);
-        }
-        if (pointer == 1) {
-            iv.touch.set(screenX, screenY, 0);
-            iv.camera.unproject(iv.touch);
-            touchScreen(iv.touch);
+        private void touchColobs(int screenX, int screenY, int pointer) {
+            if (pointer == 0) {
+                iv.touch.set(screenX, screenY, 0);
+                iv.camera.unproject(iv.touch);
+                touchScreen(iv.touch);
+            }
+            if (pointer == 1) {
+                iv.touch.set(screenX, screenY, 0);
+                iv.camera.unproject(iv.touch);
+                touchScreen(iv.touch);
+            }
         }
     }
 }

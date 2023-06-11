@@ -12,7 +12,7 @@ public class ScreenAbout implements Screen {
     private final Texture imgBackGround;
     private final ImageButton btnBack;
     private Texture imgBack;
-    private String textAbout =  "Эта супер-игра создана\n" +
+    private String textAbout = "Эта супер-игра создана\n" +
             "в IT-школе Samsung\n" +
             "на java под Android.\n\n" +
             "Цель игры - победить\n" +
@@ -22,7 +22,7 @@ public class ScreenAbout implements Screen {
         iv = volleyBall;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
-        btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
     }
 
     @Override
@@ -33,11 +33,11 @@ public class ScreenAbout implements Screen {
     @Override
     public void render(float delta) {
         // обработка касаний экрана
-        if(Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
 
-            if(btnBack.hit(iv.touch.x, iv.touch.y)) {
+            if (btnBack.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.screenIntro);
             }
         }
@@ -48,7 +48,7 @@ public class ScreenAbout implements Screen {
         iv.camera.update();
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
-        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH*100, SCR_HEIGHT*100);
+        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH * 100, SCR_HEIGHT * 100);
         iv.font.draw(iv.batch, textAbout, 350, 500);
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.camera.combined);

@@ -17,7 +17,7 @@ public class StaticBodyBox {
         body = world.createBody(bodyDef);
 
         PolygonShape box = new PolygonShape();
-        box.setAsBox(width/2, height/2);
+        box.setAsBox(width / 2, height / 2);
         body.createFixture(box, 0.0f);
         box.dispose();
     }

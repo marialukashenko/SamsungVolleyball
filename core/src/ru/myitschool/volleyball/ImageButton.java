@@ -15,7 +15,7 @@ public class ImageButton {
         this.width = width;
     }
 
-    boolean hit(float tx, float ty){
-        return x < tx && tx < x+width && y+height > ty && ty > y;
+    boolean hit(float tx, float ty) {
+        return x < tx && tx < x + width && y + height > ty && ty > y;
     }
 }

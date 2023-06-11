@@ -20,7 +20,7 @@ public class ScreenChoose implements Screen {
         btnTwoPlayers = new TextButton(iv.fontLarge, "TWO PLAYERS", 450);
         btnComputer = new TextButton(iv.fontLarge, "WITH COMPUTER", 350);
         imgBack = new Texture("back.png");
-        btnBack = new ImageButton(imgBack, SCR_WIDTH- 1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
     }
 
     @Override
@@ -31,18 +31,18 @@ public class ScreenChoose implements Screen {
     @Override
     public void render(float delta) {
         // обработка касаний экрана
-        if(Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
-            if(btnTwoPlayers.hit(iv.touch.x, iv.touch.y)) {
+            if (btnTwoPlayers.hit(iv.touch.x, iv.touch.y)) {
                 iv.sleep();
                 iv.setScreen(iv.screenTwoPlayersGame);
             }
-            if(btnComputer.hit(iv.touch.x, iv.touch.y)) {
+            if (btnComputer.hit(iv.touch.x, iv.touch.y)) {
                 iv.sleep();
                 iv.setScreen(iv.screenComputerGame);
             }
-            if(btnBack.hit(iv.touch.x, iv.touch.y)) {
+            if (btnBack.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.screenIntro);
             }
         }

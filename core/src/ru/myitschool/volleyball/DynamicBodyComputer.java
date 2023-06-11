@@ -25,7 +25,7 @@ public class DynamicBodyComputer {
     public static final boolean LEFT = true, RIGHT = false;
     private boolean side;
 
-    DynamicBodyComputer(World world, float x, float y, float radius, boolean side){
+    DynamicBodyComputer(World world, float x, float y, float radius, boolean side) {
         r = radius;
         lowLevel = y;
         this.side = side;
@@ -51,38 +51,38 @@ public class DynamicBodyComputer {
         circle.dispose();
     }
 
-    void hitBall(DynamicBodyBall ball){
-        if (ball.getX() > SCR_WIDTH/2){
+    void hitBall(DynamicBodyBall ball) {
+        if (ball.getX() > SCR_WIDTH / 2) {
             Vector2 ballVelocity = ball.body.getLinearVelocity();
             Vector2 ballPosition = ball.body.getPosition();
-            if (ballVelocity.x == 0 && ballVelocity.y == 0){
+            if (ballVelocity.x == 0 && ballVelocity.y == 0) {
                 timeStartJump = TimeUtils.millis();
                 state = JUMP;
                 //body.setLinearVelocity(-8f, MathUtils.random(15f, 20f));
-                body.applyLinearImpulse(new Vector2(-5f, MathUtils.random(15f, 20f)), body.getPosition(), true );
+                body.applyLinearImpulse(new Vector2(-5f, MathUtils.random(15f, 20f)), body.getPosition(), true);
             }
-            if (ballVelocity.x < 0 && ball.getX() < getX()){
+            if (ballVelocity.x < 0 && ball.getX() < getX()) {
                 body.setLinearVelocity(ballVelocity.x, 0);
                 state = GO;
-            } else if (ballVelocity.x < 0 && ball.getX() > getX()){
+            } else if (ballVelocity.x < 0 && ball.getX() > getX()) {
                 body.setLinearVelocity(-ballVelocity.x, 0);
                 state = GO;
-            } else if (ballVelocity.x > 0 && ball.getX() < getX()){
+            } else if (ballVelocity.x > 0 && ball.getX() < getX()) {
                 body.setLinearVelocity(-ballVelocity.x, 0);
                 state = GO;
-            } else if (ballVelocity.x > 0 && ball.getX() > getX()){
+            } else if (ballVelocity.x > 0 && ball.getX() > getX()) {
                 body.setLinearVelocity(ballVelocity.x, 0);
                 state = GO;
             }
             if (ballPosition.y - getY() > 0 && (ballPosition.y - getY()) * (ballPosition.y - getY()) +
-                    (ballPosition.x - getX()) * (ballPosition.x - getX()) <= 1 && ballVelocity.y < 0 && ballVelocity.y > -10){
+                    (ballPosition.x - getX()) * (ballPosition.x - getX()) <= 1 && ballVelocity.y < 0 && ballVelocity.y > -10) {
                 timeStartJump = TimeUtils.millis();
                 state = JUMP;
                 //body.setLinearVelocity(body.getLinearVelocity().x, 20);
-                body.applyLinearImpulse(new Vector2(body.getLinearVelocity().x, 20), body.getPosition(), true );
+                body.applyLinearImpulse(new Vector2(body.getLinearVelocity().x, 20), body.getPosition(), true);
             }
-            if (timeStartJump + timeJump < TimeUtils.millis()&& state == JUMP) {
-                body.setLinearVelocity(body.getLinearVelocity().x>5?5:body.getLinearVelocity().x, -10);
+            if (timeStartJump + timeJump < TimeUtils.millis() && state == JUMP) {
+                body.setLinearVelocity(body.getLinearVelocity().x > 5 ? 5 : body.getLinearVelocity().x, -10);
                 state = FALL;
             }
         }
@@ -97,23 +97,22 @@ public class DynamicBodyComputer {
         }
     }
 
-    void changeFaza(){
-        if(state == GO) {
-            if(Math.abs(body.getLinearVelocity().x)<0.01){
+    void changeFaza() {
+        if (state == GO) {
+            if (Math.abs(body.getLinearVelocity().x) < 0.01) {
                 isFlip = side;
                 faza = fazaStay;
-            }
-            else if(timeLastFaza+timeFazaInterval<TimeUtils.millis()) {
-                isFlip = body.getLinearVelocity().x>0;
+            } else if (timeLastFaza + timeFazaInterval < TimeUtils.millis()) {
+                isFlip = body.getLinearVelocity().x > 0;
                 if (++faza >= nFaz) faza = 0;
                 timeLastFaza = TimeUtils.millis();
             }
         }
-        if(state == JUMP && body.getLinearVelocity().x>0) {
+        if (state == JUMP && body.getLinearVelocity().x > 0) {
             if (isFlip) faza = fazaJumpRight;
             else faza = fazaJumpLeft;
         }
-        if(state == JUMP && body.getLinearVelocity().x<0) {
+        if (state == JUMP && body.getLinearVelocity().x < 0) {
             if (isFlip) faza = fazaJumpLeft;
             else faza = fazaJumpRight;
         }

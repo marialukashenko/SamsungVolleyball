@@ -24,12 +24,12 @@ public class ScreenBackgrounds implements Screen {
         iv = volleyBall;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
-        btnBack = new ImageButton(imgBack, SCR_WIDTH-1, SCR_HEIGHT-0.9f, 0.7f, 0.7f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
         for (int i = 0; i < count_backgrounds; i++) {
-            imgBtnBackground[i] = new Texture("background"+i+".jpg");
+            imgBtnBackground[i] = new Texture("background" + i + ".jpg");
         }
         for (int i = 0; i < count_backgrounds; i++) {
-            btnBackground[i] = new ImageButton(imgBtnBackground[i], 1+4*(i%3), SCR_HEIGHT-3*(i/3+1), 3.5f, 2);
+            btnBackground[i] = new ImageButton(imgBtnBackground[i], 1 + 4 * (i % 3), SCR_HEIGHT - 3 * (i / 3 + 1), 3.5f, 2);
         }
     }
 
@@ -41,16 +41,16 @@ public class ScreenBackgrounds implements Screen {
     @Override
     public void render(float delta) {
         // обработка касаний экрана
-        if(Gdx.input.justTouched()) {
+        if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
 
-            if(btnBack.hit(iv.touch.x, iv.touch.y)) {
+            if (btnBack.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.screenSettings);
             }
 
             for (int i = 0; i < count_backgrounds; i++) {
-                if(btnBackground[i].hit(iv.touch.x, iv.touch.y)){
+                if (btnBackground[i].hit(iv.touch.x, iv.touch.y)) {
                     number_background = i;
                     break;
                 }
@@ -65,11 +65,11 @@ public class ScreenBackgrounds implements Screen {
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
         for (int i = 0; i < count_backgrounds; i++) {
-            if (i == number_background){
+            if (i == number_background) {
                 shapeRenderer.setProjectionMatrix(iv.camera.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.YELLOW);
-                shapeRenderer.rect(btnBackground[number_background].x-0.1f, btnBackground[number_background].y - 0.1f, 3.7f, 2.2f);
+                shapeRenderer.rect(btnBackground[number_background].x - 0.1f, btnBackground[number_background].y - 0.1f, 3.7f, 2.2f);
                 shapeRenderer.end();
             }
         }
