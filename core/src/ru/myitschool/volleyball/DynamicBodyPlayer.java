@@ -154,13 +154,11 @@ public class DynamicBodyPlayer {
 
     void useAi(DynamicBodyBall ball) {
         if (state == GO) {
-            Vector2 ballVelocity = ball.body.getLinearVelocity();
             Vector2 ballPosition = ball.body.getPosition();
-
             if (near(getX(), ballPosition.x, r*2) && near(getY(), ballPosition.y, r*4)) {
                 timeStartJump = TimeUtils.millis();
                 state = JUMP;
-                body.applyLinearImpulse(new Vector2((ballPosition.x-getX())*10, MathUtils.random(25f, 35f)), body.getPosition(), true);
+                body.applyLinearImpulse(new Vector2((ballPosition.x-getX())*10, MathUtils.random(30f, 35f)), body.getPosition(), true);
             } else if (near(getX(), ballPosition.x, SCR_WIDTH/2) && MathUtils.random(10)==5) {
                 body.setLinearVelocity((ballPosition.x-getX())*10, 0);
             }
