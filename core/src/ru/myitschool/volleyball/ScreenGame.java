@@ -1,10 +1,6 @@
 package ru.myitschool.volleyball;
 
-import static ru.myitschool.volleyball.VolleyBall.MODE_VS_COMPUTER;
-import static ru.myitschool.volleyball.VolleyBall.MODE_VS_PLAYER;
-import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
-import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
-import static ru.myitschool.volleyball.VolleyBall.number_background;
+import static ru.myitschool.volleyball.VolleyBall.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
@@ -37,11 +33,12 @@ public class ScreenGame implements Screen {
     private StaticBodyBox net;
     private DynamicBodyPlayer person1, person2;
     private DynamicBodyBall ball;
+
     private int countGoals1, countGoals2;
     private long timeGoal, timeInterval = 3000;
     private boolean isGoal, isWin;
     private float ballHeight = 2.6f;
-    private float netHeight = 6.02f;
+    private float netHeight = 4f;
     private ImageButton btnBack;
     private TextButton btnRerun;
     private boolean startGame = true;
@@ -50,47 +47,32 @@ public class ScreenGame implements Screen {
     private long timeSoundPlay, timeSoundInterval = 100;
 
     public ScreenGame(VolleyBall volleyBall) {
-        imgBackGround = new Texture("background" + number_background + ".jpg");
-        imgBall = new Texture("ball2.png");
-        imgShadow = new Texture("shadow.png");
-        imgNet = new Texture("net1.png");
-        imgBack = new Texture("back.png");
+        iv = volleyBall;
 
-        imgPersonAtlas1 = new Texture("colobatlasbeach.png");
-        for (int i = 0; i < imgPerson1.length / 2; i++) {
-            imgPerson1[i] = new TextureRegion(imgPersonAtlas1, i * 250, 0, 250, 250);
-            imgPerson1[i + imgPerson1.length / 2] = new TextureRegion(imgPersonAtlas1, i * 250, 250, 250, 250);
-        }
-        imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
-        for (int i = 0; i < imgPerson2.length / 2; i++) {
-            imgPerson2[i] = new TextureRegion(imgPersonAtlas2, i * 250, 0, 250, 250);
-            imgPerson2[i + imgPerson2.length / 2] = new TextureRegion(imgPersonAtlas2, i * 250, 250, 250, 250);
-        }
+        imgShadow = new Texture("shadow.png");
+        imgBack = new Texture("back.png");
 
         soundBallHit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
         soundGoal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
         soundWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
-        iv = volleyBall;
 
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
         btnRerun = new TextButton(iv.fontLarge, "REPLAY", 20, SCR_HEIGHT * 100 - 30);
-        //игровое поле и сетки
+
+        // игровое поле и сетки
         block[0] = new StaticBodyBox(iv.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
         block[1] = new StaticBodyBox(iv.world, 0, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000);
         block[2] = new StaticBodyBox(iv.world, SCR_WIDTH, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000);
         block[3] = new StaticBodyBox(iv.world, SCR_WIDTH / 2, SCR_HEIGHT + 0.4f, SCR_WIDTH, 0.3f);
-        net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, 1f, 0.2f, netHeight);
-
-        //задание тел
-        ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+        // колобки
         person1 = new DynamicBodyPlayer(iv.world, 0, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
         person2 = new DynamicBodyPlayer(iv.world, 0, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
     }
 
     @Override
     public void show() {
-        create();
         timeShowGame = TimeUtils.millis();
+        create();
     }
 
     @Override
@@ -172,11 +154,10 @@ public class ScreenGame implements Screen {
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
-        iv.batch.draw(imgNet, SCR_WIDTH / 2 - 0.1f, -netHeight / 3, 0.2f, netHeight);
+        iv.batch.draw(imgNet, SCR_WIDTH / 2 - 0.6f, 0.1f, 1.2f, netHeight);
         iv.batch.draw(imgShadow, ball.scrX(), floor - ball.height() / 8, ball.width(), ball.height() / 4);
         iv.batch.draw(imgShadow, person1.scrX(), floor - ball.height() / 8, person1.width(), person1.height() / 4);
         iv.batch.draw(imgShadow, person2.scrX(), floor - ball.height() / 8, person2.width(), person2.height() / 4);
-
 
         iv.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
 
@@ -245,46 +226,6 @@ public class ScreenGame implements Screen {
     @Override
     public void dispose() {
 
-    }
-
-    private void startGame() {
-        isWin = false;
-        startGame = true;
-        create();
-    }
-
-    private void create() {
-        isGoal = false;
-        countGoals2 = 0;
-        countGoals1 = 0;
-        MyInput myInput = new MyInput();
-        Gdx.input.setInputProcessor(myInput);
-        imgBackGround = new Texture("background" + number_background + ".jpg");
-        loadPersons(number_background);
-        ball.body.setLinearVelocity(0, 0);
-        ball.body.setAngularVelocity(0);
-        ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0);
-        setPersonsPositionToStart();
-    }
-
-    private void loadPersons(int type) {
-        iv.screenGame.imgPersonAtlas1.dispose();
-        iv.screenGame.imgPersonAtlas2.dispose();
-        if (type == 3) {
-            iv.screenGame.imgPersonAtlas1 = new Texture("colobatlasknight.png");
-            iv.screenGame.imgPersonAtlas2 = new Texture("colobatlasknight2.png");
-        } else {
-            iv.screenGame.imgPersonAtlas1 = new Texture("colobatlasbeach.png");
-            iv.screenGame.imgPersonAtlas2 = new Texture("colobatlasbeach2.png");
-        }
-        for (int i = 0; i < iv.screenGame.imgPerson1.length / 2; i++) {
-            iv.screenGame.imgPerson1[i] = new TextureRegion(iv.screenGame.imgPersonAtlas1, i * 250, 0, 250, 250);
-            iv.screenGame.imgPerson1[i + iv.screenGame.imgPerson1.length / 2] = new TextureRegion(iv.screenGame.imgPersonAtlas1, i * 250, 250, 250, 250);
-        }
-        for (int i = 0; i < iv.screenGame.imgPerson2.length / 2; i++) {
-            iv.screenGame.imgPerson2[i] = new TextureRegion(iv.screenGame.imgPersonAtlas2, i * 250, 0, 250, 250);
-            iv.screenGame.imgPerson2[i + iv.screenGame.imgPerson2.length / 2] = new TextureRegion(iv.screenGame.imgPersonAtlas2, i * 250, 250, 250, 250);
-        }
     }
 
     class MyInput implements InputProcessor {
@@ -357,7 +298,7 @@ public class ScreenGame implements Screen {
             }
 
             if (isWin && btnRerun.hit(iv.touch.x, iv.touch.y)) {
-                startGame();
+                create();
             }
 
             return false;
@@ -391,5 +332,69 @@ public class ScreenGame implements Screen {
                 touchScreen(iv.touch);
             }
         }
+    }
+
+    private void loadPersons() {
+        if(imgPersonAtlas1!=null) imgPersonAtlas1.dispose();
+        if(imgPersonAtlas2!=null) imgPersonAtlas2.dispose();
+        imgPersonAtlas1 = new Texture("colobatlas"+iv.gameStyle+"0.png");
+        imgPersonAtlas2 = new Texture("colobatlas"+iv.gameStyle+"1.png");
+        for (int i = 0; i < iv.screenGame.imgPerson1.length / 2; i++) {
+            iv.screenGame.imgPerson1[i] = new TextureRegion(iv.screenGame.imgPersonAtlas1, i * 250, 0, 250, 250);
+            iv.screenGame.imgPerson1[i + iv.screenGame.imgPerson1.length / 2] = new TextureRegion(iv.screenGame.imgPersonAtlas1, i * 250, 250, 250, 250);
+        }
+        for (int i = 0; i < iv.screenGame.imgPerson2.length / 2; i++) {
+            iv.screenGame.imgPerson2[i] = new TextureRegion(iv.screenGame.imgPersonAtlas2, i * 250, 0, 250, 250);
+            iv.screenGame.imgPerson2[i + iv.screenGame.imgPerson2.length / 2] = new TextureRegion(iv.screenGame.imgPersonAtlas2, i * 250, 250, 250, 250);
+        }
+    }
+
+    void create() {
+        isWin = false;
+        startGame = true;
+        isGoal = false;
+        countGoals2 = 0;
+        countGoals1 = 0;
+        MyInput myInput = new MyInput();
+        Gdx.input.setInputProcessor(myInput);
+        if(imgBackGround!=null) imgBackGround.dispose();
+        imgBackGround = new Texture("background" + iv.gameStyle + ".jpg");
+        if(imgBall!=null) imgBall.dispose();
+        imgBall = new Texture("ball" + iv.gameStyle + ".png");
+        if(imgNet!=null) imgNet.dispose();
+        imgNet = new Texture("net" + iv.gameStyle + ".png");
+        loadPersons();
+
+        switch (iv.gameStyle) {
+            case STYLE_BEACH:
+                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                break;
+            case STYLE_CASTLE:
+                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                break;
+            case STYLE_KITCHEN:
+                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                break;
+            case STYLE_ROOM:
+                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                break;
+            case STYLE_STEAM:
+                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                break;
+            case STYLE_FIELD:
+                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                break;
+            default: iv.setScreen(iv.screenIntro);
+        }
+        ball.body.setLinearVelocity(0, 0);
+        ball.body.setAngularVelocity(0);
+        ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0);
+        setPersonsPositionToStart();
     }
 }

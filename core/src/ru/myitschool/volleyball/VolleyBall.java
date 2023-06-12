@@ -15,7 +15,6 @@ import com.badlogic.gdx.physics.box2d.World;
 
 public class VolleyBall extends Game {
     public static final float SCR_WIDTH = 12.8f, SCR_HEIGHT = 7.2f;
-    public static int number_background = 0;
     public static int number_players = 0;
     public SpriteBatch batch;
     public OrthographicCamera camera;
@@ -29,11 +28,12 @@ public class VolleyBall extends Game {
     ScreenGame screenGame;
     ScreenSettings screenSettings;
     ScreenAbout screenAbout;
-    ScreenBackgrounds screenBackgrounds;
+    ScreenPickStyle screenPickStyle;
     ScreenPlayers screenPlayers;
 
-    public static final int STYLE_BEACH = 0, STYLE_KITCHEN = 1, STYLE_STEAM = 2, STYLE_ROOM = 3, STYLE_CASTLE = 4;
-    public int numStyles = 5;
+    public static final int STYLE_BEACH = 0, STYLE_KITCHEN = 1, STYLE_STEAM = 2;
+    public static final int STYLE_ROOM = 3, STYLE_CASTLE = 4, STYLE_FIELD = 5;
+    public static final int NUM_STYLES = 6;
     public int gameStyle;
 
     public static final int MODE_VS_PLAYER = 0, MODE_VS_COMPUTER = 1;
@@ -60,7 +60,7 @@ public class VolleyBall extends Game {
         generateFont();
         screenIntro = new ScreenIntro(this);
         screenSettings = new ScreenSettings(this);
-        screenBackgrounds = new ScreenBackgrounds(this);
+        screenPickStyle = new ScreenPickStyle(this);
         screenPlayers = new ScreenPlayers(this);
         screenAbout = new ScreenAbout(this);
         screenGame = new ScreenGame(this);

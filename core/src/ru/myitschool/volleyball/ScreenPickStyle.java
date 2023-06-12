@@ -1,8 +1,6 @@
 package ru.myitschool.volleyball;
 
-import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
-import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
-import static ru.myitschool.volleyball.VolleyBall.number_background;
+import static ru.myitschool.volleyball.VolleyBall.*;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -10,26 +8,27 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class ScreenBackgrounds implements Screen {
-    private final VolleyBall iv;
-    private final Texture imgBackGround;
-    private final ImageButton btnBack;
-    private final Texture imgBack;
-    private final int count_backgrounds = 5;
-    private final ImageButton[] btnBackground = new ImageButton[count_backgrounds];
-    private Texture[] imgBtnBackground = new Texture[count_backgrounds];
-    private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+public class ScreenPickStyle implements Screen {
+    private VolleyBall iv;
+    private Texture imgBackGround;
+    private Texture imgBack;
+    private Texture imgSelector;
+    private Texture[] imgBtnBackground = new Texture[NUM_STYLES];
 
-    public ScreenBackgrounds(VolleyBall volleyBall) {
+    private ImageButton btnBack;
+    private final ImageButton[] btnBackground = new ImageButton[NUM_STYLES];
+
+    public ScreenPickStyle(VolleyBall volleyBall) {
         iv = volleyBall;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
+        imgSelector = new Texture("yellowselector.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
-        for (int i = 0; i < count_backgrounds; i++) {
+        for (int i = 0; i < NUM_STYLES; i++) {
             imgBtnBackground[i] = new Texture("background" + i + ".jpg");
         }
-        for (int i = 0; i < count_backgrounds; i++) {
-            btnBackground[i] = new ImageButton(imgBtnBackground[i], 1 + 4 * (i % 3), SCR_HEIGHT - 3 * (i / 3 + 1), 3.5f, 2);
+        for (int i = 0; i < NUM_STYLES; i++) {
+            btnBackground[i] = new ImageButton(imgBtnBackground[i], 1 + 4 * (i % 3), SCR_HEIGHT - 3 * (i / 3 + 1), 3.5f, 2f);
         }
     }
 
@@ -49,9 +48,9 @@ public class ScreenBackgrounds implements Screen {
                 iv.setScreen(iv.screenSettings);
             }
 
-            for (int i = 0; i < count_backgrounds; i++) {
+            for (int i = 0; i < NUM_STYLES; i++) {
                 if (btnBackground[i].hit(iv.touch.x, iv.touch.y)) {
-                    number_background = i;
+                    iv.gameStyle = i;
                     break;
                 }
             }
@@ -63,19 +62,8 @@ public class ScreenBackgrounds implements Screen {
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
-        iv.batch.end();
-        for (int i = 0; i < count_backgrounds; i++) {
-            if (i == number_background) {
-                shapeRenderer.setProjectionMatrix(iv.camera.combined);
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setColor(Color.YELLOW);
-                shapeRenderer.rect(btnBackground[number_background].x - 0.1f, btnBackground[number_background].y - 0.1f, 3.7f, 2.2f);
-                shapeRenderer.end();
-            }
-        }
-        iv.batch.setProjectionMatrix(iv.camera.combined);
-        iv.batch.begin();
-        for (int i = 0; i < count_backgrounds; i++) {
+        iv.batch.draw(imgSelector, btnBackground[iv.gameStyle].x - 0.1f, btnBackground[iv.gameStyle].y - 0.1f, 3.7f, 2.2f);
+        for (int i = 0; i < NUM_STYLES; i++) {
             iv.batch.draw(btnBackground[i].img, btnBackground[i].x, btnBackground[i].y, btnBackground[i].width, btnBackground[i].height);
         }
         iv.batch.end();

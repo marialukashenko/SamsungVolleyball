@@ -52,7 +52,7 @@ public class ScreenSettings implements Screen {
                 btnMusic.setText(iv.musicOn ? "MUSIC ON" : "MUSIC OFF");
             }
             if (btnBackgrounds.hit(iv.touch.x, iv.touch.y)) {
-                iv.setScreen(iv.screenBackgrounds);
+                iv.setScreen(iv.screenPickStyle);
             }
             if (btnPlayers.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.screenPlayers);
