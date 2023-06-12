@@ -37,7 +37,7 @@ public class ScreenGame implements Screen {
     private int countGoals1, countGoals2;
     private long timeGoal, timeInterval = 3000;
     private boolean isGoal, isWin;
-    private float ballHeight = 2.6f;
+    private float ballStartY = 2.6f;
     private float netHeight = 4f;
     private ImageButton btnBack;
     private TextButton btnRerun;
@@ -84,7 +84,6 @@ public class ScreenGame implements Screen {
         ScreenUtils.clear(0, 0, 0, 1);
         iv.debugRenderer.render(iv.world, iv.camera.combined);
 
-        // касания
 
         // события
         person1.move();
@@ -94,25 +93,24 @@ public class ScreenGame implements Screen {
                 startGame = false;
             } else {
                 ball.body.setLinearVelocity(0, 0);
-                ball.body.setTransform(ball.getX(), ballHeight, 0);
+                ball.body.setTransform(ball.getX(), ballStartY, 0);
             }
         }
         if (isGoal && !isWin) {
             if (TimeUtils.millis() > timeGoal + timeInterval) {
                 isGoal = false;
                 if (ball.getX() < SCR_WIDTH / 2) {
-                    iv.world.destroyBody(ball.body);
-                    ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 * 3, ballHeight, 0.4f);
+                    //iv.world.destroyBody(ball.body);
+                    //ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 * 3, ballStartY, iv.gameStyle);
+                    ball.body.setTransform(SCR_WIDTH / 4 * 3, ballStartY, 0);
                     startGame = true;
-                    //ball.body.setTransform((SCR_WIDTH/2+MathUtils.random(1, 5)), MyGdx.SCR_HEIGHT + 1, 0);
                 } else {
-                    iv.world.destroyBody(ball.body);
-                    ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4, ballHeight, 0.4f);
+                    //iv.world.destroyBody(ball.body);
+                    //ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4, ballStartY, iv.gameStyle);
+                    ball.body.setTransform(SCR_WIDTH / 4, ballStartY, 0);
                     startGame = true;
-                    //ball.body.setTransform(MathUtils.random(1, 5), MyGdx.SCR_HEIGHT + 1, 0);
                 }
                 setPersonsPositionToStart();
-                //ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
             }
         } else {
             if (ball.isGoal() && !isWin) {
@@ -158,14 +156,11 @@ public class ScreenGame implements Screen {
         iv.batch.draw(imgShadow, ball.scrX(), floor - ball.height() / 8, ball.width(), ball.height() / 4);
         iv.batch.draw(imgShadow, person1.scrX(), floor - ball.height() / 8, person1.width(), person1.height() / 4);
         iv.batch.draw(imgShadow, person2.scrX(), floor - ball.height() / 8, person2.width(), person2.height() / 4);
-
-        iv.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 591, 591, false, false);
-
+        iv.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 200, 200, false, false);
         iv.batch.draw(imgPerson1[person1.faza], person1.scrX() - 0.25f, person1.scrY(), person1.width() * 1.5f / 2, person1.height() * 1.5f / 2,
                 person1.width() * 1.5f, person1.height() * 1.5f, person1.isFlip ? -1 : 1, 1, 0);
         iv.batch.draw(imgPerson2[person2.faza], person2.scrX() - 0.25f, person2.scrY(), person2.width() * 1.5f / 2, person2.height() * 1.5f / 2,
                 person2.width() * 1.5f, person2.height() * 1.5f, person2.isFlip ? -1 : 1, 1, 0);
-
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.camera2.combined);
@@ -225,7 +220,16 @@ public class ScreenGame implements Screen {
 
     @Override
     public void dispose() {
-
+        imgBall.dispose();
+        imgPersonAtlas1.dispose();
+        imgPersonAtlas2.dispose();
+        imgBackGround.dispose();
+        imgNet.dispose();
+        imgBack.dispose();
+        imgShadow.dispose();
+        soundBallHit.dispose();
+        soundGoal.dispose();
+        soundWin.dispose();
     }
 
     class MyInput implements InputProcessor {
@@ -293,7 +297,7 @@ public class ScreenGame implements Screen {
                 if (isWin) {
                     isWin = false;
                 }
-                iv.setScreen(iv.screenIntro);
+                iv.setScreen(iv.getScreenIntro());
                 startGame = true;
             }
 
@@ -339,13 +343,13 @@ public class ScreenGame implements Screen {
         if(imgPersonAtlas2!=null) imgPersonAtlas2.dispose();
         imgPersonAtlas1 = new Texture("colobatlas"+iv.gameStyle+"0.png");
         imgPersonAtlas2 = new Texture("colobatlas"+iv.gameStyle+"1.png");
-        for (int i = 0; i < iv.screenGame.imgPerson1.length / 2; i++) {
-            iv.screenGame.imgPerson1[i] = new TextureRegion(iv.screenGame.imgPersonAtlas1, i * 250, 0, 250, 250);
-            iv.screenGame.imgPerson1[i + iv.screenGame.imgPerson1.length / 2] = new TextureRegion(iv.screenGame.imgPersonAtlas1, i * 250, 250, 250, 250);
+        for (int i = 0; i < imgPerson1.length / 2; i++) {
+            imgPerson1[i] = new TextureRegion(imgPersonAtlas1, i * 250, 0, 250, 250);
+            imgPerson1[i + imgPerson1.length / 2] = new TextureRegion(imgPersonAtlas1, i * 250, 250, 250, 250);
         }
-        for (int i = 0; i < iv.screenGame.imgPerson2.length / 2; i++) {
-            iv.screenGame.imgPerson2[i] = new TextureRegion(iv.screenGame.imgPersonAtlas2, i * 250, 0, 250, 250);
-            iv.screenGame.imgPerson2[i + iv.screenGame.imgPerson2.length / 2] = new TextureRegion(iv.screenGame.imgPersonAtlas2, i * 250, 250, 250, 250);
+        for (int i = 0; i < imgPerson2.length / 2; i++) {
+            imgPerson2[i] = new TextureRegion(imgPersonAtlas2, i * 250, 0, 250, 250);
+            imgPerson2[i + imgPerson2.length / 2] = new TextureRegion(imgPersonAtlas2, i * 250, 250, 250, 250);
         }
     }
 
@@ -364,37 +368,36 @@ public class ScreenGame implements Screen {
         if(imgNet!=null) imgNet.dispose();
         imgNet = new Texture("net" + iv.gameStyle + ".png");
         loadPersons();
+        net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
 
+        if(ball!=null) iv.world.destroyBody(ball.body);
+        System.out.println("style"+iv.gameStyle);
         switch (iv.gameStyle) {
             case STYLE_BEACH:
-                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.gameStyle);
                 break;
             case STYLE_CASTLE:
-                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.gameStyle);
                 break;
             case STYLE_KITCHEN:
-                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.STYLE_BEACH);
                 break;
             case STYLE_ROOM:
-                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.STYLE_BEACH);
                 break;
             case STYLE_STEAM:
-                net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.gameStyle);
                 break;
             case STYLE_FIELD:
                 net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, STYLE_BEACH);
                 break;
-            default: iv.setScreen(iv.screenIntro);
+            default: iv.setScreen(iv.getScreenIntro());
         }
+
         ball.body.setLinearVelocity(0, 0);
         ball.body.setAngularVelocity(0);
-        ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0);
+        ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, 0);
         setPersonsPositionToStart();
     }
 }

@@ -2,7 +2,6 @@ package ru.myitschool.volleyball;
 
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
-import static ru.myitschool.volleyball.VolleyBall.number_players;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -19,6 +18,7 @@ public class ScreenPlayers implements Screen {
     private ImageButton[] btnPlayer = new ImageButton[count_players];
     private Texture[] imgBtnPlayer = new Texture[count_players];
     private ShapeRenderer shapeRenderer = new ShapeRenderer();
+    private int numberPlayers;
 
     public ScreenPlayers(VolleyBall volleyBall) {
         iv = volleyBall;
@@ -46,12 +46,12 @@ public class ScreenPlayers implements Screen {
             iv.camera.unproject(iv.touch);
 
             if (btnBack.hit(iv.touch.x, iv.touch.y)) {
-                iv.setScreen(iv.screenSettings);
+                iv.setScreen(iv.getScreenSettings());
             }
 
             for (int i = 0; i < count_players; i++) {
                 if (btnPlayer[i].hit(iv.touch.x, iv.touch.y)) {
-                    number_players = i;
+                    numberPlayers = i;
                     break;
                 }
             }
@@ -65,11 +65,11 @@ public class ScreenPlayers implements Screen {
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
         for (int i = 0; i < count_players; i++) {
-            if (i == number_players) {
+            if (i == numberPlayers) {
                 shapeRenderer.setProjectionMatrix(iv.camera.combined);
                 shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
                 shapeRenderer.setColor(Color.YELLOW);
-                shapeRenderer.rect(btnPlayer[number_players].x - 0.1f, btnPlayer[number_players].y - 0.1f, 2.7f, 2.7f);
+                shapeRenderer.rect(btnPlayer[numberPlayers].x - 0.1f, btnPlayer[numberPlayers].y - 0.1f, 2.7f, 2.7f);
                 shapeRenderer.end();
             }
         }
@@ -83,17 +83,17 @@ public class ScreenPlayers implements Screen {
 
     @Override
     public void resize(int width, int height) {
-
+        //
     }
 
     @Override
     public void pause() {
-
+        //
     }
 
     @Override
     public void resume() {
-
+        //
     }
 
     @Override
@@ -103,6 +103,7 @@ public class ScreenPlayers implements Screen {
 
     @Override
     public void dispose() {
-
+        imgBackGround.dispose();
+        imgBack.dispose();
     }
 }

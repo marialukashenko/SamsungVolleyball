@@ -14,29 +14,35 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 
 public class VolleyBall extends Game {
-    public static final float SCR_WIDTH = 12.8f, SCR_HEIGHT = 7.2f;
-    public static int number_players = 0;
+    public static final float SCR_WIDTH = 12.8f;
+    public static final float SCR_HEIGHT = 7.2f;
     public SpriteBatch batch;
     public OrthographicCamera camera;
     public OrthographicCamera camera2;
     public World world;
     public Box2DDebugRenderer debugRenderer;
     public Vector3 touch;
-    public BitmapFont font, fontLarge;
+    public BitmapFont font;
+    public BitmapFont fontLarge;
 
-    ScreenIntro screenIntro;
-    ScreenGame screenGame;
-    ScreenSettings screenSettings;
-    ScreenAbout screenAbout;
-    ScreenPickStyle screenPickStyle;
-    ScreenPlayers screenPlayers;
+    private ScreenIntro screenIntro;
+    private ScreenGame screenGame;
+    private ScreenSettings screenSettings;
+    private ScreenAbout screenAbout;
+    private ScreenPickStyle screenPickStyle;
+    private ScreenPlayers screenPlayers;
 
-    public static final int STYLE_BEACH = 0, STYLE_KITCHEN = 1, STYLE_STEAM = 2;
-    public static final int STYLE_ROOM = 3, STYLE_CASTLE = 4, STYLE_FIELD = 5;
+    public static final int STYLE_BEACH = 0;
+    public static final int STYLE_CASTLE = 1;
+    public static final int STYLE_STEAM = 2;
+    public static final int STYLE_ROOM = 3;
+    public static final int STYLE_KITCHEN = 4;
+    public static final int STYLE_FIELD = 5;
     public static final int NUM_STYLES = 6;
     public int gameStyle;
 
-    public static final int MODE_VS_PLAYER = 0, MODE_VS_COMPUTER = 1;
+    public static final int MODE_VS_PLAYER = 0;
+    public static final int MODE_VS_COMPUTER = 1;
     public int gameMode;
 
     public boolean soundOn = true;
@@ -98,9 +104,32 @@ public class VolleyBall extends Game {
     public void sleep() {
         try {
             Thread.sleep(300);
-        } catch (Exception ignored) {
-            //
+        } catch (Exception ignored){
         }
+    }
+
+    public ScreenIntro getScreenIntro() {
+        return screenIntro;
+    }
+
+    public ScreenGame getScreenGame() {
+        return screenGame;
+    }
+
+    public ScreenSettings getScreenSettings() {
+        return screenSettings;
+    }
+
+    public ScreenAbout getScreenAbout() {
+        return screenAbout;
+    }
+
+    public ScreenPickStyle getScreenPickStyle() {
+        return screenPickStyle;
+    }
+
+    public ScreenPlayers getScreenPlayers() {
+        return screenPlayers;
     }
 }
 

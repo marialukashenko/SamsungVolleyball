@@ -38,7 +38,7 @@ public class ScreenAbout implements Screen {
             iv.camera.unproject(iv.touch);
 
             if (btnBack.hit(iv.touch.x, iv.touch.y)) {
-                iv.setScreen(iv.screenIntro);
+                iv.setScreen(iv.getScreenIntro());
             }
         }
 

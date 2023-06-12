@@ -45,7 +45,7 @@ public class ScreenPickStyle implements Screen {
             iv.camera.unproject(iv.touch);
 
             if (btnBack.hit(iv.touch.x, iv.touch.y)) {
-                iv.setScreen(iv.screenSettings);
+                iv.setScreen(iv.getScreenSettings());
             }
 
             for (int i = 0; i < NUM_STYLES; i++) {
