@@ -157,33 +157,13 @@ public class DynamicBodyPlayer {
             Vector2 ballVelocity = ball.body.getLinearVelocity();
             Vector2 ballPosition = ball.body.getPosition();
 
-            if (near(getX(), ballPosition.x, r)) {
+            if (near(getX(), ballPosition.x, r*2) && near(getY(), ballPosition.y, r*4)) {
                 timeStartJump = TimeUtils.millis();
                 state = JUMP;
-                body.applyLinearImpulse(new Vector2(0, MathUtils.random(25f, 30f)), body.getPosition(), true);
+                body.applyLinearImpulse(new Vector2((ballPosition.x-getX())*10, MathUtils.random(25f, 35f)), body.getPosition(), true);
+            } else if (near(getX(), ballPosition.x, SCR_WIDTH/2) && MathUtils.random(10)==5) {
+                body.setLinearVelocity((ballPosition.x-getX())*10, 0);
             }
-            /*    if (ballVelocity.x < 0 && ball.getX() < getX()) {
-                    body.setLinearVelocity(ballVelocity.x, 0);
-                    state = GO;
-                } else if (ballVelocity.x < 0 && ball.getX() > getX()) {
-                    body.setLinearVelocity(-ballVelocity.x, 0);
-                    state = GO;
-                } else if (ballVelocity.x > 0 && ball.getX() < getX()) {
-                    body.setLinearVelocity(-ballVelocity.x, 0);
-                    state = GO;
-                } else if (ballVelocity.x > 0 && ball.getX() > getX()) {
-                    body.setLinearVelocity(ballVelocity.x, 0);
-                    state = GO;
-                }
-                if (ballPosition.y - getY() > 0 && (ballPosition.y - getY()) * (ballPosition.y - getY()) +
-                        (ballPosition.x - getX()) * (ballPosition.x - getX()) <= 1 && ballVelocity.y < 0 && ballVelocity.y > -10) {
-                    timeStartJump = TimeUtils.millis();
-                    state = JUMP;
-                    //body.setLinearVelocity(body.getLinearVelocity().x, 20);
-                    body.applyLinearImpulse(new Vector2(body.getLinearVelocity().x, 20), body.getPosition(), true);
-                }*/
-
-
         }
     }
 }
