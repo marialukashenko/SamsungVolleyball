@@ -20,8 +20,7 @@ public class VolleyBall extends Game {
     public SpriteBatch batch;
     public OrthographicCamera camera;
     public OrthographicCamera camera2;
-    public World worldTwoPlayers;
-    public World worldComputer;
+    public World world;
     public Box2DDebugRenderer debugRenderer;
     public Vector3 touch;
     public BitmapFont font, fontLarge;
@@ -53,8 +52,7 @@ public class VolleyBall extends Game {
         camera.setToOrtho(false, SCR_WIDTH, SCR_HEIGHT);
         camera2.setToOrtho(false, SCR_WIDTH * 100, SCR_HEIGHT * 100);
 
-        worldTwoPlayers = new World(new Vector2(0, -10), false);
-        worldComputer = new World(new Vector2(0, -10), false);
+        world = new World(new Vector2(0, -10), false);
         touch = new Vector3();
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();

@@ -152,40 +152,38 @@ public class DynamicBodyPlayer {
         return (getX() - b.getX()) * (getX() - b.getX()) + (getY() - b.getY()) * (getY() - b.getY()) <= (r + b.r) * (r + b.r);
     }
 
-    void hitBall(DynamicBodyBall ball) {
-        if (ball.getX() > SCR_WIDTH / 2) {
+    void useAi(DynamicBodyBall ball) {
+        if (state == GO) {
             Vector2 ballVelocity = ball.body.getLinearVelocity();
             Vector2 ballPosition = ball.body.getPosition();
-            if (ballVelocity.x == 0 && ballVelocity.y == 0) {
+
+            if (near(getX(), ballPosition.x, r)) {
                 timeStartJump = TimeUtils.millis();
                 state = JUMP;
-                //body.setLinearVelocity(-8f, MathUtils.random(15f, 20f));
-                body.applyLinearImpulse(new Vector2(-5f, MathUtils.random(15f, 20f)), body.getPosition(), true);
+                body.applyLinearImpulse(new Vector2(0, MathUtils.random(25f, 30f)), body.getPosition(), true);
             }
-            if (ballVelocity.x < 0 && ball.getX() < getX()) {
-                body.setLinearVelocity(ballVelocity.x, 0);
-                state = GO;
-            } else if (ballVelocity.x < 0 && ball.getX() > getX()) {
-                body.setLinearVelocity(-ballVelocity.x, 0);
-                state = GO;
-            } else if (ballVelocity.x > 0 && ball.getX() < getX()) {
-                body.setLinearVelocity(-ballVelocity.x, 0);
-                state = GO;
-            } else if (ballVelocity.x > 0 && ball.getX() > getX()) {
-                body.setLinearVelocity(ballVelocity.x, 0);
-                state = GO;
-            }
-            if (ballPosition.y - getY() > 0 && (ballPosition.y - getY()) * (ballPosition.y - getY()) +
-                    (ballPosition.x - getX()) * (ballPosition.x - getX()) <= 1 && ballVelocity.y < 0 && ballVelocity.y > -10) {
-                timeStartJump = TimeUtils.millis();
-                state = JUMP;
-                //body.setLinearVelocity(body.getLinearVelocity().x, 20);
-                body.applyLinearImpulse(new Vector2(body.getLinearVelocity().x, 20), body.getPosition(), true);
-            }
-            if (timeStartJump + timeJump < TimeUtils.millis() && state == JUMP) {
-                body.setLinearVelocity(body.getLinearVelocity().x > 5 ? 5 : body.getLinearVelocity().x, -10);
-                state = FALL;
-            }
+            /*    if (ballVelocity.x < 0 && ball.getX() < getX()) {
+                    body.setLinearVelocity(ballVelocity.x, 0);
+                    state = GO;
+                } else if (ballVelocity.x < 0 && ball.getX() > getX()) {
+                    body.setLinearVelocity(-ballVelocity.x, 0);
+                    state = GO;
+                } else if (ballVelocity.x > 0 && ball.getX() < getX()) {
+                    body.setLinearVelocity(-ballVelocity.x, 0);
+                    state = GO;
+                } else if (ballVelocity.x > 0 && ball.getX() > getX()) {
+                    body.setLinearVelocity(ballVelocity.x, 0);
+                    state = GO;
+                }
+                if (ballPosition.y - getY() > 0 && (ballPosition.y - getY()) * (ballPosition.y - getY()) +
+                        (ballPosition.x - getX()) * (ballPosition.x - getX()) <= 1 && ballVelocity.y < 0 && ballVelocity.y > -10) {
+                    timeStartJump = TimeUtils.millis();
+                    state = JUMP;
+                    //body.setLinearVelocity(body.getLinearVelocity().x, 20);
+                    body.applyLinearImpulse(new Vector2(body.getLinearVelocity().x, 20), body.getPosition(), true);
+                }*/
+
+
         }
     }
 }

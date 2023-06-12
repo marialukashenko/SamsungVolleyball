@@ -1,6 +1,7 @@
 package ru.myitschool.volleyball;
 
 import static ru.myitschool.volleyball.VolleyBall.MODE_VS_COMPUTER;
+import static ru.myitschool.volleyball.VolleyBall.MODE_VS_PLAYER;
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 import static ru.myitschool.volleyball.VolleyBall.number_background;
@@ -74,16 +75,16 @@ public class ScreenGame implements Screen {
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
         btnRerun = new TextButton(iv.fontLarge, "REPLAY", 20, SCR_HEIGHT * 100 - 30);
         //игровое поле и сетки
-        block[0] = new StaticBodyBox(iv.worldTwoPlayers, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
-        block[1] = new StaticBodyBox(iv.worldTwoPlayers, 0, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000);
-        block[2] = new StaticBodyBox(iv.worldTwoPlayers, SCR_WIDTH, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000);
-        block[3] = new StaticBodyBox(iv.worldTwoPlayers, SCR_WIDTH / 2, SCR_HEIGHT + 0.4f, SCR_WIDTH, 0.3f);
-        net = new StaticBodyBox(iv.worldTwoPlayers, SCR_WIDTH / 2, 1f, 0.2f, netHeight);
+        block[0] = new StaticBodyBox(iv.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
+        block[1] = new StaticBodyBox(iv.world, 0, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000);
+        block[2] = new StaticBodyBox(iv.world, SCR_WIDTH, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000);
+        block[3] = new StaticBodyBox(iv.world, SCR_WIDTH / 2, SCR_HEIGHT + 0.4f, SCR_WIDTH, 0.3f);
+        net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, 1f, 0.2f, netHeight);
 
         //задание тел
-        ball = new DynamicBodyBall(iv.worldTwoPlayers, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
-        person1 = new DynamicBodyPlayer(iv.worldTwoPlayers, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
-        person2 = new DynamicBodyPlayer(iv.worldTwoPlayers, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
+        ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0.4f);
+        person1 = new DynamicBodyPlayer(iv.world, 0, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
+        person2 = new DynamicBodyPlayer(iv.world, 0, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
     }
 
     @Override
@@ -97,9 +98,9 @@ public class ScreenGame implements Screen {
         if (timeShowGame + timeStartGameInterval > TimeUtils.millis()) return;
 
         iv.camera.update();
-        iv.worldTwoPlayers.step(1 / 60f, 6, 2);
+        iv.world.step(1 / 60f, 6, 2);
         ScreenUtils.clear(0, 0, 0, 1);
-        iv.debugRenderer.render(iv.worldTwoPlayers, iv.camera.combined);
+        iv.debugRenderer.render(iv.world, iv.camera.combined);
 
         // касания
 
@@ -118,20 +119,17 @@ public class ScreenGame implements Screen {
             if (TimeUtils.millis() > timeGoal + timeInterval) {
                 isGoal = false;
                 if (ball.getX() < SCR_WIDTH / 2) {
-                    iv.worldTwoPlayers.destroyBody(ball.body);
-                    ball = new DynamicBodyBall(iv.worldTwoPlayers, SCR_WIDTH / 4 * 3, ballHeight, 0.4f);
+                    iv.world.destroyBody(ball.body);
+                    ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 * 3, ballHeight, 0.4f);
                     startGame = true;
                     //ball.body.setTransform((SCR_WIDTH/2+MathUtils.random(1, 5)), MyGdx.SCR_HEIGHT + 1, 0);
                 } else {
-                    iv.worldTwoPlayers.destroyBody(ball.body);
-                    ball = new DynamicBodyBall(iv.worldTwoPlayers, SCR_WIDTH / 4, ballHeight, 0.4f);
+                    iv.world.destroyBody(ball.body);
+                    ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4, ballHeight, 0.4f);
                     startGame = true;
                     //ball.body.setTransform(MathUtils.random(1, 5), MyGdx.SCR_HEIGHT + 1, 0);
                 }
-                iv.worldTwoPlayers.destroyBody(person1.body);
-                person1 = new DynamicBodyPlayer(iv.worldTwoPlayers, SCR_WIDTH / 4, 0.65f, 0.5f, DynamicBodyPlayer.LEFT);
-                iv.worldTwoPlayers.destroyBody(person2.body);
-                person2 = new DynamicBodyPlayer(iv.worldTwoPlayers, SCR_WIDTH / 4 * 3, 0.65f, 0.5f, DynamicBodyPlayer.RIGHT);
+                setPersonsPositionToStart();
                 //ball.body.setTransform(SCR_WIDTH/2+ (MathUtils.randomBoolean()?0.7f:-0.7f), MyGdx.SCR_HEIGHT, 0);
             }
         } else {
@@ -166,7 +164,7 @@ public class ScreenGame implements Screen {
         }
         // если играем с компьютером
         if (iv.gameMode == MODE_VS_COMPUTER && !isWin && !isGoal) {
-            person2.hitBall(ball);
+            person2.useAi(ball);
         }
 
         // отрисовка
@@ -205,12 +203,22 @@ public class ScreenGame implements Screen {
         iv.batch.end();
     }
 
+    void setPersonsPositionToStart() {
+        person1.body.setLinearVelocity(0, 0);
+        person1.body.setAngularVelocity(0);
+        person1.body.setTransform(SCR_WIDTH/4-person1.r, 0.65f, 0);
+        person1.faza = 0;
+        person2.body.setLinearVelocity(0, 0);
+        person2.body.setAngularVelocity(0);
+        person2.body.setTransform(SCR_WIDTH/4*3+person1.r, 0.65f, 0);
+        person2.faza = 0;
+    }
 
     void touchScreen(Vector3 touch) {
         if (touch.x < SCR_WIDTH / 2) {
             person1.touch(touch.x, touch.y);
         } else {
-            person2.touch(touch.x, touch.y);
+            if(iv.gameMode==MODE_VS_PLAYER) person2.touch(touch.x, touch.y);
         }
     }
 
@@ -256,12 +264,7 @@ public class ScreenGame implements Screen {
         ball.body.setLinearVelocity(0, 0);
         ball.body.setAngularVelocity(0);
         ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballHeight, 0);
-        person1.body.setLinearVelocity(0, 0);
-        person1.body.setAngularVelocity(0);
-        person1.body.setTransform(SCR_WIDTH / 4, 0.65f, 0);
-        person2.body.setLinearVelocity(0, 0);
-        person2.body.setAngularVelocity(0);
-        person2.body.setTransform(SCR_WIDTH / 4 * 3, 0.65f, 0);
+        setPersonsPositionToStart();
     }
 
     private void loadPersons(int type) {

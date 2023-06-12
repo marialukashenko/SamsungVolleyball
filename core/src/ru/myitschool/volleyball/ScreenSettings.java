@@ -6,6 +6,7 @@ import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
@@ -25,7 +26,8 @@ public class ScreenSettings implements Screen {
         btnSound = new TextButton(iv.fontLarge, "SOUND ON", 430);
         btnBackgrounds = new TextButton(iv.fontLarge, "BACKGROUNDS", 360);
         btnPlayers = new TextButton(iv.fontLarge, "PLAYERS", 290);
-        btnModeGame = new TextButton(iv.fontLarge, "MODE: PLAYER vs PLAYER", 220);
+        btnModeGame = new TextButton(iv.fontLarge, "PLAYER vs PLAYER", 220);
+        loadSettings();
     }
 
     @Override
@@ -57,7 +59,7 @@ public class ScreenSettings implements Screen {
             }
             if (btnModeGame.hit(iv.touch.x, iv.touch.y)) {
                 iv.gameMode =  iv.gameMode==MODE_VS_PLAYER ? MODE_VS_COMPUTER : MODE_VS_PLAYER;
-                btnModeGame.setText(iv.gameMode==MODE_VS_PLAYER ? "MODE: PLAYER vs PLAYER" : "MODE: PLAYER vs COMPUTER");
+                btnModeGame.setText(iv.gameMode==MODE_VS_PLAYER ? "PLAYER vs PLAYER" : "PLAYER vs COMPUTER");
             }
         }
 
@@ -95,7 +97,32 @@ public class ScreenSettings implements Screen {
 
     @Override
     public void hide() {
+        saveSettings();
         Gdx.input.setInputProcessor(null);
+    }
+
+    void saveSettings() {
+        Preferences pref = Gdx.app.getPreferences("settings iVolleyBall");
+        pref.putBoolean("sound", iv.soundOn);
+        pref.putBoolean("music", iv.musicOn);
+        pref.putInteger("style", iv.gameStyle);
+        pref.putInteger("mode", iv.gameMode);
+        pref.flush();
+    }
+
+    void loadSettings() {
+        Preferences pref = Gdx.app.getPreferences("settings iVolleyBall");
+        if(pref.contains("sound")) iv.soundOn = pref.getBoolean("sound", false);
+        if(pref.contains("music")) iv.musicOn = pref.getBoolean("music", false);
+        if(pref.contains("style")) iv.gameStyle = pref.getInteger("style", 0);
+        if(pref.contains("mode")) iv.gameMode = pref.getInteger("mode", 0);
+        updateButtons();
+    }
+
+    void updateButtons(){
+        btnSound.setText(iv.soundOn ? "SOUND ON" : "SOUND OFF");
+        btnMusic.setText(iv.musicOn ? "MUSIC ON" : "MUSIC OFF");
+        btnModeGame.setText(iv.gameMode==MODE_VS_PLAYER ? "PLAYER vs PLAYER" : "PLAYER vs COMPUTER");
     }
 
     @Override
