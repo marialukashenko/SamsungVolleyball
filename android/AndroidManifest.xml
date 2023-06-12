@@ -11,11 +11,11 @@
         android:icon="@drawable/ball2"
         android:isGame="true"
         android:appCategory="game"
-        android:label="@string/app_name"
+        android:label="Incredible Volleyball"
         tools:ignore="UnusedAttribute">
         <activity
             android:name="ru.myitschool.volleyball.AndroidLauncher"
-            android:label="@string/app_name" 
+            android:label="Incredible Volleyball"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|navigation|orientation|screenSize|screenLayout"
             android:exported="true">

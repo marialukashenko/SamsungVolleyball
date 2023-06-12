@@ -75,10 +75,10 @@ public class VolleyBall extends Game {
     }
 
     private void generateFont() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("beautiful_letters.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("letters.otf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = new Color(1, 1, 0.6f, 1);
-        parameter.size = 45;
+        parameter.size = 35;
         parameter.borderColor = Color.BLACK;
         parameter.borderWidth = 2;
         parameter.borderStraight = true;
@@ -90,7 +90,7 @@ public class VolleyBall extends Game {
         parameter.characters = str;
         //parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
         font = generator.generateFont(parameter);
-        parameter.size = 60;
+        parameter.size = 40;
         fontLarge = generator.generateFont(parameter);
         generator.dispose();
     }
