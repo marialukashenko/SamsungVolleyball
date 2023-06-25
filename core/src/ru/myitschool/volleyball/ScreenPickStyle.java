@@ -23,7 +23,7 @@ public class ScreenPickStyle implements Screen {
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
         imgSelector = new Texture("yellowselector.png");
-        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         for (int i = 0; i < NUM_STYLES; i++) {
             imgBtnBackground[i] = new Texture("background" + i + ".jpg");
         }

@@ -56,7 +56,7 @@ public class ScreenGame implements Screen {
         soundGoal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
         soundWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
 
-        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.7f, 0.7f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnRerun = new TextButton(iv.fontLarge, "REPLAY", 20, SCR_HEIGHT * 100 - 30);
 
         // игровое поле и сетки

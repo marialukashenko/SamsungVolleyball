@@ -21,7 +21,7 @@ public class DynamicBodyPlayer {
     private int state;
     private long timeStartJump, timeJump = 200;
     private long timeLastFaza, timeFazaInterval = 50;
-    public int faza, nFaz = 18, fazaStay = 17, fazaJumpLeft = 18, fazaJumpRight = 19;
+    public int faza, nFaz = 17, fazaStay = 17, fazaJumpLeft = 18, fazaJumpRight = 19;
     public boolean isFlip;
     public static final boolean LEFT = true, RIGHT = false;
     private boolean side;
