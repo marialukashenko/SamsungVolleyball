@@ -16,8 +16,7 @@ import com.badlogic.gdx.physics.box2d.World;
 public class VolleyBall extends Game {
     public static final float SCR_WIDTH = 12.8f;
     public static final float SCR_HEIGHT = 7.2f;
-    //public static final float SCR_WIDTH = 16f;
-    //public static final float SCR_HEIGHT = 9f;
+
     public SpriteBatch batch;
     public OrthographicCamera camera;
     public OrthographicCamera camera2;

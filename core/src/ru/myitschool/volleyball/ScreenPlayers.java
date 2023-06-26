@@ -8,23 +8,30 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Align;
 
 public class ScreenPlayers implements Screen {
     private VolleyBall iv;
     private Texture imgBackGround;
     private ImageButton btnBack;
+    private TextButton btnName1, btnName2;
+    private TextButton btnTypePlayer1, btnTypePlayer2;
+
     private Texture imgBack;
     private int count_players = 1;
     private ImageButton[] btnPlayer = new ImageButton[count_players];
     private Texture[] imgBtnPlayer = new Texture[count_players];
-    private ShapeRenderer shapeRenderer = new ShapeRenderer();
-    private int numberPlayers;
+
 
     public ScreenPlayers(VolleyBall volleyBall) {
         iv = volleyBall;
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
+        btnName1 = new TextButton(iv.font, "Noname", 100, 500);
+        btnName2 = new TextButton(iv.font, "Noname", 0, 500);
+        btnTypePlayer1 = new TextButton(iv.font, "Human", 100, 400);
+        btnTypePlayer2 = new TextButton(iv.font, "Human", 0, 400);
         for (int i = 0; i < count_players; i++) {
             imgBtnPlayer[i] = new Texture("person" + i + ".png");
         }
@@ -48,13 +55,6 @@ public class ScreenPlayers implements Screen {
             if (btnBack.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenSettings());
             }
-
-            for (int i = 0; i < count_players; i++) {
-                if (btnPlayer[i].hit(iv.touch.x, iv.touch.y)) {
-                    numberPlayers = i;
-                    break;
-                }
-            }
         }
 
         // отрисовка всей графики
@@ -64,20 +64,16 @@ public class ScreenPlayers implements Screen {
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
-        for (int i = 0; i < count_players; i++) {
-            if (i == numberPlayers) {
-                shapeRenderer.setProjectionMatrix(iv.camera.combined);
-                shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-                shapeRenderer.setColor(Color.YELLOW);
-                shapeRenderer.rect(btnPlayer[numberPlayers].x - 0.1f, btnPlayer[numberPlayers].y - 0.1f, 2.7f, 2.7f);
-                shapeRenderer.end();
-            }
-        }
-        iv.batch.setProjectionMatrix(iv.camera.combined);
+
+        iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
-        for (int i = 0; i < count_players; i++) {
-            iv.batch.draw(btnPlayer[i].img, btnPlayer[i].x, btnPlayer[i].y, btnPlayer[i].width, btnPlayer[i].height);
-        }
+        iv.font.draw(iv.batch, "Player1", 100, 600, SCR_WIDTH*100-100, Align.left, false);
+        iv.font.draw(iv.batch, "Player2", 0, 600, SCR_WIDTH*100-100, Align.right, false);
+        btnName1.font.draw(iv.batch, btnName1.text, btnName1.x, btnName1.y, SCR_WIDTH*100-100, Align.left, false);
+        btnName2.font.draw(iv.batch, btnName2.text, btnName2.x, btnName2.y, SCR_WIDTH*100-100, Align.right, false);
+        iv.font.draw(iv.batch, "vs", 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
+        btnTypePlayer1.font.draw(iv.batch, btnTypePlayer1.text, btnTypePlayer1.x, btnTypePlayer1.y, SCR_WIDTH*100-100, Align.left, false);
+        btnTypePlayer2.font.draw(iv.batch, btnTypePlayer2.text, btnTypePlayer2.x, btnTypePlayer2.y, SCR_WIDTH*100-100, Align.right, false);
         iv.batch.end();
     }
 

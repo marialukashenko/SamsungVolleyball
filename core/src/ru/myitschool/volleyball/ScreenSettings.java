@@ -25,8 +25,8 @@ public class ScreenSettings implements Screen {
         btnMusic = new TextButton(iv.fontLarge, "MUSIC ON", 500);
         btnSound = new TextButton(iv.fontLarge, "SOUND ON", 430);
         btnBackgrounds = new TextButton(iv.fontLarge, "BACKGROUNDS", 360);
-        //btnPlayers = new TextButton(iv.fontLarge, "PLAYERS", 290);
-        btnModeGame = new TextButton(iv.fontLarge, "PLAYER vs PLAYER", 290);
+        btnPlayers = new TextButton(iv.fontLarge, "PLAYERS", 290);
+        btnModeGame = new TextButton(iv.fontLarge, "PLAYER vs PLAYER", 220);
         loadSettings();
     }
 
@@ -54,6 +54,9 @@ public class ScreenSettings implements Screen {
             if (btnBackgrounds.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenPickStyle());
             }
+            if (btnPlayers.hit(iv.touch.x, iv.touch.y)) {
+                iv.setScreen(iv.getScreenPlayers());
+            }
             if (btnModeGame.hit(iv.touch.x, iv.touch.y)) {
                 iv.gameMode =  iv.gameMode==MODE_VS_PLAYER ? MODE_VS_COMPUTER : MODE_VS_PLAYER;
                 btnModeGame.setText(iv.gameMode==MODE_VS_PLAYER ? "PLAYER vs PLAYER" : "PLAYER vs COMPUTER");
@@ -72,6 +75,7 @@ public class ScreenSettings implements Screen {
         btnMusic.font.draw(iv.batch, btnMusic.text, btnMusic.x, btnMusic.y);
         btnSound.font.draw(iv.batch, btnSound.text, btnSound.x, btnSound.y);
         btnBackgrounds.font.draw(iv.batch, btnBackgrounds.text, btnBackgrounds.x, btnBackgrounds.y);
+        btnPlayers.font.draw(iv.batch, btnPlayers.text, btnPlayers.x, btnPlayers.y);
         btnModeGame.font.draw(iv.batch, btnModeGame.text, btnModeGame.x, btnModeGame.y);
         iv.batch.end();
     }
