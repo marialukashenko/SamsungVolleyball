@@ -20,7 +20,7 @@ public class ScreenAbout implements Screen {
 
     public ScreenAbout(VolleyBall volleyBall) {
         iv = volleyBall;
-        imgBackGround = new Texture("background.jpg");
+        imgBackGround = new Texture("screenbgintro.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
     }

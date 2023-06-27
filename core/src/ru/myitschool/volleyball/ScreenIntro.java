@@ -14,7 +14,7 @@ public class ScreenIntro implements Screen {
 
     public ScreenIntro(VolleyBall volleyBall) {
         iv = volleyBall;
-        imgBackGround = new Texture("background.jpg");
+        imgBackGround = new Texture("screenbgintro.jpg");
         btnPlay = new TextButton(iv.fontLarge, "PLAY", 550);
         btnSettings = new TextButton(iv.fontLarge, "SETTINGS", 450);
         btnAbout = new TextButton(iv.fontLarge, "ABOUT", 350);

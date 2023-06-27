@@ -25,7 +25,7 @@ public class ScreenPlayers implements Screen {
 
     public ScreenPlayers(VolleyBall volleyBall) {
         iv = volleyBall;
-        imgBackGround = new Texture("background.jpg");
+        imgBackGround = new Texture("screenbgintro.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnName1 = new TextButton(iv.font, iv.playerName1, 100, 500);

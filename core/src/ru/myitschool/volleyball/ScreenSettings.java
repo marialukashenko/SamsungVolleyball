@@ -19,7 +19,7 @@ public class ScreenSettings implements Screen {
 
     public ScreenSettings(VolleyBall volleyBall) {
         iv = volleyBall;
-        imgBackGround = new Texture("background.jpg");
+        imgBackGround = new Texture("screenbgsettings.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnMusic = new TextButton(iv.fontLarge, "MUSIC ON", 500);

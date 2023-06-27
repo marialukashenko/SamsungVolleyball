@@ -20,7 +20,7 @@ public class ScreenPickStyle implements Screen {
 
     public ScreenPickStyle(VolleyBall volleyBall) {
         iv = volleyBall;
-        imgBackGround = new Texture("background.jpg");
+        imgBackGround = new Texture("screenbgbackgrounds.jpg");
         imgBack = new Texture("back.png");
         imgSelector = new Texture("yellowselector.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
