@@ -45,6 +45,8 @@ public class ScreenGame implements Screen {
     private float floor = 0.3f / 2;
     private long timeShowGame, timeStartGameInterval = 300;
     private long timeSoundPlay, timeSoundInterval = 100;
+    private String winner="";
+    private boolean isWinRecorded;
 
     public ScreenGame(VolleyBall volleyBall) {
         iv = volleyBall;
@@ -147,6 +149,17 @@ public class ScreenGame implements Screen {
             person2.useAi(ball);
         }
 
+        if(isWin && !isWinRecorded) {
+            if(countGoals1 > countGoals2) {
+                winner = "Выиграл " + iv.player1.name;
+                iv.player1.wins++;
+            } else {
+                winner = "Выиграл " + iv.player2.name;
+                iv.player2.wins++;
+            }
+            isWinRecorded = true;
+        }
+
         // отрисовка
         iv.camera.update();
         iv.batch.setProjectionMatrix(iv.camera.combined);
@@ -165,14 +178,13 @@ public class ScreenGame implements Screen {
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
-        iv.font.draw(iv.batch, ":", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100, Align.center, true);
-        iv.font.draw(iv.batch, countGoals1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
-        iv.font.draw(iv.batch, countGoals2 + "", SCR_WIDTH * 100 / 2 + 50, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.left, true);
+        iv.fontNormal.draw(iv.batch, ":", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100, Align.center, true);
+        iv.fontNormal.draw(iv.batch, countGoals1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
+        iv.fontNormal.draw(iv.batch, countGoals2 + "", SCR_WIDTH * 100 / 2 + 50, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.left, true);
         if (isGoal && !isWin) {
             iv.fontLarge.draw(iv.batch, "ГОЛ!", 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
         }
         if (isWin) {
-            String winner = countGoals1 > countGoals2 ? "Выиграл левый чувак!" : "Выиграл правый чувак!";
             iv.fontLarge.draw(iv.batch, winner, 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
             btnRerun.font.draw(iv.batch, btnRerun.text, btnRerun.x, btnRerun.y);
         }
@@ -215,6 +227,7 @@ public class ScreenGame implements Screen {
 
     @Override
     public void hide() {
+        saveRecords();
         Gdx.input.setInputProcessor(null);
     }
 
@@ -355,6 +368,7 @@ public class ScreenGame implements Screen {
 
     void create() {
         isWin = false;
+        isWinRecorded = false;
         startGame = true;
         isGoal = false;
         countGoals2 = 0;
@@ -399,5 +413,13 @@ public class ScreenGame implements Screen {
         ball.body.setAngularVelocity(0);
         ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, 0);
         setPersonsPositionToStart();
+    }
+
+    private void saveRecords() {
+        iv.player1.insertRecord(iv.players);
+        Player.sortTableOfRecords(iv.players);
+        iv.player2.insertRecord(iv.players);
+        Player.sortTableOfRecords(iv.players);
+        Player.saveTableOfRecords(iv.players);
     }
 }

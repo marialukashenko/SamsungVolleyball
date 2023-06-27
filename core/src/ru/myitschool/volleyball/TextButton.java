@@ -39,7 +39,7 @@ public class TextButton {
         this.text = text;
         GlyphLayout gl = new GlyphLayout(font, text);
         width = gl.width;
-        this.x = SCR_WIDTH * 100 / 2f - width / 2;
+        //this.x = SCR_WIDTH * 100 / 2f - width / 2;
     }
 
     public void setXY(float x, float y) {

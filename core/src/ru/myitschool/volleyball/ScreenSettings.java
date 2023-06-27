@@ -14,7 +14,11 @@ public class ScreenSettings implements Screen {
     private VolleyBall iv;
     private Texture imgBackGround;
     private Texture imgBack;
-    private TextButton btnMusic, btnSound, btnBackgrounds, btnPlayers, btnModeGame;
+    private TextButton btnMusic;
+    private TextButton btnSound;
+    private TextButton btnBackgrounds;
+    private TextButton btnPlayers;
+    private TextButton btnModeGame;
     private ImageButton btnBack;
 
     public ScreenSettings(VolleyBall volleyBall) {
@@ -58,9 +62,10 @@ public class ScreenSettings implements Screen {
                 iv.setScreen(iv.getScreenPlayers());
             }
             if (btnModeGame.hit(iv.touch.x, iv.touch.y)) {
-                iv.gameMode =  iv.gameMode==MODE_VS_PLAYER ? MODE_VS_COMPUTER : MODE_VS_PLAYER;
+                iv.gameMode = iv.gameMode==MODE_VS_PLAYER ? MODE_VS_COMPUTER : MODE_VS_PLAYER;
                 btnModeGame.setText(iv.gameMode==MODE_VS_PLAYER ? "PLAYER vs PLAYER" : "PLAYER vs COMPUTER");
             }
+
         }
 
         //отрисовка
@@ -107,6 +112,8 @@ public class ScreenSettings implements Screen {
         pref.putBoolean("music", iv.musicOn);
         pref.putInteger("style", iv.gameStyle);
         pref.putInteger("mode", iv.gameMode);
+        pref.putString("name1", iv.player1.name);
+        pref.putString("name2", iv.player2.name);
         pref.flush();
     }
 
@@ -116,6 +123,8 @@ public class ScreenSettings implements Screen {
         if(pref.contains("music")) iv.musicOn = pref.getBoolean("music", false);
         if(pref.contains("style")) iv.gameStyle = pref.getInteger("style", 0);
         if(pref.contains("mode")) iv.gameMode = pref.getInteger("mode", 0);
+        if(pref.contains("name1")) iv.player1.name = pref.getString("name1", "Noname");
+        if(pref.contains("name2")) iv.player2.name = pref.getString("name2", "Noname");
         updateButtons();
     }
 

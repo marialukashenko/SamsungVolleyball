@@ -10,15 +10,20 @@ import com.badlogic.gdx.graphics.Texture;
 public class ScreenIntro implements Screen {
     private VolleyBall iv;
     private Texture imgBackGround;
-    private TextButton btnPlay, btnSettings, btnAbout, btnExit;
+    private TextButton btnPlay;
+    private TextButton btnSettings;
+    private TextButton btnRecords;
+    private TextButton btnAbout;
+    private TextButton btnExit;
 
     public ScreenIntro(VolleyBall volleyBall) {
         iv = volleyBall;
         imgBackGround = new Texture("screenbgintro.jpg");
         btnPlay = new TextButton(iv.fontLarge, "PLAY", 550);
         btnSettings = new TextButton(iv.fontLarge, "SETTINGS", 450);
-        btnAbout = new TextButton(iv.fontLarge, "ABOUT", 350);
-        btnExit = new TextButton(iv.fontLarge, "EXIT", 250);
+        btnRecords = new TextButton(iv.fontLarge, "BEST PLAYERS", 350);
+        btnAbout = new TextButton(iv.fontLarge, "ABOUT", 250);
+        btnExit = new TextButton(iv.fontLarge, "EXIT", 150);
     }
 
     @Override
@@ -39,6 +44,9 @@ public class ScreenIntro implements Screen {
             if (btnSettings.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenSettings());
             }
+            if (btnRecords.hit(iv.touch.x, iv.touch.y)) {
+                iv.setScreen(iv.getScreenRecords());
+            }
             if (btnAbout.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenAbout());
             }
@@ -57,6 +65,7 @@ public class ScreenIntro implements Screen {
         iv.batch.begin();
         btnPlay.font.draw(iv.batch, btnPlay.text, btnPlay.x, btnPlay.y);
         btnSettings.font.draw(iv.batch, btnSettings.text, btnSettings.x, btnSettings.y);
+        btnRecords.font.draw(iv.batch, btnRecords.text, btnRecords.x, btnRecords.y);
         btnAbout.font.draw(iv.batch, btnAbout.text, btnAbout.x, btnAbout.y);
         btnExit.font.draw(iv.batch, btnExit.text, btnExit.x, btnExit.y);
         iv.batch.end();

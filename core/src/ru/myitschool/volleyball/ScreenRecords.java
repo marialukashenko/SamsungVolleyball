@@ -7,27 +7,23 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-public class ScreenAbout implements Screen {
+public class ScreenRecords implements Screen {
     private final VolleyBall iv;
     private final Texture imgBackGround;
     private final ImageButton btnBack;
     private Texture imgBack;
-    private String textAbout = "Эта супер-игра создана\n" +
-            "в IT-школе Samsung\n" +
-            "на java под Android.\n\n" +
-            "Цель игры - победить\n" +
-            "в волейбол.";
+    private String textAbout = "";
 
-    public ScreenAbout(VolleyBall volleyBall) {
+    public ScreenRecords(VolleyBall volleyBall) {
         iv = volleyBall;
-        imgBackGround = new Texture("screenbgabout.jpg");
+        imgBackGround = new Texture("screenbgrecords.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
     }
 
     @Override
     public void show() {
-
+        Player.loadTableOfRecords(iv.players);
     }
 
     @Override
@@ -49,7 +45,8 @@ public class ScreenAbout implements Screen {
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH * 100, SCR_HEIGHT * 100);
-        iv.fontSmall.draw(iv.batch, textAbout, 220, 500);
+        iv.fontNormal.draw(iv.batch, "Best Players", 200, 600);
+        iv.fontSmall.draw(iv.batch, Player.tableOfRecordsToString(iv.players, iv.fontSmall), 200, 500);
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();

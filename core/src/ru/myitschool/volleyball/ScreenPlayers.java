@@ -11,28 +11,28 @@ import com.badlogic.gdx.utils.Align;
 public class ScreenPlayers implements Screen {
     private final VolleyBall iv;
     private final Texture imgBackGround;
+    private final Texture imgBack;
     private final ImageButton btnBack;
     private final TextButton btnName1;
     private final TextButton btnName2;
     private final TextButton btnTypePlayer1;
     private final TextButton btnTypePlayer2;
 
-    private final Texture imgBack;
     private final InputKeyboard inputKeyboard;
     private boolean isEnterName1;
     private boolean isEnterName2;
 
-
     public ScreenPlayers(VolleyBall volleyBall) {
         iv = volleyBall;
-        imgBackGround = new Texture("screenbgintro.jpg");
+        imgBackGround = new Texture("screenbgplayers.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
-        btnName1 = new TextButton(iv.font, iv.playerName1, 100, 500);
-        btnName2 = new TextButton(iv.font, iv.playerName2, 0, 500);
-        btnTypePlayer1 = new TextButton(iv.font, "Human", 100, 400);
-        btnTypePlayer2 = new TextButton(iv.font, "Human", 0, 400);
-        inputKeyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 13);
+        btnName1 = new TextButton(iv.fontNormal, iv.player1.name, 100, 500);
+        btnName2 = new TextButton(iv.fontNormal, iv.player2.name, 0, 500);
+        btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, 500);
+        btnTypePlayer1 = new TextButton(iv.fontNormal, "Human", 100, 400);
+        btnTypePlayer2 = new TextButton(iv.fontNormal, "Human", 0, 400);
+        inputKeyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 8);
     }
 
     @Override
@@ -54,15 +54,22 @@ public class ScreenPlayers implements Screen {
                 isEnterName1 = true;
             }
             if(isEnterName1 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
-                btnName1.text = iv.playerName1 = inputKeyboard.getText();
+                iv.player1.name = inputKeyboard.getText();
+                btnName1.setText(iv.player1.name);
                 isEnterName1 = false;
+                iv.player1.insertRecord(iv.players);
+                Player.sortTableOfRecords(iv.players);
             }
             if (btnName2.hit(iv.touch.x, iv.touch.y)) {
                 isEnterName2 = true;
             }
             if(isEnterName2 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
-                btnName2.text = iv.playerName2 = inputKeyboard.getText();
+                iv.player2.name = inputKeyboard.getText();
+                btnName2.setText(iv.player2.name);
+                btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, 500);
                 isEnterName2 = false;
+                iv.player2.insertRecord(iv.players);
+                Player.sortTableOfRecords(iv.players);
             }
         }
 
@@ -76,11 +83,11 @@ public class ScreenPlayers implements Screen {
 
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
-        iv.font.draw(iv.batch, "Player1", 100, 600, SCR_WIDTH*100-100, Align.left, false);
-        iv.font.draw(iv.batch, "Player2", 0, 600, SCR_WIDTH*100-100, Align.right, false);
-        btnName1.font.draw(iv.batch, btnName1.text, btnName1.x, btnName1.y, SCR_WIDTH*100-100, Align.left, false);
-        btnName2.font.draw(iv.batch, btnName2.text, btnName2.x, btnName2.y, SCR_WIDTH*100-100, Align.right, false);
-        iv.font.draw(iv.batch, "vs", 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
+        iv.fontNormal.draw(iv.batch, "Player1", 100, 600, SCR_WIDTH*100-100, Align.left, false);
+        iv.fontNormal.draw(iv.batch, "Player2", 0, 600, SCR_WIDTH*100-100, Align.right, false);
+        btnName1.font.draw(iv.batch, btnName1.text, btnName1.x, btnName1.y);
+        btnName2.font.draw(iv.batch, btnName2.text, btnName2.x, btnName2.y);
+        iv.fontNormal.draw(iv.batch, "vs", 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
         btnTypePlayer1.font.draw(iv.batch, btnTypePlayer1.text, btnTypePlayer1.x, btnTypePlayer1.y, SCR_WIDTH*100-100, Align.left, false);
         btnTypePlayer2.font.draw(iv.batch, btnTypePlayer2.text, btnTypePlayer2.x, btnTypePlayer2.y, SCR_WIDTH*100-100, Align.right, false);
         if(isEnterName1 || isEnterName2){

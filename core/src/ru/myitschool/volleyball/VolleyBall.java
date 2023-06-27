@@ -23,7 +23,8 @@ public class VolleyBall extends Game {
     public World world;
     public Box2DDebugRenderer debugRenderer;
     public Vector3 touch;
-    public BitmapFont font;
+    public BitmapFont fontNormal;
+    public BitmapFont fontSmall;
     public BitmapFont fontLarge;
 
     private ScreenIntro screenIntro;
@@ -32,6 +33,7 @@ public class VolleyBall extends Game {
     private ScreenAbout screenAbout;
     private ScreenPickStyle screenPickStyle;
     private ScreenPlayers screenPlayers;
+    private ScreenRecords screenRecords;
 
     public static final int STYLE_BEACH = 0;
     public static final int STYLE_CASTLE = 1;
@@ -49,8 +51,9 @@ public class VolleyBall extends Game {
     public boolean soundOn = true;
     public boolean musicOn = true;
 
-    public String playerName1 = "Noname";
-    public String playerName2 = "Noname";
+    public Player player1;
+    public Player player2;
+    public Player[] players = new Player[1000];
 
     @Override
     public void create() {
@@ -68,10 +71,20 @@ public class VolleyBall extends Game {
         debugRenderer = new Box2DDebugRenderer();
 
         generateFont();
+        player1 = new Player("Noname1");
+        player2 = new Player("Noname2");
+        for (int i = 0; i < players.length; i++) {
+            players[i] = new Player("No`name");
+        }
+        Player.loadTableOfRecords(players);
+        player1.getRecord(players);
+        player2.getRecord(players);
+
         screenIntro = new ScreenIntro(this);
         screenSettings = new ScreenSettings(this);
         screenPickStyle = new ScreenPickStyle(this);
         screenPlayers = new ScreenPlayers(this);
+        screenRecords = new ScreenRecords(this);
         screenAbout = new ScreenAbout(this);
         screenGame = new ScreenGame(this);
         setScreen(screenIntro);
@@ -80,7 +93,7 @@ public class VolleyBall extends Game {
     @Override
     public void dispose() {
         batch.dispose();
-        font.dispose();
+        fontNormal.dispose();
         fontLarge.dispose();
     }
 
@@ -94,14 +107,23 @@ public class VolleyBall extends Game {
         parameter.borderStraight = true;
         parameter.shadowColor = new Color(0.1f, 0.1f, 0.1f, 0.8f);
         parameter.shadowOffsetX = parameter.shadowOffsetY = 3;
-        String str = "";
-        for (char i = 0x20; i < 0x7B; i++) str += i;
-        for (char i = 0x401; i < 0x452; i++) str += i;
-        parameter.characters = str;
-        //parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
-        font = generator.generateFont(parameter);
+        parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
+        fontNormal = generator.generateFont(parameter);
         parameter.size = 40;
         fontLarge = generator.generateFont(parameter);
+        generator.dispose();
+
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("elysium.otf"));
+        parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter.color = new Color(1, 1, 0.6f, 1);
+        parameter.size = 40;
+        parameter.borderColor = Color.BLACK;
+        parameter.borderWidth = 2;
+        parameter.borderStraight = true;
+        parameter.shadowColor = new Color(0.1f, 0.1f, 0.1f, 0.8f);
+        parameter.shadowOffsetX = parameter.shadowOffsetY = 3;
+        parameter.characters = "абвгдеёжзийклмнопрстуфхцчшщъыьэюяabcdefghijklmnopqrstuvwxyzАБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789][_!$%#@|\\/?-+=()*&.;:,{}\"´`'<>";
+        fontSmall = generator.generateFont(parameter);
         generator.dispose();
     }
 
@@ -134,6 +156,10 @@ public class VolleyBall extends Game {
 
     public ScreenPlayers getScreenPlayers() {
         return screenPlayers;
+    }
+
+    public ScreenRecords getScreenRecords() {
+        return screenRecords;
     }
 }
 
