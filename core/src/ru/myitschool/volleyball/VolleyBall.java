@@ -49,6 +49,9 @@ public class VolleyBall extends Game {
     public boolean soundOn = true;
     public boolean musicOn = true;
 
+    public String playerName1 = "Noname";
+    public String playerName2 = "Noname";
+
     @Override
     public void create() {
         // создание системных объектов

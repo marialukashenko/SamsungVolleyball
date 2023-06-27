@@ -11,16 +11,18 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 
 public class ScreenPlayers implements Screen {
-    private VolleyBall iv;
-    private Texture imgBackGround;
-    private ImageButton btnBack;
-    private TextButton btnName1, btnName2;
-    private TextButton btnTypePlayer1, btnTypePlayer2;
+    private final VolleyBall iv;
+    private final Texture imgBackGround;
+    private final ImageButton btnBack;
+    private final TextButton btnName1;
+    private final TextButton btnName2;
+    private final TextButton btnTypePlayer1;
+    private final TextButton btnTypePlayer2;
 
-    private Texture imgBack;
-    private int count_players = 1;
-    private ImageButton[] btnPlayer = new ImageButton[count_players];
-    private Texture[] imgBtnPlayer = new Texture[count_players];
+    private final Texture imgBack;
+    private final InputKeyboard inputKeyboard;
+    private boolean isEnerName1;
+    private boolean isEnerName2;
 
 
     public ScreenPlayers(VolleyBall volleyBall) {
@@ -28,16 +30,11 @@ public class ScreenPlayers implements Screen {
         imgBackGround = new Texture("background.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
-        btnName1 = new TextButton(iv.font, "Noname", 100, 500);
-        btnName2 = new TextButton(iv.font, "Noname", 0, 500);
+        btnName1 = new TextButton(iv.font, iv.playerName1, 100, 500);
+        btnName2 = new TextButton(iv.font, iv.playerName2, 0, 500);
         btnTypePlayer1 = new TextButton(iv.font, "Human", 100, 400);
         btnTypePlayer2 = new TextButton(iv.font, "Human", 0, 400);
-        for (int i = 0; i < count_players; i++) {
-            imgBtnPlayer[i] = new Texture("person" + i + ".png");
-        }
-        for (int i = 0; i < count_players; i++) {
-            btnPlayer[i] = new ImageButton(imgBtnPlayer[i], 1 + 3.5f * (i % 3), SCR_HEIGHT - 3 * (i / 3 + 1), 2.5f, 2.5f);
-        }
+        inputKeyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 13);
     }
 
     @Override
@@ -54,6 +51,20 @@ public class ScreenPlayers implements Screen {
 
             if (btnBack.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenSettings());
+            }
+            if (btnName1.hit(iv.touch.x, iv.touch.y)) {
+                isEnerName1 = true;
+            }
+            if(isEnerName1 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
+                btnName1.text = iv.playerName1 = inputKeyboard.getText();
+                isEnerName1 = false;
+            }
+            if (btnName2.hit(iv.touch.x, iv.touch.y)) {
+                isEnerName2 = true;
+            }
+            if(isEnerName2 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
+                btnName2.text = iv.playerName2 = inputKeyboard.getText();
+                isEnerName2 = false;
             }
         }
 
@@ -74,6 +85,9 @@ public class ScreenPlayers implements Screen {
         iv.font.draw(iv.batch, "vs", 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
         btnTypePlayer1.font.draw(iv.batch, btnTypePlayer1.text, btnTypePlayer1.x, btnTypePlayer1.y, SCR_WIDTH*100-100, Align.left, false);
         btnTypePlayer2.font.draw(iv.batch, btnTypePlayer2.text, btnTypePlayer2.x, btnTypePlayer2.y, SCR_WIDTH*100-100, Align.right, false);
+        if(isEnerName1 || isEnerName2){
+            inputKeyboard.draw(iv.batch);
+        }
         iv.batch.end();
     }
 
@@ -101,5 +115,6 @@ public class ScreenPlayers implements Screen {
     public void dispose() {
         imgBackGround.dispose();
         imgBack.dispose();
+        inputKeyboard.dispose();
     }
 }
