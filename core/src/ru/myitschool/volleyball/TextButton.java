@@ -42,6 +42,11 @@ public class TextButton {
         this.x = SCR_WIDTH * 100 / 2f - width / 2;
     }
 
+    public void setXY(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
     public boolean hit(float tx, float ty) {
         return x / 100f < tx && tx < (x + width) / 100f && (y - height) / 100f < ty && ty < y / 100f;
     }

@@ -54,6 +54,8 @@ public class InputKeyboard {
         imgKeySW = new TextureRegion(imgAtlasKeys, 256*6, 0, 256, 256);
 
         // задаём параметры клавиатуры
+        scrWidth *= 100;
+        scrHeight *= 100;
         width = scrWidth/21f*20; // ширина и высота клавиатуры
         height = scrHeight/5f*3;
         x = (scrWidth-width)/2; // координаты вывода клавиатуры
@@ -206,7 +208,7 @@ public class InputKeyboard {
         }
 
         private String hit(float tx, float ty){
-            if (x<tx && tx<x+width && y<ty && ty<y+height) {
+            if (x/100<tx && tx<(x+width)/100 && y/100<ty && ty<(y+height)/100) {
                 return "" + letter;
             }
             return "";

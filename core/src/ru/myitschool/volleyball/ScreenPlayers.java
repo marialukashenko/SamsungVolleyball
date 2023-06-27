@@ -5,9 +5,7 @@ import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 
 public class ScreenPlayers implements Screen {
@@ -21,8 +19,8 @@ public class ScreenPlayers implements Screen {
 
     private final Texture imgBack;
     private final InputKeyboard inputKeyboard;
-    private boolean isEnerName1;
-    private boolean isEnerName2;
+    private boolean isEnterName1;
+    private boolean isEnterName2;
 
 
     public ScreenPlayers(VolleyBall volleyBall) {
@@ -53,18 +51,18 @@ public class ScreenPlayers implements Screen {
                 iv.setScreen(iv.getScreenSettings());
             }
             if (btnName1.hit(iv.touch.x, iv.touch.y)) {
-                isEnerName1 = true;
+                isEnterName1 = true;
             }
-            if(isEnerName1 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
+            if(isEnterName1 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
                 btnName1.text = iv.playerName1 = inputKeyboard.getText();
-                isEnerName1 = false;
+                isEnterName1 = false;
             }
             if (btnName2.hit(iv.touch.x, iv.touch.y)) {
-                isEnerName2 = true;
+                isEnterName2 = true;
             }
-            if(isEnerName2 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
+            if(isEnterName2 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
                 btnName2.text = iv.playerName2 = inputKeyboard.getText();
-                isEnerName2 = false;
+                isEnterName2 = false;
             }
         }
 
@@ -85,7 +83,7 @@ public class ScreenPlayers implements Screen {
         iv.font.draw(iv.batch, "vs", 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
         btnTypePlayer1.font.draw(iv.batch, btnTypePlayer1.text, btnTypePlayer1.x, btnTypePlayer1.y, SCR_WIDTH*100-100, Align.left, false);
         btnTypePlayer2.font.draw(iv.batch, btnTypePlayer2.text, btnTypePlayer2.x, btnTypePlayer2.y, SCR_WIDTH*100-100, Align.right, false);
-        if(isEnerName1 || isEnerName2){
+        if(isEnterName1 || isEnterName2){
             inputKeyboard.draw(iv.batch);
         }
         iv.batch.end();
