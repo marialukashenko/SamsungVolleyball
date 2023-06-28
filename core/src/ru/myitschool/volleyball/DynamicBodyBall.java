@@ -24,7 +24,6 @@ public class DynamicBodyBall {
         bodyDef.position.set(x, y);
 
         body = world.createBody(bodyDef);
-        System.out.println("фчу"+type);
         if(type == VolleyBall.STYLE_STEAM) { // кирпич
             PolygonShape box = new PolygonShape();
             box.setAsBox(width, height);
@@ -57,7 +56,7 @@ public class DynamicBodyBall {
             fixtureDef.shape = circle;
             fixtureDef.density = 0.4f;
             fixtureDef.friction = 0.4f;
-            fixtureDef.restitution = 0.8f;
+            fixtureDef.restitution = 0.7f;
             Fixture fixture = body.createFixture(fixtureDef);
             circle.dispose();
         }

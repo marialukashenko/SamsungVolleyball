@@ -59,8 +59,8 @@ public class DynamicBodyPlayer {
         if (ty > getY() + r * 2) {
             state = JUMP;
             float a = MathUtils.atan2((tx - getX()), (ty - getY()));
-            float vx = 40 * MathUtils.sin(a);
-            float vy = 40 * MathUtils.cos(a);
+            float vx = 30 * MathUtils.sin(a);
+            float vy = 30 * MathUtils.cos(a);
             vy = vy < 0 ? -1 * vy : vy;
             body.applyLinearImpulse(new Vector2(vx, vy), body.getPosition(), true);
             timeStartJump = TimeUtils.millis();
@@ -68,12 +68,12 @@ public class DynamicBodyPlayer {
         }
 
         if (tx > getX()) {
-            float vx = (tx - getX()) * 8;
-            if (vx > 10) vx = 10;
+            float vx = (tx - getX()) * 6;
+            if (vx > 8) vx = 8;
             body.setLinearVelocity(vx, 0);
         } else {
-            float vx = (tx - getX()) * 8;
-            if (vx < -10) vx = -10;
+            float vx = (tx - getX()) * 6;
+            if (vx < -8) vx = -8;
             body.setLinearVelocity(vx, 0);
         }
     }
@@ -93,6 +93,7 @@ public class DynamicBodyPlayer {
         if(near(getX(), targetX, 0.1f)) {
             body.setLinearVelocity(0, body.getLinearVelocity().y);
         }
+
     }
 
     boolean near(float x1, float x2, float dx){

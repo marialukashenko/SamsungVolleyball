@@ -26,16 +26,16 @@ public class ScreenIntro implements Screen {
         iv = volleyBall;
 
         imgBackGround = new Texture("screenbgintro.jpg");
-        btnPlay = new TextButton(iv.fontLarge, iv.text.get("Play")[iv.lang], 550);
-        btnSettings = new TextButton(iv.fontLarge, "SETTINGS", 450);
-        btnRecords = new TextButton(iv.fontLarge, "BEST PLAYERS", 350);
-        btnAbout = new TextButton(iv.fontLarge, "ABOUT", 250);
-        btnExit = new TextButton(iv.fontLarge, "EXIT", 150);
+        btnPlay = new TextButton(iv.fontLarge, iv.text.get("PLAY")[iv.lang], 550);
+        btnSettings = new TextButton(iv.fontLarge, iv.text.get("SETTINGS")[iv.lang], 450);
+        btnRecords = new TextButton(iv.fontLarge, iv.text.get("BEST PLAYERS")[iv.lang], 350);
+        btnAbout = new TextButton(iv.fontLarge, iv.text.get("ABOUT")[iv.lang], 250);
+        btnExit = new TextButton(iv.fontLarge, iv.text.get("EXIT")[iv.lang], 150);
     }
 
     @Override
     public void show() {
-
+        updateButtons();
     }
 
     @Override
@@ -101,6 +101,14 @@ public class ScreenIntro implements Screen {
     @Override
     public void dispose() {
         imgBackGround.dispose();
+    }
+
+    void updateButtons(){
+        btnPlay.setText(iv.text.get("PLAY")[iv.lang], true);
+        btnSettings.setText(iv.text.get("SETTINGS")[iv.lang], true);
+        btnRecords.setText(iv.text.get("BEST PLAYERS")[iv.lang], true);
+        btnAbout.setText(iv.text.get("ABOUT")[iv.lang], true);
+        btnExit.setText(iv.text.get("EXIT")[iv.lang], true);
     }
 }
 
