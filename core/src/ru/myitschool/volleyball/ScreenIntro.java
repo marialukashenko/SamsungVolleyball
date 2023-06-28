@@ -6,6 +6,12 @@ import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class ScreenIntro implements Screen {
     private VolleyBall iv;
@@ -18,8 +24,9 @@ public class ScreenIntro implements Screen {
 
     public ScreenIntro(VolleyBall volleyBall) {
         iv = volleyBall;
+
         imgBackGround = new Texture("screenbgintro.jpg");
-        btnPlay = new TextButton(iv.fontLarge, "PLAY", 550);
+        btnPlay = new TextButton(iv.fontLarge, iv.text.get("Play")[iv.lang], 550);
         btnSettings = new TextButton(iv.fontLarge, "SETTINGS", 450);
         btnRecords = new TextButton(iv.fontLarge, "BEST PLAYERS", 350);
         btnAbout = new TextButton(iv.fontLarge, "ABOUT", 250);

@@ -65,7 +65,7 @@ public class ScreenPlayers implements Screen {
             }
             if(isEnterName1 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
                 iv.player1.name = inputKeyboard.getText();
-                btnName1.setText(iv.player1.name);
+                btnName1.setText(iv.player1.name, false);
                 isEnterName1 = false;
                 iv.player1.insertRecord(iv.players);
                 Player.sortTableOfRecords(iv.players);
@@ -75,7 +75,7 @@ public class ScreenPlayers implements Screen {
             }
             if(isEnterName2 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)){
                 iv.player2.name = inputKeyboard.getText();
-                btnName2.setText(iv.player2.name);
+                btnName2.setText(iv.player2.name, false);
                 btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, 500);
                 isEnterName2 = false;
                 iv.player2.insertRecord(iv.players);
@@ -84,17 +84,17 @@ public class ScreenPlayers implements Screen {
             if(btnTypePlayer1.hit(iv.touch.x, iv.touch.y)) {
                 iv.player1.isAi = !iv.player1.isAi;
                 if(iv.player1.isAi) {
-                    btnTypePlayer1.setText("Computer");
+                    btnTypePlayer1.setText("Computer", false);
                 } else {
-                    btnTypePlayer1.setText("Human");
+                    btnTypePlayer1.setText("Human", false);
                 }
             }
             if(btnTypePlayer2.hit(iv.touch.x, iv.touch.y)) {
                 iv.player2.isAi = !iv.player2.isAi;
                 if(iv.player2.isAi) {
-                    btnTypePlayer2.setText("Computer");
+                    btnTypePlayer2.setText("Computer", false);
                 } else {
-                    btnTypePlayer2.setText("Human");
+                    btnTypePlayer2.setText("Human", false);
                 }
                 btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, 400);
             }

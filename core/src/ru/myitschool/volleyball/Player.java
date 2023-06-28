@@ -26,7 +26,7 @@ public class Player {
         }
     }
 
-    public static String tableOfRecordsToString(Player[] players){
+    /*public static String tableOfRecordsToString(Player[] players){
         String s = "";
         for (int i = 0; i < 10; i++) {
             s += players[i].name+points(players[i].name, 13)+players[i].wins +"\n";
@@ -39,7 +39,7 @@ public class Player {
         String s = "";
         for (int i = 0; i < n; i++) s += ".";
         return s;
-    }
+    }*/
 
     public static float getWidth(String text, BitmapFont font) {
         GlyphLayout gl = new GlyphLayout(font, text);

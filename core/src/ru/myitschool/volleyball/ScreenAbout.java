@@ -12,11 +12,6 @@ public class ScreenAbout implements Screen {
     private final Texture imgBackGround;
     private final ImageButton btnBack;
     private Texture imgBack;
-    private String textAbout = "IncredibleVolleyball - приложение,\n" +
-            "представляющее собой\n" +
-            "классическую игру-волейбол на двоих.\n\n" +
-            "Цель игры - победить\n" +
-            "в волейбол.";
 
     public ScreenAbout(VolleyBall volleyBall) {
         iv = volleyBall;
@@ -49,7 +44,7 @@ public class ScreenAbout implements Screen {
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH * 100, SCR_HEIGHT * 100);
-        iv.fontSmall.draw(iv.batch, textAbout, 220, 500);
+        iv.fontSmall.draw(iv.batch, iv.text.get("AboutText")[iv.lang], 220, 500);
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();

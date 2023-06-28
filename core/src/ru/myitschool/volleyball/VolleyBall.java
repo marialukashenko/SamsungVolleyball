@@ -12,6 +12,11 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class VolleyBall extends Game {
     public static final float SCR_WIDTH = 12.8f;
@@ -51,6 +56,12 @@ public class VolleyBall extends Game {
     public Player player2;
     public Player[] players = new Player[1000];
 
+    public Map<String, String[]> text = new HashMap<>();
+    public int lang;
+    public static final int LANG_EN = 0;
+    public static final int LANG_RU = 1;
+    public static final int LANG_DE = 2;
+
     @Override
     public void create() {
         // создание системных объектов
@@ -65,6 +76,12 @@ public class VolleyBall extends Game {
         touch = new Vector3();
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
+
+        // парсинг всех текстов с учётом локализации
+        JsonValue json = new JsonReader().parse(Gdx.files.internal("text.json"));
+        for (JsonValue j: json.iterator()) {
+            text.put(j.name, json.get(j.name).asStringArray());
+        }
 
         generateFont();
         player1 = new Player("Noname1");
