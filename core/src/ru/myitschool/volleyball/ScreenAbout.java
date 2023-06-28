@@ -12,9 +12,9 @@ public class ScreenAbout implements Screen {
     private final Texture imgBackGround;
     private final ImageButton btnBack;
     private Texture imgBack;
-    private String textAbout = "Эта супер-игра создана\n" +
-            "в IT-школе Samsung\n" +
-            "на java под Android.\n\n" +
+    private String textAbout = "IncredibleVolleyball - приложение,\n" +
+            "представляющее собой\n" +
+            "классическую игру-волейбол на двоих.\n\n" +
             "Цель игры - победить\n" +
             "в волейбол.";
 
