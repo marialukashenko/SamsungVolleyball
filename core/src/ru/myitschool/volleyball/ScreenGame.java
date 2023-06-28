@@ -80,6 +80,7 @@ public class ScreenGame implements Screen {
     public void show() {
         timeShowGame = TimeUtils.millis();
         create();
+        btnRerun.setText(iv.text.get("REPLAY")[iv.lang], false);
     }
 
     @Override

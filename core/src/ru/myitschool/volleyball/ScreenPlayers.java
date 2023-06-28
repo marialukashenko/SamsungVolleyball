@@ -48,6 +48,16 @@ public class ScreenPlayers implements Screen {
     @Override
     public void show() {
         iv.sleep();
+        if(iv.player1.isAi) {
+            btnTypePlayer1.setText(iv.text.get("COMPUTER")[iv.lang], false);
+        } else {
+            btnTypePlayer1.setText(iv.text.get("HUMAN")[iv.lang], false);
+        }
+        if(iv.player2.isAi) {
+            btnTypePlayer2.setText(iv.text.get("COMPUTER")[iv.lang], false);
+        } else {
+            btnTypePlayer2.setText(iv.text.get("HUMAN")[iv.lang], false);
+        }
     }
 
     @Override
