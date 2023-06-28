@@ -44,10 +44,6 @@ public class VolleyBall extends Game {
     public static final int NUM_STYLES = 6;
     public int gameStyle;
 
-    public static final int MODE_VS_PLAYER = 0;
-    public static final int MODE_VS_COMPUTER = 1;
-    public int gameMode;
-
     public boolean soundOn = true;
     public boolean musicOn = true;
 
@@ -113,7 +109,7 @@ public class VolleyBall extends Game {
         fontLarge = generator.generateFont(parameter);
         generator.dispose();
 
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("elysium.otf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("minnie.otf"));
         parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.color = new Color(1, 1, 0.6f, 1);
         parameter.size = 40;

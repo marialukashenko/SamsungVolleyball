@@ -145,7 +145,10 @@ public class ScreenGame implements Screen {
             }
         }
         // если играем с компьютером
-        if (iv.gameMode == MODE_VS_COMPUTER && !isWin && !isGoal) {
+        if (iv.player1.isAi && !isWin && !isGoal) {
+            person1.useAi(ball);
+        }
+        if (iv.player2.isAi && !isWin && !isGoal) {
             person2.useAi(ball);
         }
 
@@ -204,9 +207,13 @@ public class ScreenGame implements Screen {
 
     void touchScreen(Vector3 touch) {
         if (touch.x < SCR_WIDTH / 2) {
-            person1.touch(touch.x, touch.y);
+            if(!iv.player1.isAi) {
+                person1.touch(touch.x, touch.y);
+            }
         } else {
-            if(iv.gameMode==MODE_VS_PLAYER) person2.touch(touch.x, touch.y);
+            if(!iv.player2.isAi) {
+                person2.touch(touch.x, touch.y);
+            }
         }
     }
 

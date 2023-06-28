@@ -13,7 +13,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class InputKeyboard {
     private boolean endOfEdit;
-    private String fontName = "elysium.otf";
+    private String fontName = "minnie.otf";
     private String keysName = "keys.png";
 
     private final float x, y; // координаты

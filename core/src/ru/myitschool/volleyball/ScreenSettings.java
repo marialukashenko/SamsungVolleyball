@@ -1,7 +1,5 @@
 package ru.myitschool.volleyball;
 
-import static ru.myitschool.volleyball.VolleyBall.MODE_VS_COMPUTER;
-import static ru.myitschool.volleyball.VolleyBall.MODE_VS_PLAYER;
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
@@ -18,7 +16,6 @@ public class ScreenSettings implements Screen {
     private TextButton btnSound;
     private TextButton btnBackgrounds;
     private TextButton btnPlayers;
-    private TextButton btnModeGame;
     private ImageButton btnBack;
 
     public ScreenSettings(VolleyBall volleyBall) {
@@ -27,10 +24,9 @@ public class ScreenSettings implements Screen {
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnMusic = new TextButton(iv.fontLarge, "MUSIC ON", 500);
-        btnSound = new TextButton(iv.fontLarge, "SOUND ON", 430);
-        btnBackgrounds = new TextButton(iv.fontLarge, "BACKGROUNDS", 360);
-        btnPlayers = new TextButton(iv.fontLarge, "PLAYERS", 290);
-        btnModeGame = new TextButton(iv.fontLarge, "PLAYER vs PLAYER", 220);
+        btnSound = new TextButton(iv.fontLarge, "SOUND ON", 400);
+        btnBackgrounds = new TextButton(iv.fontLarge, "BACKGROUNDS", 300);
+        btnPlayers = new TextButton(iv.fontLarge, "PLAYERS", 200);
         loadSettings();
     }
 
@@ -61,11 +57,6 @@ public class ScreenSettings implements Screen {
             if (btnPlayers.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenPlayers());
             }
-            if (btnModeGame.hit(iv.touch.x, iv.touch.y)) {
-                iv.gameMode = iv.gameMode==MODE_VS_PLAYER ? MODE_VS_COMPUTER : MODE_VS_PLAYER;
-                btnModeGame.setText(iv.gameMode==MODE_VS_PLAYER ? "PLAYER vs PLAYER" : "PLAYER vs COMPUTER");
-            }
-
         }
 
         //отрисовка
@@ -81,7 +72,6 @@ public class ScreenSettings implements Screen {
         btnSound.font.draw(iv.batch, btnSound.text, btnSound.x, btnSound.y);
         btnBackgrounds.font.draw(iv.batch, btnBackgrounds.text, btnBackgrounds.x, btnBackgrounds.y);
         btnPlayers.font.draw(iv.batch, btnPlayers.text, btnPlayers.x, btnPlayers.y);
-        btnModeGame.font.draw(iv.batch, btnModeGame.text, btnModeGame.x, btnModeGame.y);
         iv.batch.end();
     }
 
@@ -111,9 +101,10 @@ public class ScreenSettings implements Screen {
         pref.putBoolean("sound", iv.soundOn);
         pref.putBoolean("music", iv.musicOn);
         pref.putInteger("style", iv.gameStyle);
-        pref.putInteger("mode", iv.gameMode);
         pref.putString("name1", iv.player1.name);
         pref.putString("name2", iv.player2.name);
+        pref.putBoolean("isai1", iv.player1.isAi);
+        pref.putBoolean("isai2", iv.player2.isAi);
         pref.flush();
     }
 
@@ -122,16 +113,16 @@ public class ScreenSettings implements Screen {
         if(pref.contains("sound")) iv.soundOn = pref.getBoolean("sound", false);
         if(pref.contains("music")) iv.musicOn = pref.getBoolean("music", false);
         if(pref.contains("style")) iv.gameStyle = pref.getInteger("style", 0);
-        if(pref.contains("mode")) iv.gameMode = pref.getInteger("mode", 0);
         if(pref.contains("name1")) iv.player1.name = pref.getString("name1", "Noname");
         if(pref.contains("name2")) iv.player2.name = pref.getString("name2", "Noname");
+        if(pref.contains("isai1")) iv.player1.isAi = pref.getBoolean("isai1", false);
+        if(pref.contains("isai2")) iv.player2.isAi = pref.getBoolean("isai2", false);
         updateButtons();
     }
 
     void updateButtons(){
         btnSound.setText(iv.soundOn ? "SOUND ON" : "SOUND OFF");
         btnMusic.setText(iv.musicOn ? "MUSIC ON" : "MUSIC OFF");
-        btnModeGame.setText(iv.gameMode==MODE_VS_PLAYER ? "PLAYER vs PLAYER" : "PLAYER vs COMPUTER");
     }
 
     @Override

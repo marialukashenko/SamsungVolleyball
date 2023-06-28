@@ -30,8 +30,18 @@ public class ScreenPlayers implements Screen {
         btnName1 = new TextButton(iv.fontNormal, iv.player1.name, 100, 500);
         btnName2 = new TextButton(iv.fontNormal, iv.player2.name, 0, 500);
         btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, 500);
-        btnTypePlayer1 = new TextButton(iv.fontNormal, "Human", 100, 400);
-        btnTypePlayer2 = new TextButton(iv.fontNormal, "Human", 0, 400);
+        if(iv.player1.isAi) {
+            btnTypePlayer1 = new TextButton(iv.fontNormal, "Computer", 100, 400);
+        } else {
+            btnTypePlayer1 = new TextButton(iv.fontNormal, "Human", 100, 400);
+        }
+        if(iv.player2.isAi) {
+            btnTypePlayer2 = new TextButton(iv.fontNormal, "Computer", 0, 400);
+        } else {
+            btnTypePlayer2 = new TextButton(iv.fontNormal, "Human", 0, 400);
+        }
+        btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, 400);
+
         inputKeyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 8);
     }
 
@@ -71,6 +81,23 @@ public class ScreenPlayers implements Screen {
                 iv.player2.insertRecord(iv.players);
                 Player.sortTableOfRecords(iv.players);
             }
+            if(btnTypePlayer1.hit(iv.touch.x, iv.touch.y)) {
+                iv.player1.isAi = !iv.player1.isAi;
+                if(iv.player1.isAi) {
+                    btnTypePlayer1.setText("Computer");
+                } else {
+                    btnTypePlayer1.setText("Human");
+                }
+            }
+            if(btnTypePlayer2.hit(iv.touch.x, iv.touch.y)) {
+                iv.player2.isAi = !iv.player2.isAi;
+                if(iv.player2.isAi) {
+                    btnTypePlayer2.setText("Computer");
+                } else {
+                    btnTypePlayer2.setText("Human");
+                }
+                btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, 400);
+            }
         }
 
         // отрисовка всей графики
@@ -83,13 +110,13 @@ public class ScreenPlayers implements Screen {
 
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
-        iv.fontNormal.draw(iv.batch, "Player1", 100, 600, SCR_WIDTH*100-100, Align.left, false);
-        iv.fontNormal.draw(iv.batch, "Player2", 0, 600, SCR_WIDTH*100-100, Align.right, false);
+        iv.fontNormal.draw(iv.batch, "Player 1", 100, 600, SCR_WIDTH*100-100, Align.left, false);
+        iv.fontNormal.draw(iv.batch, "Player 2", 0, 600, SCR_WIDTH*100-100, Align.right, false);
         btnName1.font.draw(iv.batch, btnName1.text, btnName1.x, btnName1.y);
         btnName2.font.draw(iv.batch, btnName2.text, btnName2.x, btnName2.y);
         iv.fontNormal.draw(iv.batch, "vs", 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
-        btnTypePlayer1.font.draw(iv.batch, btnTypePlayer1.text, btnTypePlayer1.x, btnTypePlayer1.y, SCR_WIDTH*100-100, Align.left, false);
-        btnTypePlayer2.font.draw(iv.batch, btnTypePlayer2.text, btnTypePlayer2.x, btnTypePlayer2.y, SCR_WIDTH*100-100, Align.right, false);
+        btnTypePlayer1.font.draw(iv.batch, btnTypePlayer1.text, btnTypePlayer1.x, btnTypePlayer1.y);
+        btnTypePlayer2.font.draw(iv.batch, btnTypePlayer2.text, btnTypePlayer2.x, btnTypePlayer2.y);
         if(isEnterName1 || isEnterName2){
             inputKeyboard.draw(iv.batch);
         }

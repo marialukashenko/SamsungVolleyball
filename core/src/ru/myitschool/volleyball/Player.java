@@ -8,7 +8,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 public class Player {
     public int wins;
     public String name;
-    private float maxWidth;
+    public boolean isAi;
 
     public Player(String name) {
         this.name = name;
@@ -57,7 +57,7 @@ public class Player {
             for (int j = 0; j < n; j++) {
                 points += ".";
             }
-            s += players[i].name+points+players[i].wins +"\n";
+            s += players[i].name+" "+points+" "+players[i].wins +"\n";
         }
         return s;
     }
