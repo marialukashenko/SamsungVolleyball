@@ -31,14 +31,14 @@ public class ScreenPlayers implements Screen {
         btnName2 = new TextButton(iv.fontNormal, iv.player2.name, 0, 500);
         btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, 500);
         if(iv.player1.isAi) {
-            btnTypePlayer1 = new TextButton(iv.fontNormal, "Computer", 100, 400);
+            btnTypePlayer1 = new TextButton(iv.fontNormal, iv.text.get("COMPUTER")[iv.lang], 100, 400);
         } else {
-            btnTypePlayer1 = new TextButton(iv.fontNormal, "Human", 100, 400);
+            btnTypePlayer1 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 100, 400);
         }
         if(iv.player2.isAi) {
-            btnTypePlayer2 = new TextButton(iv.fontNormal, "Computer", 0, 400);
+            btnTypePlayer2 = new TextButton(iv.fontNormal, iv.text.get("COMPUTER")[iv.lang], 0, 400);
         } else {
-            btnTypePlayer2 = new TextButton(iv.fontNormal, "Human", 0, 400);
+            btnTypePlayer2 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 0, 400);
         }
         btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, 400);
 
@@ -84,17 +84,17 @@ public class ScreenPlayers implements Screen {
             if(btnTypePlayer1.hit(iv.touch.x, iv.touch.y)) {
                 iv.player1.isAi = !iv.player1.isAi;
                 if(iv.player1.isAi) {
-                    btnTypePlayer1.setText("Computer", false);
+                    btnTypePlayer1.setText(iv.text.get("COMPUTER")[iv.lang], false);
                 } else {
-                    btnTypePlayer1.setText("Human", false);
+                    btnTypePlayer1.setText(iv.text.get("HUMAN")[iv.lang], false);
                 }
             }
             if(btnTypePlayer2.hit(iv.touch.x, iv.touch.y)) {
                 iv.player2.isAi = !iv.player2.isAi;
                 if(iv.player2.isAi) {
-                    btnTypePlayer2.setText("Computer", false);
+                    btnTypePlayer2.setText(iv.text.get("COMPUTER")[iv.lang], false);
                 } else {
-                    btnTypePlayer2.setText("Human", false);
+                    btnTypePlayer2.setText(iv.text.get("HUMAN")[iv.lang], false);
                 }
                 btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, 400);
             }
@@ -110,11 +110,11 @@ public class ScreenPlayers implements Screen {
 
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
-        iv.fontNormal.draw(iv.batch, "Player 1", 100, 600, SCR_WIDTH*100-100, Align.left, false);
-        iv.fontNormal.draw(iv.batch, "Player 2", 0, 600, SCR_WIDTH*100-100, Align.right, false);
+        iv.fontNormal.draw(iv.batch, iv.text.get("PLAYER 1")[iv.lang], 100, 600, SCR_WIDTH*100-100, Align.left, false);
+        iv.fontNormal.draw(iv.batch, iv.text.get("PLAYER 2")[iv.lang], 0, 600, SCR_WIDTH*100-100, Align.right, false);
         btnName1.font.draw(iv.batch, btnName1.text, btnName1.x, btnName1.y);
         btnName2.font.draw(iv.batch, btnName2.text, btnName2.x, btnName2.y);
-        iv.fontNormal.draw(iv.batch, "vs", 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
+        iv.fontNormal.draw(iv.batch, iv.text.get("VS")[iv.lang], 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
         btnTypePlayer1.font.draw(iv.batch, btnTypePlayer1.text, btnTypePlayer1.x, btnTypePlayer1.y);
         btnTypePlayer2.font.draw(iv.batch, btnTypePlayer2.text, btnTypePlayer2.x, btnTypePlayer2.y);
         if(isEnterName1 || isEnterName2){

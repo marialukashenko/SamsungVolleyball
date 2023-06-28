@@ -5,7 +5,7 @@
   "ABOUT": ["ABOUT", "ОБ ИГРЕ"],
   "EXIT": ["EXIT", "ВЫХОД"],
 
-  "AboutText": ["wtf",
+  "AboutText": ["Incredible Volleyball is an\napplication that is a classic\nvolleyball game for two.\n\nThe goal of the game\n is to win volleyball",
                 "IncredibleVolleyball - приложение,\nпредставляющее собой\nклассическую игру-волейбол на двоих.\n\nЦель игры - победить\nв волейбол."],
   "LANGUAGE": ["LANGUAGE: ENGLISH", "ЯЗЫК: РУССКИЙ"],
   "SOUND ON": ["SOUND ON", "ЗВУК ВКЛ"],
@@ -13,5 +13,13 @@
   "MUSIC ON": ["MUSIC ON", "МУЗЫКА ВКЛ"],
   "MUSIC OFF": ["MUSIC OFF", "МУЗЫКА ВЫКЛ"],
   "STYLE": ["STYLE", "СТИЛь"],
-  "PLAYERS": ["PLAYERS", "ИГРОКИ"]
+  "PLAYERS": ["PLAYERS", "ИГРОКИ"],
+  "WINS" : [" wins!", " выиграл!"],
+  "REPLAY": ["REPLAY", "ЗАНОВО"],
+  "SCORES": [" scores!", " забивает!"],
+  "VS": ["vs", "vs"],
+  "PLAYER 1": ["PLAYER 1", "ИГРОК 1"],
+  "PLAYER 2": ["PLAYER 2", "ИГРОК 2"],
+  "COMPUTER": ["Computer", "Компьютер"],
+  "HUMAN": ["Human", "Человек"]
 }

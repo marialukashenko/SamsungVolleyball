@@ -15,6 +15,8 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import javax.naming.Name;
+
 
 public class ScreenGame implements Screen {
 
@@ -48,6 +50,9 @@ public class ScreenGame implements Screen {
     private String winner="";
     private boolean isWinRecorded;
 
+    String GoalPlayer;
+    boolean NameChanged = false;
+
     public ScreenGame(VolleyBall volleyBall) {
         iv = volleyBall;
 
@@ -59,7 +64,7 @@ public class ScreenGame implements Screen {
         soundWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
 
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
-        btnRerun = new TextButton(iv.fontLarge, "REPLAY", 20, SCR_HEIGHT * 100 - 30);
+        btnRerun = new TextButton(iv.fontLarge, iv.text.get("REPLAY")[iv.lang], 20, SCR_HEIGHT * 100 - 30);
 
         // игровое поле и сетки
         block[0] = new StaticBodyBox(iv.world, SCR_WIDTH / 2, 0, SCR_WIDTH, 0.3f); // пол
@@ -102,13 +107,9 @@ public class ScreenGame implements Screen {
             if (TimeUtils.millis() > timeGoal + timeInterval) {
                 isGoal = false;
                 if (ball.getX() < SCR_WIDTH / 2) {
-                    //iv.world.destroyBody(ball.body);
-                    //ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 * 3, ballStartY, iv.gameStyle);
                     ball.body.setTransform(SCR_WIDTH / 4 * 3, ballStartY, 0);
                     startGame = true;
                 } else {
-                    //iv.world.destroyBody(ball.body);
-                    //ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4, ballStartY, iv.gameStyle);
                     ball.body.setTransform(SCR_WIDTH / 4, ballStartY, 0);
                     startGame = true;
                 }
@@ -120,6 +121,10 @@ public class ScreenGame implements Screen {
                 timeGoal = TimeUtils.millis();
                 if (ball.getX() < SCR_WIDTH / 2) {
                     countGoals2++;
+                    if(!NameChanged) {
+                        GoalPlayer = iv.player2.name;
+                        NameChanged = true;
+                    }
                     if (countGoals2 == 5) {
                         isWin = true;
                         if (iv.soundOn) soundWin.play();
@@ -128,6 +133,10 @@ public class ScreenGame implements Screen {
                     }
                 } else {
                     countGoals1++;
+                    if(!NameChanged) {
+                        GoalPlayer = iv.player1.name;
+                        NameChanged = true;
+                    }
                     if (countGoals1 == 5) {
                         isWin = true;
                         if (iv.soundOn) soundWin.play();
@@ -154,10 +163,10 @@ public class ScreenGame implements Screen {
 
         if(isWin && !isWinRecorded) {
             if(countGoals1 > countGoals2) {
-                winner = "Выиграл " + iv.player1.name;
+                winner = iv.player1.name + iv.text.get("WINS")[iv.lang];
                 iv.player1.wins++;
             } else {
-                winner = "Выиграл " + iv.player2.name;
+                winner = iv.player2.name + iv.text.get("WINS")[iv.lang];
                 iv.player2.wins++;
             }
             isWinRecorded = true;
@@ -185,7 +194,10 @@ public class ScreenGame implements Screen {
         iv.fontNormal.draw(iv.batch, countGoals1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
         iv.fontNormal.draw(iv.batch, countGoals2 + "", SCR_WIDTH * 100 / 2 + 50, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.left, true);
         if (isGoal && !isWin) {
-            iv.fontLarge.draw(iv.batch, "ГОЛ!", 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
+//            String Scorer = GoalPlayer + iv.text.get("SCORE")[iv.lang];
+//            System.out.println(GoalPlayer);
+            iv.fontLarge.draw(iv.batch, GoalPlayer + iv.text.get("SCORES")[iv.lang], 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
+            NameChanged = false;
         }
         if (isWin) {
             iv.fontLarge.draw(iv.batch, winner, 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);

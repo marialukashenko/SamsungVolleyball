@@ -46,12 +46,10 @@ public class ScreenSettings implements Screen {
             }
             if (btnSound.hit(iv.touch.x, iv.touch.y)) {
                 iv.soundOn = !iv.soundOn;
-                //btnSound.setText(iv.soundOn ? "SOUND ON" : "SOUND OFF");
                 updateButtons();
             }
             if (btnMusic.hit(iv.touch.x, iv.touch.y)) {
                 iv.musicOn = !iv.musicOn;
-                //btnMusic.setText(iv.musicOn ? "MUSIC ON" : "MUSIC OFF");
                 updateButtons();
             }
             if (btnBackgrounds.hit(iv.touch.x, iv.touch.y)) {
@@ -61,7 +59,10 @@ public class ScreenSettings implements Screen {
                 iv.setScreen(iv.getScreenPlayers());
             }
             if (btnLanguage.hit(iv.touch.x, iv.touch.y)) {
-                if(++iv.lang > LANG_RU) iv.lang = LANG_EN; // меняем лангуагу
+                ++iv.lang;
+                if(iv.lang > LANG_RU){
+                    iv.lang = LANG_EN; // меняем лангуагу
+                }
                 updateButtons();
             }
         }
