@@ -12,11 +12,13 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
+/**
+ * Динамические тела - игроки
+ */
 public class DynamicBodyPlayer {
-
     public Body body;
     public float r;
-    private float lowLevel;
+    private float lowLevel; // пол
     private static final int GO = 0, JUMP = 1, FALL = 2, STAY = 3;
     private int state;
     private long timeStartJump, timeJump = 200;
@@ -25,9 +27,9 @@ public class DynamicBodyPlayer {
     public boolean isFlip;
     public static final boolean LEFT = true, RIGHT = false;
     private boolean side;
-    float targetX, targetY;
+    private float targetX, targetY;
 
-    DynamicBodyPlayer(World world, float x, float y, float radius, boolean side) {
+    public DynamicBodyPlayer(World world, float x, float y, float radius, boolean side) {
         r = radius;
         lowLevel = y;
         this.side = side;
@@ -78,7 +80,7 @@ public class DynamicBodyPlayer {
         }
     }
 
-    void move() {
+    public void move() {
         if (timeStartJump + timeJump < TimeUtils.millis() && state == JUMP) {
             body.setLinearVelocity(body.getLinearVelocity().x > 5 ? 5 : body.getLinearVelocity().x, -4.9f);
             state = FALL;
@@ -101,7 +103,7 @@ public class DynamicBodyPlayer {
         return x1 > x2-dx && x1 < x2+dx;
     }
 
-    void changeFaza() {
+    private void changeFaza() {
         if (state == GO) {
             if (Math.abs(body.getLinearVelocity().x) < 0.01) {
                 isFlip = side;
@@ -122,39 +124,43 @@ public class DynamicBodyPlayer {
         }
     }
 
-    float getX() {
+    public float getX() {
         return body.getPosition().x;
     }
 
-    float getY() {
+    public float getY() {
         return body.getPosition().y;
     }
 
-    float scrX() {
-        return body.getPosition().x - r;
+    public float scrX() {
+        return body.getPosition().x - r - 0.35f;
     }
 
-    float scrY() {
-        return body.getPosition().y - r;
+    public float scrY() {
+        return body.getPosition().y - r - 0.35f;
     }
 
-    float width() {
+    public float getScrWidth(){
+        return width()*0.85f;
+    }
+
+    public float width() {
         return r * 2;
     }
 
-    float height() {
+    public float height() {
         return r * 2;
     }
 
-    Vector2 getCenter() {
+    private Vector2 getCenter() {
         return body.getPosition();
     }
 
-    boolean overlap(DynamicBodyBall b) {
+    public boolean overlap(DynamicBodyBall b) {
         return (getX() - b.getX()) * (getX() - b.getX()) + (getY() - b.getY()) * (getY() - b.getY()) <= (r + b.r) * (r + b.r);
     }
 
-    void useAi(DynamicBodyBall ball) {
+    public void useAi(DynamicBodyBall ball) {
         if (state == GO && (getX() < SCR_WIDTH/2 && ball.getX()<SCR_WIDTH/2 || getX()>SCR_WIDTH/2 && ball.getX()>SCR_WIDTH/2)) {
             Vector2 ballPosition = ball.body.getPosition();
             if (near(getX(), ballPosition.x, r*2) && near(getY(), ballPosition.y, r*4)) {
