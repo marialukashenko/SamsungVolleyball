@@ -97,7 +97,6 @@ public class DynamicBodyBall {
             Fixture fixture = body.createFixture(fixtureDef);
             circle.dispose();
         }
-        System.out.println(type);
     }
 
     float getX() {

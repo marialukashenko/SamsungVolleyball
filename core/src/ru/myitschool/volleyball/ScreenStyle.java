@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 /**
  * выбор стиля игры
  */
-public class ScreenPickStyle implements Screen {
+public class ScreenStyle implements Screen {
     private final VolleyBall iv;
 
     // картинки
@@ -22,17 +22,17 @@ public class ScreenPickStyle implements Screen {
     private final ImageButton btnBack;
     private final ImageButton[] btnBackground = new ImageButton[NUM_STYLES];
 
-    public ScreenPickStyle(VolleyBall volleyBall) {
+    public ScreenStyle(VolleyBall volleyBall) {
         iv = volleyBall;
         imgBackGround = new Texture("screenbgbackgrounds.jpg");
         imgBack = new Texture("back.png");
         imgSelector = new Texture("yellowselector.png");
-        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 0.8f, SCR_HEIGHT - 0.8f, 0.6f, 0.6f);
         for (int i = 0; i < NUM_STYLES; i++) {
             imgBtnBackground[i] = new Texture("background" + i + ".jpg");
         }
         for (int i = 0; i < NUM_STYLES; i++) {
-            btnBackground[i] = new ImageButton(imgBtnBackground[i], 1 + 4 * (i % 3), SCR_HEIGHT - 3 * (i / 3 + 1), 3.5f, 2f);
+            btnBackground[i] = new ImageButton(imgBtnBackground[i], 0.7f + 4 * (i % 3), SCR_HEIGHT - 3 * (i / 3 + 1), 3.5f, 2f);
         }
     }
 
@@ -102,6 +102,11 @@ public class ScreenPickStyle implements Screen {
 
     @Override
     public void dispose() {
-
+        imgBack.dispose();
+        imgBackGround.dispose();
+        imgSelector.dispose();
+        for (int i = 0; i < imgBtnBackground.length; i++) {
+            imgBtnBackground[i].dispose();
+        }
     }
 }

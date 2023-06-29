@@ -27,5 +27,7 @@
   "HUMAN": ["Human", "Человек", "Mecnsh", "Челик", "Humano"],
   "NONAME": ["No name", "Некто", "Jemand", "Нонейм", "Sin nombre"],
   "RECORDS": ["Best players", "Лучшие игроки", "Spitzenspieler", "Топчики", "Records"],
-  "CLEAR RECORDS": ["CLEAR RECORDS", "Очистить рекорды", "KLARE AUFZEICHNUNGEN", "ВСЁ СТЕРЕТЬ", "BORRAR REGISTROS"]
+  "CLEAR RECORDS": ["CLEAR RECORDS", "Очистить рекорды", "KLARE AUFZEICHNUNGEN", "ВСЁ СТЕРЕТЬ", "BORRAR REGISTROS"],
+  "NETWORK": ["LOCAL NETWORK", "Локальная сеть", "LOKALES NETZWERK", "Локалка", "RED LOCAL"],
+  "PVP": ["GO PVP!!!", "GO PVP!!!", "GO PVP!!!", "GO PVP!!!", "GO PVP!!!"]
 }

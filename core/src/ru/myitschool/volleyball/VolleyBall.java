@@ -2,7 +2,6 @@ package ru.myitschool.volleyball;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -45,9 +44,10 @@ public class VolleyBall extends Game {
     private ScreenGame screenGame;
     private ScreenSettings screenSettings;
     private ScreenAbout screenAbout;
-    private ScreenPickStyle screenPickStyle;
+    private ScreenStyle screenStyle;
     private ScreenPlayers screenPlayers;
     private ScreenRecords screenRecords;
+    private ScreenNetwork screenNetwork;
 
     // стили
     public static final int STYLE_BEACH = 0;
@@ -59,9 +59,11 @@ public class VolleyBall extends Game {
     public static final int NUM_STYLES = 6;
     public int gameStyle;
 
-    // звук и музыка
-    public boolean soundOn = true;
-    public boolean musicOn = true;
+    // флаги
+    public boolean isSoundOn = true;
+    public boolean isMusicOn = true;
+    public boolean isOnLanPlayer1 = false;
+    public boolean isOnLanPlayer2 = false;
 
     // игроки
     public Player player1;
@@ -112,11 +114,12 @@ public class VolleyBall extends Game {
         // создание экранов
         screenSettings = new ScreenSettings(this);
         screenIntro = new ScreenIntro(this);
-        screenPickStyle = new ScreenPickStyle(this);
+        screenStyle = new ScreenStyle(this);
         screenPlayers = new ScreenPlayers(this);
         screenRecords = new ScreenRecords(this);
         screenAbout = new ScreenAbout(this);
         screenGame = new ScreenGame(this);
+        screenNetwork = new ScreenNetwork(this);
         setScreen(screenIntro);
     }
 
@@ -189,8 +192,8 @@ public class VolleyBall extends Game {
         return screenAbout;
     }
 
-    public ScreenPickStyle getScreenPickStyle() {
-        return screenPickStyle;
+    public ScreenStyle getScreenStyle() {
+        return screenStyle;
     }
 
     public ScreenPlayers getScreenPlayers() {
@@ -199,6 +202,10 @@ public class VolleyBall extends Game {
 
     public ScreenRecords getScreenRecords() {
         return screenRecords;
+    }
+
+    public ScreenNetwork getScreenNetwork() {
+        return screenNetwork;
     }
 }
 

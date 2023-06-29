@@ -144,36 +144,34 @@ public class ScreenGame implements Screen {
                 timeGoal = TimeUtils.millis();
                 if (ball.getX() < SCR_WIDTH / 2) {
                     countGoals2++;
-                    System.out.println("new goal p2");
                     if(!NameChanged) {
                         GoalPlayer = iv.player2.name;
                         NameChanged = true;
                     }
                     if (countGoals2 == 5) {
                         isWin = true;
-                        if (iv.soundOn) sndWin.play();
+                        if (iv.isSoundOn) sndWin.play();
                     } else {
-                        if (iv.soundOn) sndGoal.play();
+                        if (iv.isSoundOn) sndGoal.play();
                     }
                 } else {
                     countGoals1++;
-                    System.out.println("new goal p1");
                     if(!NameChanged) {
                         GoalPlayer = iv.player1.name;
                         NameChanged = true;
                     }
                     if (countGoals1 == 5) {
                         isWin = true;
-                        if (iv.soundOn) sndWin.play();
+                        if (iv.isSoundOn) sndWin.play();
                     } else {
-                        if (iv.soundOn) sndGoal.play();
+                        if (iv.isSoundOn) sndGoal.play();
                     }
                 }
             } else {
                 if ((person1.overlap(ball) || person2.overlap(ball)) && !isWin) {
                     if (timeSoundPlay + timeSoundInterval < TimeUtils.millis()) {
                         timeSoundPlay = TimeUtils.millis();
-                        if (iv.soundOn) sndBallHit.play();
+                        if (iv.isSoundOn) sndBallHit.play();
                     }
                 }
             }
@@ -184,6 +182,23 @@ public class ScreenGame implements Screen {
         }
         if (iv.player2.isAi && !isWin && !isGoal) {
             person2.useAi(ball);
+        }
+        // события сетевой игры
+        if(iv.isOnLanPlayer1 || iv.isOnLanPlayer2) {
+            if (iv.getScreenPlayers().isServer) {
+                iv.getScreenPlayers().responseFromServer.text = "server";
+                iv.getScreenPlayers().responseFromServer.x = iv.touch.x;
+                iv.getScreenPlayers().responseFromServer.y = iv.touch.y;
+                iv.getScreenPlayers().requestFromClient = iv.getScreenPlayers().server.getRequest();
+                person2.touch(iv.getScreenPlayers().requestFromClient.x, iv.getScreenPlayers().requestFromClient.y);
+            } else if (iv.getScreenPlayers().isClient) {
+                iv.getScreenPlayers().requestFromClient.text = "client";
+                iv.getScreenPlayers().requestFromClient.x = iv.touch.x;
+                iv.getScreenPlayers().requestFromClient.y = iv.touch.y;
+                iv.getScreenPlayers().client.send();
+                iv.getScreenPlayers().responseFromServer = iv.getScreenPlayers().client.getResponse();
+                person1.touch(iv.getScreenPlayers().responseFromServer.x, iv.getScreenPlayers().responseFromServer.y);
+            }
         }
 
         if(isWin && !isWinRecorded) {

@@ -23,7 +23,7 @@ public class ScreenRecords implements Screen {
         iv = volleyBall;
         imgBackGround = new Texture("screenbgrecords.jpg");
         imgBack = new Texture("back.png");
-        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 0.8f, SCR_HEIGHT - 0.8f, 0.6f, 0.6f);
         btnClearTable = new TextButton(iv.fontNormal, iv.text.get("CLEAR RECORDS")[iv.lang], 500, 50);
     }
 

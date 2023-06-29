@@ -21,7 +21,7 @@ public class ScreenAbout implements Screen {
         iv = volleyBall;
         imgBackGround = new Texture("screenbgabout.jpg");
         imgBack = new Texture("back.png");
-        btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
+        btnBack = new ImageButton(imgBack, SCR_WIDTH - 0.8f, SCR_HEIGHT - 0.8f, 0.6f, 0.6f);
     }
 
     @Override

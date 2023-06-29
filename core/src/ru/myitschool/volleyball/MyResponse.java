@@ -5,5 +5,9 @@ package ru.myitschool.volleyball;
  */
 public class MyResponse {
     public String text = "";
-    public float x, y;
+    public float x;
+    public float y;
+    public int gameStyle;
+    public String name;
+    public boolean startGame;
 }
