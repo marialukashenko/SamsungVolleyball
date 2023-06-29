@@ -51,12 +51,15 @@ public class DynamicBodyBall {
             axe.dispose();
         } else if (type == VolleyBall.STYLE_GRAVE) { // пентаграмма
             CircleShape circle = new CircleShape();
+            r = 0.6f;
+            width = 0.6f;
+            height = 0.3f;
             circle.setRadius(r);
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = circle;
             fixtureDef.density = 0.01f;
             fixtureDef.friction = 0.1f;
-            fixtureDef.restitution = 0.9f;
+            fixtureDef.restitution = 0.8f;
             Fixture fixture = body.createFixture(fixtureDef);
             circle.dispose();
         } else { // мяч
