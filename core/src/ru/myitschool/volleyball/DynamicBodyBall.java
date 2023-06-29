@@ -32,7 +32,7 @@ public class DynamicBodyBall {
             box.setAsBox(width, height);
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = box;
-            fixtureDef.density = 0.6f;
+            fixtureDef.density = 0.5f;
             fixtureDef.friction = 0.4f;
             fixtureDef.restitution = 0.4f;
             Fixture fixture = body.createFixture(fixtureDef);
@@ -45,9 +45,9 @@ public class DynamicBodyBall {
             axe.set(verts);
             FixtureDef fixtureDef = new FixtureDef();
             fixtureDef.shape = axe;
-            fixtureDef.density = 0.7f;
+            fixtureDef.density = 0.6f;
             fixtureDef.friction = 0.4f;
-            fixtureDef.restitution = 0.4f;
+            fixtureDef.restitution = 0.5f;
             Fixture fixture = body.createFixture(fixtureDef);
             axe.dispose();
         } else if (type == VolleyBall.STYLE_KITCHEN) { // чайник

@@ -7,21 +7,21 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
 
-import java.util.HashMap;
-import java.util.Map;
-
+/**
+ * главное меню игры
+ */
 public class ScreenIntro implements Screen {
-    private VolleyBall iv;
-    private Texture imgBackGround;
-    private TextButton btnPlay;
-    private TextButton btnSettings;
-    private TextButton btnRecords;
-    private TextButton btnAbout;
-    private TextButton btnExit;
+    private final VolleyBall iv;
+
+    private final Texture imgBackGround;
+
+    // кнопки
+    private final TextButton btnPlay;
+    private final TextButton btnSettings;
+    private final TextButton btnRecords;
+    private final TextButton btnAbout;
+    private final TextButton btnExit;
 
     public ScreenIntro(VolleyBall volleyBall) {
         iv = volleyBall;
@@ -46,7 +46,6 @@ public class ScreenIntro implements Screen {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
             if (btnPlay.hit(iv.touch.x, iv.touch.y)) {
-                iv.sleep();
                 iv.setScreen(iv.getScreenGame());
             }
             if (btnSettings.hit(iv.touch.x, iv.touch.y)) {
@@ -65,11 +64,13 @@ public class ScreenIntro implements Screen {
 
         // отрисовка всей графики
         iv.camera.update();
+        //рисуем картинки
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.end();
-        iv.batch.setProjectionMatrix(iv.camera2.combined);
+        // рисуем буквы
+        iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         btnPlay.font.draw(iv.batch, btnPlay.text, btnPlay.x, btnPlay.y);
         btnSettings.font.draw(iv.batch, btnSettings.text, btnSettings.x, btnSettings.y);
@@ -105,7 +106,8 @@ public class ScreenIntro implements Screen {
         imgBackGround.dispose();
     }
 
-    void updateButtons(){
+    // обновлялка кнопок на случай смены локализации
+    private void updateButtons(){
         btnPlay.setText(iv.text.get("PLAY")[iv.lang], true);
         btnSettings.setText(iv.text.get("SETTINGS")[iv.lang], true);
         btnRecords.setText(iv.text.get("BEST PLAYERS")[iv.lang], true);

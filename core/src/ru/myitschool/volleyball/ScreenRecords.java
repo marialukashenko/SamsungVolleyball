@@ -7,13 +7,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * экран с таблицей рекордов
+ */
+
 public class ScreenRecords implements Screen {
     private final VolleyBall iv;
+
     private final Texture imgBackGround;
     private final ImageButton btnBack;
     private final TextButton btnClearTable;
     private Texture imgBack;
-    private String textAbout = "";
 
     public ScreenRecords(VolleyBall volleyBall) {
         iv = volleyBall;
@@ -40,7 +44,6 @@ public class ScreenRecords implements Screen {
             }
             if(btnClearTable.hit(iv.touch.x, iv.touch.y)) {
                 Player.clearTableOfRecords(iv.players);
-                Player.saveTableOfRecords(iv.players);
             }
         }
 
@@ -48,17 +51,19 @@ public class ScreenRecords implements Screen {
 
         // отрисовка всей графики
         iv.camera.update();
-        iv.batch.setProjectionMatrix(iv.camera2.combined);
-        iv.batch.begin();
-        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH * 100, SCR_HEIGHT * 100);
-        iv.fontTitle.draw(iv.batch, iv.text.get("BEST PLAYERS")[iv.lang], 20, SCR_HEIGHT*100-20);
-        iv.fontNormal.draw(iv.batch, "Best Players", 200, 600);
-        iv.fontSmall.draw(iv.batch, Player.tableOfRecordsToString(iv.players, iv.fontSmall), 200, 500);
-        btnClearTable.font.draw(iv.batch, btnClearTable.text, btnClearTable.x, btnClearTable.y);
-        iv.batch.end();
+        // рисуем картинки
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
+        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        iv.batch.end();
+        // рисуем буквы
+        iv.batch.setProjectionMatrix(iv.cameraForText.combined);
+        iv.batch.begin();
+        iv.fontTitle.draw(iv.batch, iv.text.get("BEST PLAYERS")[iv.lang], 20, SCR_HEIGHT*100-20);
+        iv.fontNormal.draw(iv.batch, iv.text.get("BEST PLAYERS")[iv.lang], 300, 600);
+        iv.fontSmall.draw(iv.batch, Player.tableOfRecordsToString(iv.players, iv.fontSmall), 300, 550);
+        btnClearTable.font.draw(iv.batch, btnClearTable.text, btnClearTable.x, btnClearTable.y);
         iv.batch.end();
     }
 
@@ -84,7 +89,8 @@ public class ScreenRecords implements Screen {
 
     @Override
     public void dispose() {
-
+        imgBack.dispose();
+        imgBackGround.dispose();
     }
 }
 

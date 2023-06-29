@@ -8,56 +8,50 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
 
+/**
+ * настройка и выбор игроков
+ */
 public class ScreenPlayers implements Screen {
     private final VolleyBall iv;
+
+    // изображения
     private final Texture imgBackGround;
     private final Texture imgBack;
+
+    // кнопки
     private final ImageButton btnBack;
     private final TextButton btnName1;
     private final TextButton btnName2;
     private final TextButton btnTypePlayer1;
     private final TextButton btnTypePlayer2;
 
+    // экранная клавиатура
     private final InputKeyboard inputKeyboard;
     private boolean isEnterName1;
     private boolean isEnterName2;
 
     public ScreenPlayers(VolleyBall volleyBall) {
         iv = volleyBall;
+
         imgBackGround = new Texture("screenbgplayers.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnName1 = new TextButton(iv.fontNormal, iv.player1.name, 100, 500);
         btnName2 = new TextButton(iv.fontNormal, iv.player2.name, 0, 500);
         btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, 500);
-        if(iv.player1.isAi) {
-            btnTypePlayer1 = new TextButton(iv.fontNormal, iv.text.get("COMPUTER")[iv.lang], 100, 400);
-        } else {
-            btnTypePlayer1 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 100, 400);
-        }
-        if(iv.player2.isAi) {
-            btnTypePlayer2 = new TextButton(iv.fontNormal, iv.text.get("COMPUTER")[iv.lang], 0, 400);
-        } else {
-            btnTypePlayer2 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 0, 400);
-        }
-        btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, 400);
 
+        // создаём кнопки и обновляем их содержимое
+        btnTypePlayer1 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 100, 400);
+        btnTypePlayer2 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 0, 400);
+        updateButtons();
+
+        // создаём экранную клавиатуру
         inputKeyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 8);
     }
 
     @Override
     public void show() {
-        iv.sleep();
-        if(iv.player1.isAi) {
-            btnTypePlayer1.setText(iv.text.get("COMPUTER")[iv.lang], false);
-        } else {
-            btnTypePlayer1.setText(iv.text.get("HUMAN")[iv.lang], false);
-        }
-        if(iv.player2.isAi) {
-            btnTypePlayer2.setText(iv.text.get("COMPUTER")[iv.lang], false);
-        } else {
-            btnTypePlayer2.setText(iv.text.get("HUMAN")[iv.lang], false);
-        }
+        updateButtons();
     }
 
     @Override
@@ -77,8 +71,6 @@ public class ScreenPlayers implements Screen {
                 iv.player1.name = inputKeyboard.getText();
                 btnName1.setText(iv.player1.name, false);
                 isEnterName1 = false;
-                iv.player1.insertRecord(iv.players);
-                Player.sortTableOfRecords(iv.players);
             }
             if (btnName2.hit(iv.touch.x, iv.touch.y)) {
                 isEnterName2 = true;
@@ -88,25 +80,14 @@ public class ScreenPlayers implements Screen {
                 btnName2.setText(iv.player2.name, false);
                 btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, 500);
                 isEnterName2 = false;
-                iv.player2.insertRecord(iv.players);
-                Player.sortTableOfRecords(iv.players);
             }
             if(btnTypePlayer1.hit(iv.touch.x, iv.touch.y)) {
                 iv.player1.isAi = !iv.player1.isAi;
-                if(iv.player1.isAi) {
-                    btnTypePlayer1.setText(iv.text.get("COMPUTER")[iv.lang], false);
-                } else {
-                    btnTypePlayer1.setText(iv.text.get("HUMAN")[iv.lang], false);
-                }
+                updateButtons();
             }
             if(btnTypePlayer2.hit(iv.touch.x, iv.touch.y)) {
                 iv.player2.isAi = !iv.player2.isAi;
-                if(iv.player2.isAi) {
-                    btnTypePlayer2.setText(iv.text.get("COMPUTER")[iv.lang], false);
-                } else {
-                    btnTypePlayer2.setText(iv.text.get("HUMAN")[iv.lang], false);
-                }
-                btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, 400);
+                updateButtons();
             }
         }
 
@@ -118,7 +99,7 @@ public class ScreenPlayers implements Screen {
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
 
-        iv.batch.setProjectionMatrix(iv.camera2.combined);
+        iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         iv.fontNormal.draw(iv.batch, iv.text.get("PLAYER 1")[iv.lang], 100, 600, SCR_WIDTH*100-100, Align.left, false);
         iv.fontNormal.draw(iv.batch, iv.text.get("PLAYER 2")[iv.lang], 0, 600, SCR_WIDTH*100-100, Align.right, false);
@@ -159,5 +140,21 @@ public class ScreenPlayers implements Screen {
         imgBackGround.dispose();
         imgBack.dispose();
         inputKeyboard.dispose();
+    }
+
+    // обновляем надписи на кнопках
+    private void updateButtons(){
+        if(iv.player1.isAi) {
+            btnTypePlayer1.setText(iv.text.get("COMPUTER")[iv.lang], false);
+        } else {
+            btnTypePlayer1.setText(iv.text.get("HUMAN")[iv.lang], false);
+        }
+        if(iv.player2.isAi) {
+            btnTypePlayer2.setText(iv.text.get("COMPUTER")[iv.lang], false);
+        } else {
+            btnTypePlayer2.setText(iv.text.get("HUMAN")[iv.lang], false);
+        }
+        // переставляем правую кнопку в зависимости от длины слова
+        btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, 400);
     }
 }

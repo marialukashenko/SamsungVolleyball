@@ -5,12 +5,23 @@ import static ru.myitschool.volleyball.VolleyBall.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * экран с настройками
+ */
 public class ScreenSettings implements Screen {
     private final VolleyBall iv;
+
+    // изображения
     private final Texture imgBackGround;
     private final Texture imgBack;
+
+    // музыка
+    Music music;
+
+    // кнопки
     private final TextButton btnMusic;
     private final TextButton btnSound;
     private final TextButton btnBackgrounds;
@@ -28,7 +39,12 @@ public class ScreenSettings implements Screen {
         btnBackgrounds = new TextButton(iv.fontLarge, iv.text.get("STYLE")[iv.lang], 400);
         btnPlayers = new TextButton(iv.fontLarge, iv.text.get("PLAYERS")[iv.lang], 300);
         btnLanguage = new TextButton(iv.fontLarge, iv.text.get("LANGUAGE")[iv.lang], 200);
+        music = Gdx.audio.newMusic(Gdx.files.internal("volleyball_theme.mp3"));
         loadSettings();
+        if(iv.musicOn) {
+            music.play();
+            music.setLooping(true);
+        }
     }
 
     @Override
@@ -51,6 +67,11 @@ public class ScreenSettings implements Screen {
             if (btnMusic.hit(iv.touch.x, iv.touch.y)) {
                 iv.musicOn = !iv.musicOn;
                 updateButtons();
+                if(iv.musicOn) {
+                    music.play();
+                } else {
+                    music.stop();
+                }
             }
             if (btnBackgrounds.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenPickStyle());
@@ -69,12 +90,14 @@ public class ScreenSettings implements Screen {
 
         //отрисовка
         iv.camera.update();
+        // рисуем картинки
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
-        iv.batch.setProjectionMatrix(iv.camera2.combined);
+        // рисуем буквы
+        iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         btnMusic.font.draw(iv.batch, btnMusic.text, btnMusic.x, btnMusic.y);
         btnSound.font.draw(iv.batch, btnSound.text, btnSound.x, btnSound.y);
@@ -106,7 +129,15 @@ public class ScreenSettings implements Screen {
         Gdx.input.setInputProcessor(null);
     }
 
-    void saveSettings() {
+    @Override
+    public void dispose() {
+        imgBackGround.dispose();
+        imgBack.dispose();
+        music.dispose();
+    }
+
+    // сохраняем настройки
+    private void saveSettings() {
         Preferences pref = Gdx.app.getPreferences("Settings iVolleyBall");
         pref.putBoolean("sound", iv.soundOn);
         pref.putBoolean("music", iv.musicOn);
@@ -119,7 +150,8 @@ public class ScreenSettings implements Screen {
         pref.flush();
     }
 
-    void loadSettings() {
+    // считываем настройки
+    private void loadSettings() {
         Preferences pref = Gdx.app.getPreferences("Settings iVolleyBall");
         if(pref.contains("sound")) iv.soundOn = pref.getBoolean("sound", false);
         if(pref.contains("music")) iv.musicOn = pref.getBoolean("music", false);
@@ -132,17 +164,13 @@ public class ScreenSettings implements Screen {
         updateButtons();
     }
 
+    // обновляем кнопки
     void updateButtons(){
         btnSound.setText(iv.soundOn ? iv.text.get("SOUND ON")[iv.lang] : iv.text.get("SOUND OFF")[iv.lang], true);
         btnMusic.setText(iv.musicOn ? iv.text.get("MUSIC ON")[iv.lang] : iv.text.get("MUSIC OFF")[iv.lang], true);
         btnBackgrounds.setText(iv.text.get("STYLE")[iv.lang], true);
         btnPlayers.setText(iv.text.get("PLAYERS")[iv.lang], true);
         btnLanguage.setText(iv.text.get("LANGUAGE")[iv.lang], true);
-    }
-
-    @Override
-    public void dispose() {
-        imgBackGround.dispose();
     }
 }
 

@@ -136,6 +136,7 @@ public class ScreenGame implements Screen {
                 timeGoal = TimeUtils.millis();
                 if (ball.getX() < SCR_WIDTH / 2) {
                     countGoals2++;
+                    System.out.println("new goal p2");
                     if(!NameChanged) {
                         GoalPlayer = iv.player2.name;
                         NameChanged = true;
@@ -148,6 +149,7 @@ public class ScreenGame implements Screen {
                     }
                 } else {
                     countGoals1++;
+                    System.out.println("new goal p1");
                     if(!NameChanged) {
                         GoalPlayer = iv.player1.name;
                         NameChanged = true;
@@ -208,7 +210,7 @@ public class ScreenGame implements Screen {
                 person2.width() * IMG_RESIZE, person2.height() * IMG_RESIZE, person2.isFlip ? -1 : 1, 1, 0);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
-        iv.batch.setProjectionMatrix(iv.camera2.combined);
+        iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         iv.fontNormal.draw(iv.batch, ":", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100, Align.center, true);
         iv.fontNormal.draw(iv.batch, countGoals1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
@@ -264,7 +266,6 @@ public class ScreenGame implements Screen {
 
     @Override
     public void hide() {
-        saveRecords();
         Gdx.input.setInputProcessor(null);
     }
 
@@ -473,12 +474,13 @@ public class ScreenGame implements Screen {
     }
 
     private void saveRecords() {
-        iv.player1.insertRecord(iv.players);
+        iv.player1.addWinToRecord(iv.players);
         Player.sortTableOfRecords(iv.players);
-        iv.player2.insertRecord(iv.players);
+        iv.player2.addWinToRecord(iv.players);
         Player.sortTableOfRecords(iv.players);
         Player.saveTableOfRecords(iv.players);
     }
+
     private boolean isGoal() {
         return ball.getY() <= FLOOR + ball.r + 0.1f;
     }

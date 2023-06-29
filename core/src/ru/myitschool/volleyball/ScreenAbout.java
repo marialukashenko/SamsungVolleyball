@@ -7,11 +7,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
+/**
+ * класс с описанием игры
+ */
 public class ScreenAbout implements Screen {
     private final VolleyBall iv;
+
     private final Texture imgBackGround;
     private final ImageButton btnBack;
-    private Texture imgBack;
+    private final Texture imgBack;
 
     public ScreenAbout(VolleyBall volleyBall) {
         iv = volleyBall;
@@ -41,16 +45,19 @@ public class ScreenAbout implements Screen {
 
         // отрисовка всей графики
         iv.camera.update();
-        iv.batch.setProjectionMatrix(iv.camera2.combined);
+        // рисуем изображения
+        iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
-        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH * 100, SCR_HEIGHT * 100);
+        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
+        iv.batch.end();
+        // рисуем тексты
+        iv.batch.setProjectionMatrix(iv.cameraForText.combined);
+        iv.batch.begin();
         iv.fontSmall.draw(iv.batch, iv.text.get("ABOUTTEXT")[iv.lang], 220, 500);
         iv.fontTitle.draw(iv.batch, iv.text.get("ABOUT")[iv.lang], 20, SCR_HEIGHT*100-20);
         iv.batch.end();
-        iv.batch.setProjectionMatrix(iv.camera.combined);
-        iv.batch.begin();
-        iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
-        iv.batch.end();
+
     }
 
     @Override
