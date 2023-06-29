@@ -155,7 +155,7 @@ public class DynamicBodyPlayer {
     }
 
     void useAi(DynamicBodyBall ball) {
-        if (state == GO) {
+        if (state == GO && (getX() < SCR_WIDTH/2 && ball.getX()<SCR_WIDTH/2 || getX()>SCR_WIDTH/2 && ball.getX()>SCR_WIDTH/2)) {
             Vector2 ballPosition = ball.body.getPosition();
             if (near(getX(), ballPosition.x, r*2) && near(getY(), ballPosition.y, r*4)) {
                 timeStartJump = TimeUtils.millis();
