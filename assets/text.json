@@ -16,7 +16,7 @@
   "MUSIC OFF": ["MUSIC OFF", "МУЗЫКА ВЫКЛ", "MUSIK AUS", "МУЗОН ВЫКЛ", "MUSICA DESACTIVADA"],
   "STYLE": ["STYLE", "СТИЛЬ", "STIL", "ПРИКИД", "ESTILO"],
   "PLAYERS": ["PLAYERS", "ИГРОКИ", "SPIELER", "ГАМЕРЫ", "JUGADORES"],
-  "WINS" : [" wins!", " выиграл!", "GEWANNST", "РАЗНЁС", "VICTORIAS"],
+  "WINS" : [" wins!", " выиграл!", " gewannst", " зарулил", " victorias"],
   "REPLAY": ["REPLAY", "ЗАНОВО", "NEU", "ЕЩЁ КАТКУ", "DE NUEVO"],
   "GOAL": ["GOAL!", "ГОЛ!", "TOR", "ГОЛ!", "GOL!"],
   "VS": ["vs", "vs", "vs", "vs", "vs"],
