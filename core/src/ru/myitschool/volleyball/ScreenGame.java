@@ -23,49 +23,55 @@ public class ScreenGame implements Screen {
     private VolleyBall iv;
 
     // ресурсы
-    private Sound soundBallHit, soundGoal, soundWin;
+    private Sound sndBallHit;
+    private Sound sndGoal;
+    private Sound sndWin;
     private Texture imgBackGround;
     private Texture imgBall;
     private Texture imgShadow;
     private Texture imgNet;
     private Texture imgBack;
-    public Texture imgPersonAtlas1, imgPersonAtlas2;
-    public TextureRegion[] imgPerson1 = new TextureRegion[20];
-    public TextureRegion[] imgPerson2 = new TextureRegion[20];
+    private Texture imgPersonAtlas1;
+    private Texture imgPersonAtlas2;
+    private TextureRegion[] imgPerson1 = new TextureRegion[20];
+    private TextureRegion[] imgPerson2 = new TextureRegion[20];
 
     // статические тела
     private StaticBody[] block = new StaticBody[4];
     private StaticBody net;
     private StaticBody net2;
+
     // динамические тела
     private DynamicBodyPlayer person1, person2;
     private DynamicBodyBall ball;
 
     // всё, что связано с голами
     private long timeGoal;
-    private long timeInterval = 3000;
+    private final long timeGoalsInterval = 3000;
     private int countGoals1;
     private int countGoals2;
     private boolean isGoal;
     private boolean isWin;
 
+    // константы
     private static final float BALL_START_Y = 2.6f; // мяч стартует в этой точке
     private static final float NET_HEIGHT = 4f; // высота сетки
     private static final float FLOOR = 0.6f; // высота пола
-    private static final float RADIUS_PERSON = 0.5f; // радиус колобка
+    private static final float RADIUS_PERSON = 0.6f; // радиус колобка
     private static final float IMG_RESIZE = 1.7f; // коэффициент изменения размера картинки относительно размера шара
 
+    // кнопки
     private ImageButton btnBack;
     private TextButton btnRerun;
-    private boolean startGame = true;
 
     private long timeShowGame, timeStartGameInterval = 300;
     private long timeSoundPlay, timeSoundInterval = 100;
     private String winner="";
     private boolean isWinRecorded;
+    private boolean startGame = true;
 
-    String GoalPlayer;
-    boolean NameChanged = false;
+    private String GoalPlayer;
+    private boolean NameChanged = false;
 
     public ScreenGame(VolleyBall volleyBall) {
         iv = volleyBall;
@@ -73,9 +79,9 @@ public class ScreenGame implements Screen {
         imgShadow = new Texture("shadow.png");
         imgBack = new Texture("back.png");
 
-        soundBallHit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
-        soundGoal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
-        soundWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
+        sndBallHit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
+        sndGoal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
+        sndWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
 
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnRerun = new TextButton(iv.fontLarge, iv.text.get("REPLAY")[iv.lang], 20, SCR_HEIGHT * 100 - 30);
@@ -119,7 +125,7 @@ public class ScreenGame implements Screen {
             }
         }
         if (isGoal && !isWin) {
-            if (TimeUtils.millis() > timeGoal + timeInterval) {
+            if (TimeUtils.millis() > timeGoal + timeGoalsInterval) {
                 isGoal = false;
                 if (ball.getX() < SCR_WIDTH / 2) {
                     ball.body.setTransform(SCR_WIDTH / 4 * 3, BALL_START_Y, 0);
@@ -143,9 +149,9 @@ public class ScreenGame implements Screen {
                     }
                     if (countGoals2 == 5) {
                         isWin = true;
-                        if (iv.soundOn) soundWin.play();
+                        if (iv.soundOn) sndWin.play();
                     } else {
-                        if (iv.soundOn) soundGoal.play();
+                        if (iv.soundOn) sndGoal.play();
                     }
                 } else {
                     countGoals1++;
@@ -156,16 +162,16 @@ public class ScreenGame implements Screen {
                     }
                     if (countGoals1 == 5) {
                         isWin = true;
-                        if (iv.soundOn) soundWin.play();
+                        if (iv.soundOn) sndWin.play();
                     } else {
-                        if (iv.soundOn) soundGoal.play();
+                        if (iv.soundOn) sndGoal.play();
                     }
                 }
             } else {
                 if ((person1.overlap(ball) || person2.overlap(ball)) && !isWin) {
                     if (timeSoundPlay + timeSoundInterval < TimeUtils.millis()) {
                         timeSoundPlay = TimeUtils.millis();
-                        if (iv.soundOn) soundBallHit.play();
+                        if (iv.soundOn) sndBallHit.play();
                     }
                 }
             }
@@ -193,15 +199,15 @@ public class ScreenGame implements Screen {
         iv.camera.update();
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
-        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        //iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         if(iv.gameStyle == STYLE_WINTER) {
             iv.batch.draw(imgNet, SCR_WIDTH / 2 - 1.2f, 0.1f, 2.4f, NET_HEIGHT);
         } else {
             iv.batch.draw(imgNet, SCR_WIDTH / 2 - 0.6f, 0.1f, 1.2f, NET_HEIGHT);
         }
-        iv.batch.draw(imgShadow, ball.scrX(), FLOOR /2, ball.width(), ball.height() / 4);
-        iv.batch.draw(imgShadow, person1.scrX(), FLOOR /2, person1.width() * IMG_RESIZE, person1.height() / 4);
-        iv.batch.draw(imgShadow, person2.scrX(), FLOOR /2, person2.width() * IMG_RESIZE, person2.height() / 4);
+        iv.batch.draw(imgShadow, ball.scrX(), FLOOR /2 +0.25f, ball.width(), ball.height() / 4);
+        iv.batch.draw(imgShadow, person1.scrX()+0.25f, FLOOR /2+0.25f, person1.width() * IMG_RESIZE - 0.5f, person1.height() / 2);
+        iv.batch.draw(imgShadow, person2.scrX()+0.25f, FLOOR /2+0.25f, person2.width() * IMG_RESIZE - 0.5f, person2.height() / 2);
 
         iv.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 200, 200, false, false);
         iv.batch.draw(imgPerson1[person1.faza], person1.scrX(), person1.scrY(), person1.width() * IMG_RESIZE/2, person1.height() * IMG_RESIZE/2,
@@ -278,9 +284,9 @@ public class ScreenGame implements Screen {
         imgNet.dispose();
         imgBack.dispose();
         imgShadow.dispose();
-        soundBallHit.dispose();
-        soundGoal.dispose();
-        soundWin.dispose();
+        sndBallHit.dispose();
+        sndGoal.dispose();
+        sndWin.dispose();
     }
 
     class MyInput implements InputProcessor {

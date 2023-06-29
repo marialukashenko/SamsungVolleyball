@@ -19,15 +19,31 @@ public class DynamicBodyPlayer {
     public Body body;
     public float r;
     private float lowLevel; // пол
-    private static final int GO = 0, JUMP = 1, FALL = 2, STAY = 3;
+    // состояния
+    private static final int GO = 0;
+    private static final int JUMP = 1;
+    private static final int FALL = 2;
+    private static final int STAY = 3;
     private int state;
-    private long timeStartJump, timeJump = 200;
-    private long timeLastFaza, timeFazaInterval = 50;
-    public int faza, nFaz = 17, fazaStay = 17, fazaJumpLeft = 18, fazaJumpRight = 19;
+
+    // время и интервал прыжка
+    private long timeStartJump;
+    private static final long TIME_JUMP = 200;
+
+    // всё про фазы
+    private long timeLastFaza;
+    private static final long TIME_FAZA_INTERVAL = 50;
+    public int faza;
+    private static final int N_FAZ = 17;
+    private static final int FAZA_STAY = 17;
+    private static final int FAZA_JUMP_LEFT = 18;
+    private static final int FAZA_JUMP_RIGHT = 19;
+
     public boolean isFlip;
-    public static final boolean LEFT = true, RIGHT = false;
-    private boolean side;
-    private float targetX, targetY;
+    public static final boolean LEFT = true;
+    public static final boolean RIGHT = false;
+    private final boolean side;
+    private float targetX;
 
     public DynamicBodyPlayer(World world, float x, float y, float radius, boolean side) {
         r = radius;
@@ -55,6 +71,7 @@ public class DynamicBodyPlayer {
         circle.dispose();
     }
 
+    // касание колобка
     public void touch(float tx, float ty) {
         if (state != GO && state != STAY) return;
         targetX = tx;
@@ -81,7 +98,7 @@ public class DynamicBodyPlayer {
     }
 
     public void move() {
-        if (timeStartJump + timeJump < TimeUtils.millis() && state == JUMP) {
+        if (timeStartJump + TIME_JUMP < TimeUtils.millis() && state == JUMP) {
             body.setLinearVelocity(body.getLinearVelocity().x > 5 ? 5 : body.getLinearVelocity().x, -4.9f);
             state = FALL;
         }
@@ -99,28 +116,30 @@ public class DynamicBodyPlayer {
         body.setAngularVelocity(0);
     }
 
-    boolean near(float x1, float x2, float dx){
+    // определяем, рядом ли объект
+    private boolean near(float x1, float x2, float dx){
         return x1 > x2-dx && x1 < x2+dx;
     }
 
+    // смена фазы
     private void changeFaza() {
         if (state == GO) {
             if (Math.abs(body.getLinearVelocity().x) < 0.01) {
                 isFlip = side;
-                faza = fazaStay;
-            } else if (timeLastFaza + timeFazaInterval < TimeUtils.millis()) {
+                faza = FAZA_STAY;
+            } else if (timeLastFaza + TIME_FAZA_INTERVAL < TimeUtils.millis()) {
                 isFlip = body.getLinearVelocity().x > 0;
-                if (++faza >= nFaz) faza = 0;
+                if (++faza >= N_FAZ) faza = 0;
                 timeLastFaza = TimeUtils.millis();
             }
         }
         if (state == JUMP && body.getLinearVelocity().x > 0) {
-            if (isFlip) faza = fazaJumpRight;
-            else faza = fazaJumpLeft;
+            if (isFlip) faza = FAZA_JUMP_RIGHT;
+            else faza = FAZA_JUMP_LEFT;
         }
         if (state == JUMP && body.getLinearVelocity().x < 0) {
-            if (isFlip) faza = fazaJumpLeft;
-            else faza = fazaJumpRight;
+            if (isFlip) faza = FAZA_JUMP_LEFT;
+            else faza = FAZA_JUMP_RIGHT;
         }
     }
 
@@ -133,15 +152,11 @@ public class DynamicBodyPlayer {
     }
 
     public float scrX() {
-        return body.getPosition().x - r - 0.35f;
+        return body.getPosition().x - r;
     }
 
     public float scrY() {
-        return body.getPosition().y - r - 0.35f;
-    }
-
-    public float getScrWidth(){
-        return width()*0.85f;
+        return body.getPosition().y - r;
     }
 
     public float width() {
@@ -160,6 +175,7 @@ public class DynamicBodyPlayer {
         return (getX() - b.getX()) * (getX() - b.getX()) + (getY() - b.getY()) * (getY() - b.getY()) <= (r + b.r) * (r + b.r);
     }
 
+    // компьютерный интеллект
     public void useAi(DynamicBodyBall ball) {
         if (state == GO && (getX() < SCR_WIDTH/2 && ball.getX()<SCR_WIDTH/2 || getX()>SCR_WIDTH/2 && ball.getX()>SCR_WIDTH/2)) {
             Vector2 ballPosition = ball.body.getPosition();

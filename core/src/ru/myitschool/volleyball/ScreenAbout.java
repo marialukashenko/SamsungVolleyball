@@ -54,7 +54,7 @@ public class ScreenAbout implements Screen {
         // рисуем тексты
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
-        iv.fontSmall.draw(iv.batch, iv.text.get("ABOUTTEXT")[iv.lang], 220, 500);
+        iv.fontSmall.draw(iv.batch, iv.text.get("ABOUTTEXT")[iv.lang], 150, 600);
         iv.fontTitle.draw(iv.batch, iv.text.get("ABOUT")[iv.lang], 20, SCR_HEIGHT*100-20);
         iv.batch.end();
 
