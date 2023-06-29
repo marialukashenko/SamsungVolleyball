@@ -58,7 +58,8 @@ public class ScreenGame implements Screen {
     private static final float NET_HEIGHT = 4f; // высота сетки
     private static final float FLOOR = 0.6f; // высота пола
     private static final float RADIUS_PERSON = 0.6f; // радиус колобка
-    private static final float IMG_RESIZE = 1.7f; // коэффициент изменения размера картинки относительно размера шара
+    private static final float IMG_RESIZE = 1.6f; // коэффициент изменения размера картинки относительно размера шара
+    private static final float SHADOW_MARG = 0.5f; // смещение тени
 
     // кнопки
     private ImageButton btnBack;
@@ -188,9 +189,11 @@ public class ScreenGame implements Screen {
             if(countGoals1 > countGoals2) {
                 winner = iv.player1.name + iv.text.get("WINS")[iv.lang];
                 iv.player1.wins++;
+                iv.player1.addWinToRecord(iv.players);
             } else {
                 winner = iv.player2.name + iv.text.get("WINS")[iv.lang];
                 iv.player2.wins++;
+                iv.player2.addWinToRecord(iv.players);
             }
             isWinRecorded = true;
         }
@@ -199,21 +202,22 @@ public class ScreenGame implements Screen {
         iv.camera.update();
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
-        //iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
+        iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         if(iv.gameStyle == STYLE_WINTER) {
             iv.batch.draw(imgNet, SCR_WIDTH / 2 - 1.2f, 0.1f, 2.4f, NET_HEIGHT);
         } else {
             iv.batch.draw(imgNet, SCR_WIDTH / 2 - 0.6f, 0.1f, 1.2f, NET_HEIGHT);
         }
-        iv.batch.draw(imgShadow, ball.scrX(), FLOOR /2 +0.25f, ball.width(), ball.height() / 4);
-        iv.batch.draw(imgShadow, person1.scrX()+0.25f, FLOOR /2+0.25f, person1.width() * IMG_RESIZE - 0.5f, person1.height() / 2);
-        iv.batch.draw(imgShadow, person2.scrX()+0.25f, FLOOR /2+0.25f, person2.width() * IMG_RESIZE - 0.5f, person2.height() / 2);
+        iv.batch.draw(imgShadow, ball.scrX(), FLOOR /2, ball.width(), ball.height() / 4);
+        iv.batch.draw(imgShadow, person1.scrX()+SHADOW_MARG/2, FLOOR /2, person1.width() * IMG_RESIZE - SHADOW_MARG, person1.height() / 4);
+        iv.batch.draw(imgShadow, person2.scrX()+SHADOW_MARG/2, FLOOR /2, person2.width() * IMG_RESIZE - SHADOW_MARG, person2.height() / 4);
 
         iv.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 200, 200, false, false);
         iv.batch.draw(imgPerson1[person1.faza], person1.scrX(), person1.scrY(), person1.width() * IMG_RESIZE/2, person1.height() * IMG_RESIZE/2,
                 person1.width() * IMG_RESIZE, person1.height() * IMG_RESIZE, person1.isFlip ? -1 : 1, 1, 0);
         iv.batch.draw(imgPerson2[person2.faza], person2.scrX(), person2.scrY(), person2.width() * IMG_RESIZE/2, person2.height() * IMG_RESIZE/2,
                 person2.width() * IMG_RESIZE, person2.height() * IMG_RESIZE, person2.isFlip ? -1 : 1, 1, 0);
+
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
@@ -488,6 +492,6 @@ public class ScreenGame implements Screen {
     }
 
     private boolean isGoal() {
-        return ball.getY() <= FLOOR + ball.r + 0.1f;
+        return ball.getY() <= FLOOR + ball.r + 0.2f;
     }
 }

@@ -63,9 +63,9 @@ public class DynamicBodyPlayer {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = circle;
 
-        fixtureDef.density = 5f;
+        fixtureDef.density = 3f;
         fixtureDef.friction = 0.4f;
-        fixtureDef.restitution = 0.1f;
+        fixtureDef.restitution = 0.2f;
 
         Fixture fixture = body.createFixture(fixtureDef);
         circle.dispose();
@@ -152,11 +152,11 @@ public class DynamicBodyPlayer {
     }
 
     public float scrX() {
-        return body.getPosition().x - r;
+        return body.getPosition().x - r - 0.35f;
     }
 
     public float scrY() {
-        return body.getPosition().y - r;
+        return body.getPosition().y - r - 0.25f;
     }
 
     public float width() {
