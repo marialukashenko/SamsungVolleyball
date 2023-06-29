@@ -463,6 +463,7 @@ public class ScreenGame implements Screen {
                 break;
             case STYLE_KITCHEN:
                 net = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.1f, NET_HEIGHT, null);
+                net2 = new StaticBody(iv.world, SCR_WIDTH / 2, FLOOR+0.3f, 0.2f, 1f, new float[]{0,0.5f, -0.4f,-0.5f, 0.4f,-0.5f});
                 ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
                 break;
             case STYLE_GRAVE:
@@ -481,14 +482,6 @@ public class ScreenGame implements Screen {
         ball.body.setAngularVelocity(0);
         ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, 0);
         setPersonsPositionToStart();
-    }
-
-    private void saveRecords() {
-        iv.player1.addWinToRecord(iv.players);
-        Player.sortTableOfRecords(iv.players);
-        iv.player2.addWinToRecord(iv.players);
-        Player.sortTableOfRecords(iv.players);
-        Player.saveTableOfRecords(iv.players);
     }
 
     private boolean isGoal() {
