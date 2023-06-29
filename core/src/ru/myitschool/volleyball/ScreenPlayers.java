@@ -130,6 +130,7 @@ public class ScreenPlayers implements Screen {
         if(isEnterName1 || isEnterName2){
             inputKeyboard.draw(iv.batch);
         }
+        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYERS")[iv.lang], 20, SCR_HEIGHT*100-20);
         iv.batch.end();
     }
 

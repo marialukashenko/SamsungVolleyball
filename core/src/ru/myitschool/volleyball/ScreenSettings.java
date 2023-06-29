@@ -8,25 +8,25 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
 public class ScreenSettings implements Screen {
-    private VolleyBall iv;
-    private Texture imgBackGround;
-    private Texture imgBack;
-    private TextButton btnMusic;
-    private TextButton btnSound;
-    private TextButton btnBackgrounds;
-    private TextButton btnPlayers;
-    private TextButton btnLanguage;
-    private ImageButton btnBack;
+    private final VolleyBall iv;
+    private final Texture imgBackGround;
+    private final Texture imgBack;
+    private final TextButton btnMusic;
+    private final TextButton btnSound;
+    private final TextButton btnBackgrounds;
+    private final TextButton btnPlayers;
+    private final TextButton btnLanguage;
+    private final ImageButton btnBack;
 
     public ScreenSettings(VolleyBall volleyBall) {
         iv = volleyBall;
         imgBackGround = new Texture("screenbgsettings.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
-        btnMusic = new TextButton(iv.fontLarge, "MUSIC ON", 600);
-        btnSound = new TextButton(iv.fontLarge, "SOUND ON", 500);
-        btnBackgrounds = new TextButton(iv.fontLarge, "BACKGROUNDS", 400);
-        btnPlayers = new TextButton(iv.fontLarge, "PLAYERS", 300);
+        btnMusic = new TextButton(iv.fontLarge, iv.text.get("MUSIC ON")[iv.lang], 600);
+        btnSound = new TextButton(iv.fontLarge, iv.text.get("SOUND ON")[iv.lang], 500);
+        btnBackgrounds = new TextButton(iv.fontLarge, iv.text.get("STYLE")[iv.lang], 400);
+        btnPlayers = new TextButton(iv.fontLarge, iv.text.get("PLAYERS")[iv.lang], 300);
         btnLanguage = new TextButton(iv.fontLarge, iv.text.get("LANGUAGE")[iv.lang], 200);
         loadSettings();
     }
@@ -81,6 +81,7 @@ public class ScreenSettings implements Screen {
         btnBackgrounds.font.draw(iv.batch, btnBackgrounds.text, btnBackgrounds.x, btnBackgrounds.y);
         btnPlayers.font.draw(iv.batch, btnPlayers.text, btnPlayers.x, btnPlayers.y);
         btnLanguage.font.draw(iv.batch, btnLanguage.text, btnLanguage.x, btnLanguage.y);
+        iv.fontTitle.draw(iv.batch, iv.text.get("SETTINGS")[iv.lang], 20, SCR_HEIGHT*100-20);
         iv.batch.end();
     }
 

@@ -11,6 +11,7 @@ public class ScreenRecords implements Screen {
     private final VolleyBall iv;
     private final Texture imgBackGround;
     private final ImageButton btnBack;
+    private final TextButton btnClearTable;
     private Texture imgBack;
     private String textAbout = "";
 
@@ -19,6 +20,7 @@ public class ScreenRecords implements Screen {
         imgBackGround = new Texture("screenbgrecords.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
+        btnClearTable = new TextButton(iv.fontNormal, iv.text.get("CLEAR RECORDS")[iv.lang], 500, 50);
     }
 
     @Override
@@ -36,6 +38,9 @@ public class ScreenRecords implements Screen {
             if (btnBack.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenIntro());
             }
+            if(btnClearTable.hit(iv.touch.x, iv.touch.y)) {
+                Player.clearTableOfRecords(iv.players);
+            }
         }
 
         // события
@@ -45,8 +50,10 @@ public class ScreenRecords implements Screen {
         iv.batch.setProjectionMatrix(iv.camera2.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH * 100, SCR_HEIGHT * 100);
+        iv.fontTitle.draw(iv.batch, iv.text.get("BEST PLAYERS")[iv.lang], 20, SCR_HEIGHT*100-20);
         iv.fontNormal.draw(iv.batch, "Best Players", 200, 600);
         iv.fontSmall.draw(iv.batch, Player.tableOfRecordsToString(iv.players, iv.fontSmall), 200, 500);
+        btnClearTable.font.draw(iv.batch, btnClearTable.text, btnClearTable.x, btnClearTable.y);
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();

@@ -79,11 +79,18 @@ public class Player {
         try {
             Preferences pref = Gdx.app.getPreferences("Records iVolleyBall");
             for (int i = 0; i < players.length; i++) {
-                if(pref.contains("name"+i))	players[i].name = pref.getString("name"+i, "Noname");
+                if(pref.contains("name"+i))	players[i].name = pref.getString("name"+i, "No`name");
                 if(pref.contains("wins"+i)) players[i].wins = pref.getInteger("wins"+i, 0);
             }
         } catch (Exception e) {
             // exception
+        }
+    }
+
+    public static void clearTableOfRecords(Player[] players){
+        for (int i = 0; i < players.length; i++) {
+            players[i].name = "No`name";
+            players[i].wins = 0;
         }
     }
 

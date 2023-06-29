@@ -31,6 +31,7 @@ public class VolleyBall extends Game {
     public BitmapFont fontNormal;
     public BitmapFont fontSmall;
     public BitmapFont fontLarge;
+    public BitmapFont fontTitle;
 
     private ScreenIntro screenIntro;
     private ScreenGame screenGame;
@@ -126,6 +127,9 @@ public class VolleyBall extends Game {
         fontNormal = generator.generateFont(parameter);
         parameter.size = 40;
         fontLarge = generator.generateFont(parameter);
+        parameter.color = new Color(1, 0.4f, 0.1f, 1);
+        parameter.size = 30;
+        fontTitle = generator.generateFont(parameter);
         generator.dispose();
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("minnie.otf"));

@@ -7,6 +7,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Align;
 
 public class ScreenPickStyle implements Screen {
     private VolleyBall iv;
@@ -66,6 +67,11 @@ public class ScreenPickStyle implements Screen {
         for (int i = 0; i < NUM_STYLES; i++) {
             iv.batch.draw(btnBackground[i].img, btnBackground[i].x, btnBackground[i].y, btnBackground[i].width, btnBackground[i].height);
         }
+        iv.batch.end();
+
+        iv.batch.setProjectionMatrix(iv.camera2.combined);
+        iv.batch.begin();
+        iv.fontTitle.draw(iv.batch, iv.text.get("STYLE")[iv.lang], 20, SCR_HEIGHT*100-20);
         iv.batch.end();
     }
 

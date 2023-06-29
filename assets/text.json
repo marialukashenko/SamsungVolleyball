@@ -1,9 +1,10 @@
 {
+  "INCREDIBLE VOLLEYBALL": ["INCREDIBLE VOLLEYBALL","INCREDIBLE VOLLEYBALL","INCREDIBLE VOLLEYBALL","INCREDIBLE VOLLEYBALL","INCREDIBLE VOLLEYBALL"],
   "PLAY": ["PLAY","ИГРАТЬ", "SPIELE", "ГАМАТЬ", "JUGAR"],
   "SETTINGS": ["SETTINGS","НАСТРОЙКИ", "EINSTELLUNG", "СЕТТИНГИ", "CONFIGURACION"],
   "BEST PLAYERS": ["BEST PLAYERS", "ЧЕМПИОНЫ", "CHAMPIONS", "ТОПЧИКИ", "MEJORES JUGADORES"],
   "ABOUT": ["ABOUT", "ОБ ИГРЕ", "BEIM SPIEL", "ОПИСАЛОВО", "ACERCA DE"],
-  "EXIT": ["EXIT", "ВЫХОД", "AUSGANG", "ВЫХОД", "SALIR"],
+  "EXIT": ["EXIT", "ВЫХОД", "AUSGANG", "СВАЛИТЬ", "SALIR"],
   "ABOUTTEXT": ["Incredible Volleyball is an\napplication that is a classic\nvolleyball game for two.\n\nThe goal of the game\nis to win volleyball.",
                 "IncredibleVolleyball - приложение,\nпредставляющее собой\nклассическую игру-волейбол на двоих.\n\nЦель игры - победить\nв волейбол.",
                 "Incredible Volleyball ist\neine Anwendung, die ein\nklassisches Volleyballspiel\nfur zwei Personen darstellt.\n\nDas Ziel des Spiels ist es,\nVolleyball zu gewinnen.",
@@ -24,6 +25,7 @@
   "PLAYER 2": ["PLAYER 2", "ИГРОК 2", "SPIELER 2", "ГАМЕР 2", "JUGADOR 2"],
   "COMPUTER": ["Computer", "Компьютер", "Computer", "Комп", "Computadora"],
   "HUMAN": ["Human", "Человек", "Mecnsh", "Челик", "Humano"],
-  "NONAME": ["No name", "Некто", "Jemand", "Ноунейм", "Sin nombre"],
-  "RECORDS": ["Best players", "Лучшие игроки", "Spitzenspieler", "Топчики", "Records"]
+  "NONAME": ["No name", "Некто", "Jemand", "Нонейм", "Sin nombre"],
+  "RECORDS": ["Best players", "Лучшие игроки", "Spitzenspieler", "Топчики", "Records"],
+  "CLEAR RECORDS": ["CLEAR RECORDS", "Очистить рекорды", "KLARE AUFZEICHNUNGEN", "ВСЁ СТЕРЕТЬ", "BORRAR REGISTROS"]
 }

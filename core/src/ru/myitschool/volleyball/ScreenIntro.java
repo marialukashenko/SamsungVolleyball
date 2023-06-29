@@ -6,6 +6,7 @@ import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -75,6 +76,7 @@ public class ScreenIntro implements Screen {
         btnRecords.font.draw(iv.batch, btnRecords.text, btnRecords.x, btnRecords.y);
         btnAbout.font.draw(iv.batch, btnAbout.text, btnAbout.x, btnAbout.y);
         btnExit.font.draw(iv.batch, btnExit.text, btnExit.x, btnExit.y);
+        iv.fontTitle.draw(iv.batch, iv.text.get("INCREDIBLE VOLLEYBALL")[iv.lang], 0, SCR_HEIGHT*100-20, SCR_WIDTH*100, Align.center, false);
         iv.batch.end();
     }
 
