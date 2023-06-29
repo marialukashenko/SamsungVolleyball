@@ -16,7 +16,7 @@
   "PLAYERS": ["PLAYERS", "ИГРОКИ"],
   "WINS" : [" wins!", " выиграл!"],
   "REPLAY": ["REPLAY", "ЗАНОВО"],
-  "SCORES": [" scores!", " забивает!"],
+  "GOAL": ["GOAL!", "ГОЛ!"],
   "VS": ["vs", "vs"],
   "PLAYER 1": ["PLAYER 1", "ИГРОК 1"],
   "PLAYER 2": ["PLAYER 2", "ИГРОК 2"],

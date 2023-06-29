@@ -194,9 +194,7 @@ public class ScreenGame implements Screen {
         iv.fontNormal.draw(iv.batch, countGoals1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
         iv.fontNormal.draw(iv.batch, countGoals2 + "", SCR_WIDTH * 100 / 2 + 50, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.left, true);
         if (isGoal && !isWin) {
-//            String Scorer = GoalPlayer + iv.text.get("SCORE")[iv.lang];
-//            System.out.println(GoalPlayer);
-            iv.fontLarge.draw(iv.batch, GoalPlayer + iv.text.get("SCORES")[iv.lang], 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
+            iv.fontLarge.draw(iv.batch, iv.text.get("GOAL")[iv.lang], 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
             NameChanged = false;
         }
         if (isWin) {
