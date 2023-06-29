@@ -61,6 +61,8 @@ public class VolleyBall extends Game {
     public static final int LANG_EN = 0;
     public static final int LANG_RU = 1;
     public static final int LANG_DE = 2;
+    public static final int LANG_PO = 3;
+    public static final int LANG_ES = 4;
 
     @Override
     public void create() {

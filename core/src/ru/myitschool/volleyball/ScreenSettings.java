@@ -60,7 +60,7 @@ public class ScreenSettings implements Screen {
             }
             if (btnLanguage.hit(iv.touch.x, iv.touch.y)) {
                 ++iv.lang;
-                if(iv.lang > LANG_RU){
+                if(iv.lang > LANG_ES){
                     iv.lang = LANG_EN; // меняем лангуагу
                 }
                 updateButtons();
