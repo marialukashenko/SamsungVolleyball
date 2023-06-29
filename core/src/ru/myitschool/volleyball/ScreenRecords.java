@@ -40,6 +40,7 @@ public class ScreenRecords implements Screen {
             }
             if(btnClearTable.hit(iv.touch.x, iv.touch.y)) {
                 Player.clearTableOfRecords(iv.players);
+                Player.saveTableOfRecords(iv.players);
             }
         }
 

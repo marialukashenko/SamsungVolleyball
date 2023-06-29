@@ -15,10 +15,14 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
-
+/**
+ * главный экран игры
+ */
 public class ScreenGame implements Screen {
 
     private VolleyBall iv;
+
+    // ресурсы
     private Sound soundBallHit, soundGoal, soundWin;
     private Texture imgBackGround;
     private Texture imgBall;
@@ -29,12 +33,15 @@ public class ScreenGame implements Screen {
     public TextureRegion[] imgPerson1 = new TextureRegion[20];
     public TextureRegion[] imgPerson2 = new TextureRegion[20];
 
+    // статические тела
     private StaticBody[] block = new StaticBody[4];
     private StaticBody net;
     private StaticBody net2;
+    // динамические тела
     private DynamicBodyPlayer person1, person2;
     private DynamicBodyBall ball;
 
+    // всё, что связано с голами
     private long timeGoal;
     private long timeInterval = 3000;
     private int countGoals1;
