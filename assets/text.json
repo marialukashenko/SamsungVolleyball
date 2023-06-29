@@ -23,7 +23,7 @@
   "VS": ["vs", "vs", "vs", "vs", "vs"],
   "PLAYER 1": ["PLAYER 1", "ИГРОК 1", "SPIELER 1", "ГАМЕР 1", "JUGADOR 1"],
   "PLAYER 2": ["PLAYER 2", "ИГРОК 2", "SPIELER 2", "ГАМЕР 2", "JUGADOR 2"],
-  "COMPUTER": ["Computer", "Компьютер", "Computer", "Комп", "Computadora"],
+  "COMPUTER": ["Computer", "Компьютер", "Computer", "Комп", "Ordenador"],
   "HUMAN": ["Human", "Человек", "Mecnsh", "Челик", "Humano"],
   "NONAME": ["No name", "Некто", "Jemand", "Нонейм", "Sin nombre"],
   "RECORDS": ["Best players", "Лучшие игроки", "Spitzenspieler", "Топчики", "Records"],
