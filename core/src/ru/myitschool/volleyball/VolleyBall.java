@@ -44,8 +44,8 @@ public class VolleyBall extends Game {
     public static final int STYLE_CASTLE = 1;
     public static final int STYLE_STEAM = 2;
     public static final int STYLE_ROOM = 3;
-    public static final int STYLE_KITCHEN = 4;
-    public static final int STYLE_FIELD = 5;
+    public static final int STYLE_GRAVE = 4;
+    public static final int STYLE_WINTER = 5;
     public static final int NUM_STYLES = 6;
     public int gameStyle;
 

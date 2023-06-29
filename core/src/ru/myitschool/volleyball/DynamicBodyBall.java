@@ -34,12 +34,12 @@ public class DynamicBodyBall {
             fixtureDef.restitution = 0.4f;
             Fixture fixture = body.createFixture(fixtureDef);
             box.dispose();
-        } else if(type == VolleyBall.STYLE_CASTLE) { // топор
+        } else if (type == VolleyBall.STYLE_CASTLE) { // топор
              /*float[] verts = {0, 0, 0, -2, 0, -3, -2, -2.2f, -3.5f, -1, -4.3f, 0, -4.7f, 1, -5, 3,
                      -2, 2.5f, -2, 3, -1, 4, -0.5f, 3.5f, 0, 4, 2, 4, 0.2f, 2.5f, 5, -4, 4, -5, 0, 0};*/
-            float[] verts = {-2,-2.2f,  -3.5f,-1,  -5,3,  -1,4,  2,4,  5,-4,  4,-5,  -2,-2.2f};
+            float[] verts = {-2, -2.2f, -3.5f, -1, -5, 3, -1, 4, 2, 4, 5, -4, 4, -5, -2, -2.2f};
 
-            for (int i = 0; i < verts.length; i++) verts[i]/=12;
+            for (int i = 0; i < verts.length; i++) verts[i] /= 12;
             PolygonShape axe = new PolygonShape();
             axe.set(verts);
             FixtureDef fixtureDef = new FixtureDef();
@@ -49,6 +49,16 @@ public class DynamicBodyBall {
             fixtureDef.restitution = 0.3f;
             Fixture fixture = body.createFixture(fixtureDef);
             axe.dispose();
+        } else if (type == VolleyBall.STYLE_GRAVE) { // пентаграмма
+            CircleShape circle = new CircleShape();
+            circle.setRadius(r);
+            FixtureDef fixtureDef = new FixtureDef();
+            fixtureDef.shape = circle;
+            fixtureDef.density = 0.01f;
+            fixtureDef.friction = 0.1f;
+            fixtureDef.restitution = 0.9f;
+            Fixture fixture = body.createFixture(fixtureDef);
+            circle.dispose();
         } else { // мяч
             CircleShape circle = new CircleShape();
             circle.setRadius(r);
@@ -60,6 +70,7 @@ public class DynamicBodyBall {
             Fixture fixture = body.createFixture(fixtureDef);
             circle.dispose();
         }
+        System.out.println(type);
     }
 
     float getX() {

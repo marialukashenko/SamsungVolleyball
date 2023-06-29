@@ -15,8 +15,6 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
-import javax.naming.Name;
-
 
 public class ScreenGame implements Screen {
 
@@ -403,7 +401,7 @@ public class ScreenGame implements Screen {
         net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
 
         if(ball!=null) iv.world.destroyBody(ball.body);
-        System.out.println("style"+iv.gameStyle);
+
         switch (iv.gameStyle) {
             case STYLE_BEACH:
                 ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.gameStyle);
@@ -411,16 +409,16 @@ public class ScreenGame implements Screen {
             case STYLE_CASTLE:
                 ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.gameStyle);
                 break;
-            case STYLE_KITCHEN:
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.STYLE_BEACH);
+            case STYLE_STEAM:
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.gameStyle);
                 break;
             case STYLE_ROOM:
                 ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.STYLE_BEACH);
                 break;
-            case STYLE_STEAM:
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.gameStyle);
+            case STYLE_GRAVE:
+                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, iv.STYLE_GRAVE);
                 break;
-            case STYLE_FIELD:
+            case STYLE_WINTER:
                 net = new StaticBodyBox(iv.world, SCR_WIDTH / 2, netHeight/2+0.1f, 0.2f, netHeight);
                 ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), ballStartY, STYLE_BEACH);
                 break;
