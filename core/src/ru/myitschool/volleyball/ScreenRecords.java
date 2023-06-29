@@ -29,6 +29,7 @@ public class ScreenRecords implements Screen {
 
     @Override
     public void show() {
+        updateButtons();
         Player.loadTableOfRecords(iv.players);
     }
 
@@ -91,6 +92,11 @@ public class ScreenRecords implements Screen {
     public void dispose() {
         imgBack.dispose();
         imgBackGround.dispose();
+    }
+
+    // обновлялка кнопок на случай смены локализации
+    private void updateButtons(){
+        btnClearTable.setText(iv.text.get("CLEAR RECORDS")[iv.lang], true);
     }
 }
 
