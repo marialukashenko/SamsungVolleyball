@@ -80,6 +80,7 @@ public class ScreenGame implements Screen {
         imgShadow = new Texture("shadow.png");
         imgBack = new Texture("back.png");
 
+        // загрузка музыки
         sndBallHit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
         sndGoal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
         sndWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
@@ -87,7 +88,7 @@ public class ScreenGame implements Screen {
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnRerun = new TextButton(iv.fontLarge, iv.text.get("REPLAY")[iv.lang], 20, SCR_HEIGHT * 100 - 30);
 
-        // игровое поле и сетки
+        // стены на игровом поле
         block[0] = new StaticBody(iv.world, SCR_WIDTH / 2, 0, SCR_WIDTH, FLOOR *2, null); // пол
         block[1] = new StaticBody(iv.world, 0, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null); // стена слева
         block[2] = new StaticBody(iv.world, SCR_WIDTH, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null); // стена справа
@@ -441,10 +442,7 @@ public class ScreenGame implements Screen {
             iv.world.destroyBody(net2.body);
             net2 = null;
         }
-        if(ball != null) {
-            iv.world.destroyBody(ball.body);
-            ball = null;
-        }
+
 
         switch (iv.gameStyle) {
             case STYLE_BEACH:
