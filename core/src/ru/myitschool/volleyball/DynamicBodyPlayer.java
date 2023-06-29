@@ -94,6 +94,7 @@ public class DynamicBodyPlayer {
             body.setLinearVelocity(0, body.getLinearVelocity().y);
         }
 
+        body.setAngularVelocity(0);
     }
 
     boolean near(float x1, float x2, float dx){
