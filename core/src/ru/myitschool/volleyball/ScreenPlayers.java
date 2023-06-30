@@ -189,7 +189,7 @@ public class ScreenPlayers implements Screen {
         }
         // переставляем правую кнопку в зависимости от длины слова
         btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, btnTypePlayer2.y);
-        btnNetwork.setText(iv.text.get("NETWORK")[iv.lang], false);
-        btnPVP.setText(iv.text.get("PVP")[iv.lang], false);
+        btnNetwork.setText(iv.text.get("NETWORK")[iv.lang], true);
+        btnPVP.setText(iv.text.get("PVP")[iv.lang], true);
     }
 }
