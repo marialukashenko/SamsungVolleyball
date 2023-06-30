@@ -63,12 +63,12 @@ public class ScreenNetwork implements Screen {
         btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, btnName2.y);
 
         // создаём кнопки и обновляем их содержимое
-        btnPVP = new TextButton(iv.fontTitle, iv.text.get("PVP")[iv.lang], 400);
+        btnPVP = new TextButton(iv.fontTitle, iv.text.get("PVP")[iv.lang], 450);
 
-        btnNetwork = new TextButton(iv.fontTitle, iv.text.get("NETWORK")[iv.lang], 280);
-        btnCreateServer = new TextButton(iv.fontSmall, iv.text.get("Start Server")[iv.lang], 100, 220);
+        btnNetwork = new TextButton(iv.fontTitle, iv.text.get("NETWORK")[iv.lang], 350);
+        btnCreateServer = new TextButton(iv.fontSmall, iv.text.get("Start Server")[iv.lang], 100, 250);
         btnStopServer = new TextButton(iv.fontSmall, iv.text.get("Stop Server")[iv.lang], 100, 100);
-        btnCreateClient = new TextButton(iv.fontSmall, iv.text.get("Start Client")[iv.lang], 100, 220);
+        btnCreateClient = new TextButton(iv.fontSmall, iv.text.get("Start Client")[iv.lang], 100, 250);
         btnStopClient = new TextButton(iv.fontSmall, iv.text.get("Stop Client")[iv.lang], 100, 100);
         btnCreateClient.setXY(SCR_WIDTH*100-100-btnCreateClient.width, btnCreateClient.y);
         btnStopClient.setXY(SCR_WIDTH*100-100-btnStopClient.width, btnStopServer.y);
@@ -200,17 +200,17 @@ public class ScreenNetwork implements Screen {
         // рисуем буквы
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
-        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 1")[iv.lang], 100, 680, SCR_WIDTH*100-100, Align.left, false);
-        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 2")[iv.lang], 0, 680, SCR_WIDTH*100-100, Align.right, false);
+        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 1")[iv.lang], 100, 550, SCR_WIDTH*100-100, Align.left, false);
+        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 2")[iv.lang], 0, 550, SCR_WIDTH*100-100, Align.right, false);
         btnName1.font.draw(iv.batch, btnName1.text, btnName1.x, btnName1.y);
         btnName2.font.draw(iv.batch, btnName2.text, btnName2.x, btnName2.y);
 
         btnNetwork.font.draw(iv.batch, btnNetwork.text, btnNetwork.x, btnNetwork.y);
 
         btnCreateServer.font.draw(iv.batch, btnCreateServer.text, btnCreateServer.x, btnCreateServer.y);
-        iv.fontSmall.draw(iv.batch, iv.text.get("Server's IP: ")[iv.lang] + ipAddressOfServer, 0, btnCreateServer.y-50, SCR_WIDTH*100, Align.center, false);
+        iv.fontSmall.draw(iv.batch, iv.text.get("Server's IP: ")[iv.lang] + ipAddressOfServer, 0, btnCreateServer.y-80, SCR_WIDTH*100, Align.center, false);
         btnCreateClient.font.draw(iv.batch, btnCreateClient.text, btnCreateClient.x, btnCreateClient.y);
-        iv.fontSmall.draw(iv.batch, infoOfConnection, 0, btnCreateServer.y-100, SCR_WIDTH*100, Align.center, false);
+        iv.fontSmall.draw(iv.batch, infoOfConnection, 0, btnCreateServer.y-160, SCR_WIDTH*100, Align.center, false);
         //btnStopServer.font.draw(iv.batch, btnStopServer.text, btnStopServer.x, btnStopServer.y);
         //btnStopClient.font.draw(iv.batch, btnStopClient.text, btnStopClient.x, btnStopClient.y);
 

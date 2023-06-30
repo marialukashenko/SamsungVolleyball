@@ -186,21 +186,21 @@ public class ScreenGame implements Screen {
         }
         // события сетевой игры
         if(iv.isOnLanPlayer1 || iv.isOnLanPlayer2) {
-            if (iv.getScreenPlayers().isServer) {
-                iv.getScreenPlayers().responseFromServer.text = "server";
-                iv.getScreenPlayers().responseFromServer.x = iv.touch.x;
-                iv.getScreenPlayers().responseFromServer.y = iv.touch.y;
+            if (iv.getScreenNetwork().isServer) {
+                iv.getScreenNetwork().responseFromServer.text = "server";
+                iv.getScreenNetwork().responseFromServer.x = iv.touch.x;
+                iv.getScreenNetwork().responseFromServer.y = iv.touch.y;
                 setNetData(ball.body, person1.body, person2.body);
-                iv.getScreenPlayers().requestFromClient = iv.getScreenPlayers().server.getRequest();
-                person2.touch(iv.getScreenPlayers().requestFromClient.x, iv.getScreenPlayers().requestFromClient.y);
-            } else if (iv.getScreenPlayers().isClient) {
-                iv.getScreenPlayers().requestFromClient.text = "client";
-                iv.getScreenPlayers().requestFromClient.x = iv.touch.x;
-                iv.getScreenPlayers().requestFromClient.y = iv.touch.y;
-                iv.getScreenPlayers().client.send();
-                iv.getScreenPlayers().responseFromServer = iv.getScreenPlayers().client.getResponse();
-                person1.touch(iv.getScreenPlayers().responseFromServer.x, iv.getScreenPlayers().responseFromServer.y);
-                getNetData(iv.getScreenPlayers().responseFromServer);
+                iv.getScreenNetwork().requestFromClient = iv.getScreenNetwork().server.getRequest();
+                person2.touch(iv.getScreenNetwork().requestFromClient.x, iv.getScreenNetwork().requestFromClient.y);
+            } else if (iv.getScreenNetwork().isClient) {
+                iv.getScreenNetwork().requestFromClient.text = "client";
+                iv.getScreenNetwork().requestFromClient.x = iv.touch.x;
+                iv.getScreenNetwork().requestFromClient.y = iv.touch.y;
+                iv.getScreenNetwork().client.send();
+                iv.getScreenNetwork().responseFromServer = iv.getScreenNetwork().client.getResponse();
+                person1.touch(iv.getScreenNetwork().responseFromServer.x, iv.getScreenNetwork().responseFromServer.y);
+                getNetData(iv.getScreenNetwork().responseFromServer);
             }
         }
 
@@ -256,26 +256,26 @@ public class ScreenGame implements Screen {
     }
 
     private void setNetData(Body body, Body body1, Body body2) {
-        iv.getScreenPlayers().responseFromServer.bx = body.getPosition().x;
-        iv.getScreenPlayers().responseFromServer.by = body.getPosition().y;
-        iv.getScreenPlayers().responseFromServer.ba = body.getAngle();
-        iv.getScreenPlayers().responseFromServer.bvx = body.getLinearVelocity().x;
-        iv.getScreenPlayers().responseFromServer.bvy = body.getLinearVelocity().y;
-        iv.getScreenPlayers().responseFromServer.bva = body.getAngularVelocity();
-        iv.getScreenPlayers().responseFromServer.p1x = body1.getPosition().x;
-        iv.getScreenPlayers().responseFromServer.p1y = body1.getPosition().y;
-        iv.getScreenPlayers().responseFromServer.p1a = body1.getAngle();
-        iv.getScreenPlayers().responseFromServer.p1vx = body1.getLinearVelocity().x;
-        iv.getScreenPlayers().responseFromServer.p1vy = body1.getLinearVelocity().y;
-        iv.getScreenPlayers().responseFromServer.p1va = body1.getAngularVelocity();
-        iv.getScreenPlayers().responseFromServer.p2x = body2.getPosition().x;
-        iv.getScreenPlayers().responseFromServer.p2y = body2.getPosition().y;
-        iv.getScreenPlayers().responseFromServer.p2a = body2.getAngle();
-        iv.getScreenPlayers().responseFromServer.p2vx = body2.getLinearVelocity().x;
-        iv.getScreenPlayers().responseFromServer.p2vy = body2.getLinearVelocity().y;
-        iv.getScreenPlayers().responseFromServer.p2va = body2.getAngularVelocity();
-        iv.getScreenPlayers().responseFromServer.goals1 = countGoals1;
-        iv.getScreenPlayers().responseFromServer.goals2 = countGoals2;
+        iv.getScreenNetwork().responseFromServer.bx = body.getPosition().x;
+        iv.getScreenNetwork().responseFromServer.by = body.getPosition().y;
+        iv.getScreenNetwork().responseFromServer.ba = body.getAngle();
+        iv.getScreenNetwork().responseFromServer.bvx = body.getLinearVelocity().x;
+        iv.getScreenNetwork().responseFromServer.bvy = body.getLinearVelocity().y;
+        iv.getScreenNetwork().responseFromServer.bva = body.getAngularVelocity();
+        iv.getScreenNetwork().responseFromServer.p1x = body1.getPosition().x;
+        iv.getScreenNetwork().responseFromServer.p1y = body1.getPosition().y;
+        iv.getScreenNetwork().responseFromServer.p1a = body1.getAngle();
+        iv.getScreenNetwork().responseFromServer.p1vx = body1.getLinearVelocity().x;
+        iv.getScreenNetwork().responseFromServer.p1vy = body1.getLinearVelocity().y;
+        iv.getScreenNetwork().responseFromServer.p1va = body1.getAngularVelocity();
+        iv.getScreenNetwork().responseFromServer.p2x = body2.getPosition().x;
+        iv.getScreenNetwork().responseFromServer.p2y = body2.getPosition().y;
+        iv.getScreenNetwork().responseFromServer.p2a = body2.getAngle();
+        iv.getScreenNetwork().responseFromServer.p2vx = body2.getLinearVelocity().x;
+        iv.getScreenNetwork().responseFromServer.p2vy = body2.getLinearVelocity().y;
+        iv.getScreenNetwork().responseFromServer.p2va = body2.getAngularVelocity();
+        iv.getScreenNetwork().responseFromServer.goals1 = countGoals1;
+        iv.getScreenNetwork().responseFromServer.goals2 = countGoals2;
     }
     private void getNetData(MyResponse response) {
         ball.body.setTransform(response.bx, response.by, response.ba);
@@ -332,14 +332,14 @@ public class ScreenGame implements Screen {
     @Override
     public void hide() {
         if(iv.isOnLanPlayer1) {
-            iv.getScreenPlayers().server.server.stop();
-            iv.getScreenPlayers().isServer = false;
+            iv.getScreenNetwork().server.server.stop();
+            iv.getScreenNetwork().isServer = false;
             iv.isOnLanPlayer1 = false;
 
         }
         if(iv.isOnLanPlayer2) {
-            iv.getScreenPlayers().client.client.stop();
-            iv.getScreenPlayers().isClient = false;
+            iv.getScreenNetwork().client.client.stop();
+            iv.getScreenNetwork().isClient = false;
             iv.isOnLanPlayer2 = false;
         }
         Gdx.input.setInputProcessor(null);
