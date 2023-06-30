@@ -29,7 +29,7 @@
   "RECORDS": ["Best players", "Лучшие игроки", "Spitzenspieler", "Топчики", "Records"],
   "CLEAR RECORDS": ["CLEAR RECORDS", "Очистить рекорды", "KLARE AUFZEICHNUNGEN", "ВСЁ СТЕРЕТЬ", "BORRAR REGISTROS"],
   "NETWORK": ["LOCAL NETWORK", "Локальная сеть", "LOKALES NETZWERK", "Локалка", "RED LOCAL"],
-  "PVP": ["GO PVP!!!", "ИГРАЕМ!!!", "Los, PVP!!!", "ГО ПВП!!!", "Vamos, PVP!!!"],
+  "PVP": ["GO PVP!!!", "ИГРАТЬ!!!", "Los, PVP!!!", "ГО ПВП!!!", "Vamos, PVP!!!"],
   "Start Server": ["Start Server","Запустить сервер","Den Server hochfahren","Запустить сервер","Arrancar el servidor"],
   "Stop Server": ["Stop Server","Остановить сервер","Den Server stoppen","Стопануть сервер","Detener el servidor"],
   "Start Client": ["Start Client","Запустить клиент","Den Client starten","Запустить клиент","Iniciar el cliente"],
