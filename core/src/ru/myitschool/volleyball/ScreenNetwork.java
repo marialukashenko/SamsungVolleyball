@@ -253,8 +253,12 @@ public class ScreenNetwork implements Screen {
 
     // обновляем надписи на кнопках
     private void updateButtons(){
-        btnNetwork.setText(iv.text.get("NETWORK")[iv.lang], false);
-        btnPVP.setText(iv.text.get("PVP")[iv.lang], false);
+        btnNetwork.setText(iv.text.get("NETWORK")[iv.lang], true);
+        btnPVP.setText(iv.text.get("PVP")[iv.lang], true);
+        btnCreateServer.setText(iv.text.get("Start Server")[iv.lang], false);
+        btnStopServer.setText(iv.text.get("Stop Server")[iv.lang], false);
+        btnCreateClient.setText(iv.text.get("Start Client")[iv.lang], false);
+        btnStopClient.setText(iv.text.get("Stop Client")[iv.lang], false);
     }
 
     // Определяем IP адрес собственного компа
