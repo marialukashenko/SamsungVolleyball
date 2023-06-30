@@ -82,8 +82,8 @@ public class ScreenNetwork implements Screen {
         // создаём объекты сетевого запроса и ответа
         requestFromClient = new MyRequest();
         responseFromServer = new MyResponse();
-        infoOfConnection = iv.text.get("waiting for connection")[iv.lang];
-        ipAddressOfServer = iv.text.get("server not started")[iv.lang];
+        infoOfConnection = "waiting for connection";
+        ipAddressOfServer = "server not started";
     }
 
     @Override
@@ -117,22 +117,22 @@ public class ScreenNetwork implements Screen {
                     server = new MyServer(responseFromServer);
                     ipAddressOfServer = detectIP();
                     isServer = true;
-                    infoOfConnection = iv.text.get("waiting for client connection")[iv.lang];
+                    infoOfConnection = "waiting for client connection";
                 }
                 if (btnCreateClient.hit(iv.touch.x, iv.touch.y) && !isServer && !isClient) {
                     isClient = true;
                     client = new MyClient(requestFromClient);
                     ipAddressOfServer = client.getIp().getHostAddress();
                     if (ipAddressOfServer.startsWith("192")) {
-                        infoOfConnection = iv.text.get("connected to the server")[iv.lang];
+                        infoOfConnection = "connected to the server";
                         iv.isOnLanPlayer2 = true;
                     } else {
-                        infoOfConnection = iv.text.get("waiting for a connection to the server")[iv.lang];
+                        infoOfConnection = "waiting for a connection to the server";
                     }
                     if (client.isCantConnected) {
                         isClient = false;
                         client = null;
-                        ipAddressOfServer = iv.text.get("Server not found")[iv.lang];
+                        ipAddressOfServer = "Server not found";
                     }
                 }
 
@@ -167,7 +167,7 @@ public class ScreenNetwork implements Screen {
             responseFromServer.name = iv.player1.name;
             requestFromClient = server.getRequest();
             if(requestFromClient.text.equals("client")){
-                infoOfConnection = iv.text.get("client connected")[iv.lang];
+                infoOfConnection = "client connected";
                 iv.isOnLanPlayer1 = true;
                 iv.player2.name = requestFromClient.name;
             }
@@ -179,7 +179,7 @@ public class ScreenNetwork implements Screen {
             client.send();
             responseFromServer = client.getResponse();
             if(responseFromServer.text.equals("server")){
-                infoOfConnection = iv.text.get("connected to the server")[iv.lang];
+                infoOfConnection = "connected to the server";
                 iv.isOnLanPlayer2 = true;
                 iv.player1.name = responseFromServer.name;
                 iv.gameStyle = responseFromServer.gameStyle;
@@ -210,7 +210,7 @@ public class ScreenNetwork implements Screen {
         btnCreateServer.font.draw(iv.batch, btnCreateServer.text, btnCreateServer.x, btnCreateServer.y);
         iv.fontSmall.draw(iv.batch, iv.text.get("Server's IP: ")[iv.lang] + ipAddressOfServer, 0, btnCreateServer.y-80, SCR_WIDTH*100, Align.center, false);
         btnCreateClient.font.draw(iv.batch, btnCreateClient.text, btnCreateClient.x, btnCreateClient.y);
-        iv.fontSmall.draw(iv.batch, infoOfConnection, 0, btnCreateServer.y-160, SCR_WIDTH*100, Align.center, false);
+        iv.fontSmall.draw(iv.batch, iv.text.get(infoOfConnection)[iv.lang], 0, btnCreateServer.y-160, SCR_WIDTH*100, Align.center, false);
         //btnStopServer.font.draw(iv.batch, btnStopServer.text, btnStopServer.x, btnStopServer.y);
         //btnStopClient.font.draw(iv.batch, btnStopClient.text, btnStopClient.x, btnStopClient.y);
 
