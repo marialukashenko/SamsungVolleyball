@@ -100,7 +100,7 @@ public class ScreenNetwork implements Screen {
             // если НЕ включена экранная клавиатура, то все остальные кнопки работают
             if(!isEnterName1 && !isEnterName2) {
                 if (btnBack.hit(iv.touch.x, iv.touch.y)) {
-                    iv.setScreen(iv.getScreenSettings());
+                    iv.setScreen(iv.getScreenPlayers());
                 }
                 if (btnName1.hit(iv.touch.x, iv.touch.y)) {
                     isEnterName1 = true;
