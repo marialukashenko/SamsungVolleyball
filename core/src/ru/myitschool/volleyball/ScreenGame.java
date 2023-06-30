@@ -66,7 +66,7 @@ public class ScreenGame implements Screen {
     private ImageButton btnBack;
     private TextButton btnRerun;
 
-    private long timeShowGame, timeStartGameInterval = 300;
+    private long timeShowGame, timeStartGameInterval = 1000;
     private long timeSoundPlay, timeSoundInterval = 100;
     private String winner="";
     private boolean isWinRecorded;
