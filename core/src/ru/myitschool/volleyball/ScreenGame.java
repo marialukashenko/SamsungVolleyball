@@ -276,6 +276,8 @@ public class ScreenGame implements Screen {
         iv.getScreenNetwork().responseFromServer.p2va = body2.getAngularVelocity();
         iv.getScreenNetwork().responseFromServer.goals1 = countGoals1;
         iv.getScreenNetwork().responseFromServer.goals2 = countGoals2;
+        iv.getScreenNetwork().responseFromServer.p1faza = person1.faza;
+        iv.getScreenNetwork().responseFromServer.p2faza = person2.faza;
     }
     private void getNetData(MyResponse response) {
         ball.body.setTransform(response.bx, response.by, response.ba);
@@ -289,6 +291,8 @@ public class ScreenGame implements Screen {
         person2.body.setAngularVelocity(response.p2va);
         countGoals1 = response.goals1;
         countGoals2 = response.goals2;
+        person1.faza = response.p1faza;
+        person2.faza = response.p2faza;
     }
 
     private void setPersonsPositionToStart() {
