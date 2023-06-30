@@ -67,15 +67,17 @@ public class ScreenPlayers implements Screen {
         // создаём кнопки и обновляем их содержимое
         btnTypePlayer1 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 100, 520);
         btnTypePlayer2 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 0, 520);
-        btnNetwork = new TextButton(iv.fontTitle, iv.text.get("NETWORK")[iv.lang], 440);
-        btnCreateServer = new TextButton(iv.fontSmall, "Start Server", 100, 360);
-        btnStopServer = new TextButton(iv.fontSmall, "Stop Server", 100, 200);
-        btnCreateClient = new TextButton(iv.fontSmall, "Start Client", 100, 360);
-        btnStopClient = new TextButton(iv.fontSmall, "Stop Client", 100, 200);
+        btnPVP = new TextButton(iv.fontMega, iv.text.get("PVP")[iv.lang], 380);
+
+        btnNetwork = new TextButton(iv.fontTitle, iv.text.get("NETWORK")[iv.lang], 240);
+        btnCreateServer = new TextButton(iv.fontSmall, iv.text.get("Start Server")[iv.lang], 100, 180);
+        btnStopServer = new TextButton(iv.fontSmall, iv.text.get("Stop Server")[iv.lang], 100, 100);
+        btnCreateClient = new TextButton(iv.fontSmall, iv.text.get("Start Client")[iv.lang], 100, 180);
+        btnStopClient = new TextButton(iv.fontSmall, iv.text.get("Stop Client")[iv.lang], 100, 100);
         btnCreateClient.setXY(SCR_WIDTH*100-100-btnCreateClient.width, btnCreateClient.y);
         btnStopClient.setXY(SCR_WIDTH*100-100-btnStopClient.width, btnStopServer.y);
 
-        btnPVP = new TextButton(iv.fontTitle, iv.text.get("PVP")[iv.lang], 100);
+
         updateButtons();
 
         // создаём экранную клавиатуру
@@ -84,8 +86,8 @@ public class ScreenPlayers implements Screen {
         // создаём объекты сетевого запроса и ответа
         requestFromClient = new MyRequest();
         responseFromServer = new MyResponse();
-        infoOfConnection = "waiting for connection";
-        ipAddressOfServer = "server not started";
+        infoOfConnection = iv.text.get("waiting for connection")[iv.lang];
+        ipAddressOfServer = iv.text.get("server not started")[iv.lang];
     }
 
     @Override
@@ -102,7 +104,7 @@ public class ScreenPlayers implements Screen {
             // если НЕ включена экранная клавиатура, то все остальные кнопки работают
             if(!isEnterName1 && !isEnterName2) {
                 if (btnBack.hit(iv.touch.x, iv.touch.y)) {
-                    iv.setScreen(iv.getScreenSettings());
+                    iv.setScreen(iv.getScreenIntro());
                 }
                 if (btnName1.hit(iv.touch.x, iv.touch.y)) {
                     isEnterName1 = true;
@@ -127,22 +129,22 @@ public class ScreenPlayers implements Screen {
                     server = new MyServer(responseFromServer);
                     ipAddressOfServer = detectIP();
                     isServer = true;
-                    infoOfConnection = "waiting for client connection";
+                    infoOfConnection = iv.text.get("waiting for client connection")[iv.lang];
                 }
                 if (btnCreateClient.hit(iv.touch.x, iv.touch.y) && !isServer && !isClient) {
                     isClient = true;
                     client = new MyClient(requestFromClient);
                     ipAddressOfServer = client.getIp().getHostAddress();
                     if (ipAddressOfServer.startsWith("192")) {
-                        infoOfConnection = "connected to the server";
+                        infoOfConnection = iv.text.get("connected to the server")[iv.lang];
                         iv.isOnLanPlayer2 = true;
                     } else {
-                        infoOfConnection = "waiting for a connection to the server";
+                        infoOfConnection = iv.text.get("waiting for a connection to the server")[iv.lang];
                     }
                     if (client.isCantConnected) {
                         isClient = false;
                         client = null;
-                        ipAddressOfServer = "Server not found";
+                        ipAddressOfServer = iv.text.get("Server not found")[iv.lang];
                     }
                 }
 
@@ -177,7 +179,7 @@ public class ScreenPlayers implements Screen {
             responseFromServer.name = iv.player1.name;
             requestFromClient = server.getRequest();
             if(requestFromClient.text.equals("client")){
-                infoOfConnection = "client connected";
+                infoOfConnection = iv.text.get("client connected")[iv.lang];
                 iv.isOnLanPlayer1 = true;
                 iv.player2.name = requestFromClient.name;
             }
@@ -189,7 +191,7 @@ public class ScreenPlayers implements Screen {
             client.send();
             responseFromServer = client.getResponse();
             if(responseFromServer.text.equals("server")){
-                infoOfConnection = "connected to the server";
+                infoOfConnection = iv.text.get("connected to the server")[iv.lang];
                 iv.isOnLanPlayer2 = true;
                 iv.player1.name = responseFromServer.name;
                 iv.gameStyle = responseFromServer.gameStyle;
@@ -221,11 +223,11 @@ public class ScreenPlayers implements Screen {
         btnNetwork.font.draw(iv.batch, btnNetwork.text, btnNetwork.x, btnNetwork.y);
 
         btnCreateServer.font.draw(iv.batch, btnCreateServer.text, btnCreateServer.x, btnCreateServer.y);
-        iv.fontSmall.draw(iv.batch, "Server's IP: " + ipAddressOfServer, 0, btnCreateServer.y-50, SCR_WIDTH*100, Align.center, false);
+        iv.fontSmall.draw(iv.batch, iv.text.get("Server's IP: ")[iv.lang] + ipAddressOfServer, 0, btnCreateServer.y-80, SCR_WIDTH*100, Align.center, false);
         btnCreateClient.font.draw(iv.batch, btnCreateClient.text, btnCreateClient.x, btnCreateClient.y);
-        iv.fontSmall.draw(iv.batch, infoOfConnection, 0, btnCreateServer.y-100, SCR_WIDTH*100, Align.center, false);
-        btnStopServer.font.draw(iv.batch, btnStopServer.text, btnStopServer.x, btnStopServer.y);
-        btnStopClient.font.draw(iv.batch, btnStopClient.text, btnStopClient.x, btnStopClient.y);
+        iv.fontSmall.draw(iv.batch, infoOfConnection, 0, btnCreateServer.y-120, SCR_WIDTH*100, Align.center, false);
+        //btnStopServer.font.draw(iv.batch, btnStopServer.text, btnStopServer.x, btnStopServer.y);
+        //btnStopClient.font.draw(iv.batch, btnStopClient.text, btnStopClient.x, btnStopClient.y);
 
         iv.batch.draw(imgSelector, btnPVP.x-20, btnPVP.y-btnPVP.height*1.5f, btnPVP.width+40, btnPVP.height*2);
         btnPVP.font.draw(iv.batch, btnPVP.text, btnPVP.x, btnPVP.y);
@@ -253,6 +255,7 @@ public class ScreenPlayers implements Screen {
 
     @Override
     public void hide() {
+        iv.getScreenSettings().saveSettings();
         Gdx.input.setInputProcessor(null);
     }
 

@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -189,6 +190,7 @@ public class ScreenGame implements Screen {
                 iv.getScreenPlayers().responseFromServer.text = "server";
                 iv.getScreenPlayers().responseFromServer.x = iv.touch.x;
                 iv.getScreenPlayers().responseFromServer.y = iv.touch.y;
+                setNetData(ball.body, person1.body, person2.body);
                 iv.getScreenPlayers().requestFromClient = iv.getScreenPlayers().server.getRequest();
                 person2.touch(iv.getScreenPlayers().requestFromClient.x, iv.getScreenPlayers().requestFromClient.y);
             } else if (iv.getScreenPlayers().isClient) {
@@ -198,6 +200,7 @@ public class ScreenGame implements Screen {
                 iv.getScreenPlayers().client.send();
                 iv.getScreenPlayers().responseFromServer = iv.getScreenPlayers().client.getResponse();
                 person1.touch(iv.getScreenPlayers().responseFromServer.x, iv.getScreenPlayers().responseFromServer.y);
+                getNetData(iv.getScreenPlayers().responseFromServer);
             }
         }
 
@@ -252,7 +255,43 @@ public class ScreenGame implements Screen {
         iv.batch.end();
     }
 
-    void setPersonsPositionToStart() {
+    private void setNetData(Body body, Body body1, Body body2) {
+        iv.getScreenPlayers().responseFromServer.bx = body.getPosition().x;
+        iv.getScreenPlayers().responseFromServer.by = body.getPosition().y;
+        iv.getScreenPlayers().responseFromServer.ba = body.getAngle();
+        iv.getScreenPlayers().responseFromServer.bvx = body.getLinearVelocity().x;
+        iv.getScreenPlayers().responseFromServer.bvy = body.getLinearVelocity().y;
+        iv.getScreenPlayers().responseFromServer.bva = body.getAngularVelocity();
+        iv.getScreenPlayers().responseFromServer.p1x = body1.getPosition().x;
+        iv.getScreenPlayers().responseFromServer.p1y = body1.getPosition().y;
+        iv.getScreenPlayers().responseFromServer.p1a = body1.getAngle();
+        iv.getScreenPlayers().responseFromServer.p1vx = body1.getLinearVelocity().x;
+        iv.getScreenPlayers().responseFromServer.p1vy = body1.getLinearVelocity().y;
+        iv.getScreenPlayers().responseFromServer.p1va = body1.getAngularVelocity();
+        iv.getScreenPlayers().responseFromServer.p2x = body2.getPosition().x;
+        iv.getScreenPlayers().responseFromServer.p2y = body2.getPosition().y;
+        iv.getScreenPlayers().responseFromServer.p2a = body2.getAngle();
+        iv.getScreenPlayers().responseFromServer.p2vx = body2.getLinearVelocity().x;
+        iv.getScreenPlayers().responseFromServer.p2vy = body2.getLinearVelocity().y;
+        iv.getScreenPlayers().responseFromServer.p2va = body2.getAngularVelocity();
+        iv.getScreenPlayers().responseFromServer.goals1 = countGoals1;
+        iv.getScreenPlayers().responseFromServer.goals2 = countGoals2;
+    }
+    private void getNetData(MyResponse response) {
+        ball.body.setTransform(response.bx, response.by, response.ba);
+        ball.body.setLinearVelocity(response.bvx, response.bvy);
+        ball.body.setAngularVelocity(response.bva);
+        person1.body.setTransform(response.p1x, response.p1y, response.p1a);
+        person1.body.setLinearVelocity(response.p1vx, response.p1vy);
+        person1.body.setAngularVelocity(response.p1va);
+        person2.body.setTransform(response.p2x, response.p2y, response.p2a);
+        person2.body.setLinearVelocity(response.p2vx, response.p2vy);
+        person2.body.setAngularVelocity(response.p2va);
+        countGoals1 = response.goals1;
+        countGoals2 = response.goals2;
+    }
+
+    private void setPersonsPositionToStart() {
         person1.body.setLinearVelocity(0, 0);
         person1.body.setAngularVelocity(0);
         person1.body.setTransform(SCR_WIDTH/4-person1.r, 0.65f, 0);
@@ -265,11 +304,11 @@ public class ScreenGame implements Screen {
 
     void touchScreen(Vector3 touch) {
         if (touch.x < SCR_WIDTH / 2) {
-            if(!iv.player1.isAi) {
+            if(!iv.player1.isAi && !iv.isOnLanPlayer2) {
                 person1.touch(touch.x, touch.y);
             }
         } else {
-            if(!iv.player2.isAi) {
+            if(!iv.player2.isAi && !iv.isOnLanPlayer1) {
                 person2.touch(touch.x, touch.y);
             }
         }
@@ -292,6 +331,17 @@ public class ScreenGame implements Screen {
 
     @Override
     public void hide() {
+        if(iv.isOnLanPlayer1) {
+            iv.getScreenPlayers().server.server.stop();
+            iv.getScreenPlayers().isServer = false;
+            iv.isOnLanPlayer1 = false;
+
+        }
+        if(iv.isOnLanPlayer2) {
+            iv.getScreenPlayers().client.client.stop();
+            iv.getScreenPlayers().isClient = false;
+            iv.isOnLanPlayer2 = false;
+        }
         Gdx.input.setInputProcessor(null);
     }
 
@@ -458,42 +508,36 @@ public class ScreenGame implements Screen {
             net2 = null;
         }
 
-
+        // выбираем сетку в зависимости от стиля
         switch (iv.gameStyle) {
             case STYLE_BEACH:
                 net = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.14f, NET_HEIGHT, null);
                 net2 = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT-0.3f, 0.5f, 0.7f, null);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
                 break;
             case STYLE_CASTLE:
                 net = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.2f, NET_HEIGHT, null);
                 net2 = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT-0.8f, 1, 0.12f, null);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
                 break;
             case STYLE_STEAM:
                 net = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.54f, NET_HEIGHT, null);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
                 break;
             case STYLE_KITCHEN:
                 net = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.1f, NET_HEIGHT, null);
                 net2 = new StaticBody(iv.world, SCR_WIDTH / 2, FLOOR+0.3f, 0.2f, 1f, new float[]{0,0.5f, -0.4f,-0.5f, 0.4f,-0.5f});
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
                 break;
             case STYLE_GRAVE:
                 net = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.5f, NET_HEIGHT, null);
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
                 break;
             case STYLE_WINTER:
                 net = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.2f, NET_HEIGHT, null);
                 net2 = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.2f, NET_HEIGHT, new float[]{0,2, -1.2f,-2, 1.2f,-2});
-                ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
                 break;
             default: iv.setScreen(iv.getScreenIntro());
         }
-
+        ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
         ball.body.setLinearVelocity(0, 0);
         ball.body.setAngularVelocity(0);
-        ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, 0);
+        //ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, 0);
         setPersonsPositionToStart();
     }
 

@@ -187,7 +187,9 @@ public class InputKeyboard {
 
     // выдача отредактированного текста
     public String getText() {
-        return text;
+        String t = text;
+        text = "";
+        return t;
     }
 
     // класс отдельной кнопки виртуальной клавиатуры

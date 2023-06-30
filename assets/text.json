@@ -29,5 +29,19 @@
   "RECORDS": ["Best players", "Лучшие игроки", "Spitzenspieler", "Топчики", "Records"],
   "CLEAR RECORDS": ["CLEAR RECORDS", "Очистить рекорды", "KLARE AUFZEICHNUNGEN", "ВСЁ СТЕРЕТЬ", "BORRAR REGISTROS"],
   "NETWORK": ["LOCAL NETWORK", "Локальная сеть", "LOKALES NETZWERK", "Локалка", "RED LOCAL"],
-  "PVP": ["GO PVP!!!", "GO PVP!!!", "GO PVP!!!", "GO PVP!!!", "GO PVP!!!"]
+  "PVP": ["GO PVP!!!", "ИГРАЕМ!!!", "GO PVP!!!", "GO PVP!!!", "GO PVP!!!"],
+  "Start Server": ["Start Server","Запустить сервер","Start Server","Start Server","Start Server"],
+  "Stop Server": ["Stop Server","Остановить сервер","Stop Server","Stop Server","Stop Server"],
+  "Start Client": ["Start Client","Запустить клиент","Start Client","Start Client","Start Client"],
+  "Stop Client": ["Stop Client","Остановить клиент","Stop Client","Stop Client","Stop Client"],
+  "waiting for connection": ["waiting for connection","ожидаем соединения","waiting for connection","waiting for connection","waiting for connection"],
+  "server not started": ["server not started","сервер не запущен","server not started","server not started","server not started"],
+  "waiting for client connection": ["waiting for client connection","ожидаем подключения клиента","waiting for client connection","waiting for client connection","waiting for client connection"],
+  "connected to the server": ["connected to the server","соединено с сервером","connected to the server","connected to the server","connected to the server"],
+  "waiting for a connection to the server": ["waiting for a connection to the server","ожидаем подключения к серверу","waiting for a connection to the server","waiting for a connection to the server","waiting for a connection to the server"],
+  "Server not found": ["Server not found","сервер не найден","Server not found","Server not found","Server not found"],
+  "client connected": ["client connected","клиент подключен","client connected","client connected","client connected"],
+  "connected to the server": ["connected to the server","соединено с сервером","connected to the server","connected to the server","connected to the server"],
+  "Server's IP: ": ["Server's IP: ","IP сервера: ","Server's IP: ","Server's IP: ","Server's IP: "],
+
 }

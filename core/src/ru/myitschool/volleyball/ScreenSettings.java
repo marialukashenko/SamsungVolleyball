@@ -137,7 +137,7 @@ public class ScreenSettings implements Screen {
     }
 
     // сохраняем настройки
-    private void saveSettings() {
+    public void saveSettings() {
         Preferences pref = Gdx.app.getPreferences("Settings iVolleyBall");
         pref.putBoolean("sound", iv.isSoundOn);
         pref.putBoolean("music", iv.isMusicOn);

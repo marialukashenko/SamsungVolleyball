@@ -38,6 +38,7 @@ public class VolleyBall extends Game {
     public BitmapFont fontSmall;
     public BitmapFont fontLarge;
     public BitmapFont fontTitle;
+    public BitmapFont fontMega;
 
     // экраны
     private ScreenIntro screenIntro;
@@ -148,6 +149,8 @@ public class VolleyBall extends Game {
         fontNormal = generator.generateFont(parameter);
         parameter.size = 40;
         fontLarge = generator.generateFont(parameter);
+        parameter.size = 50;
+        fontMega = generator.generateFont(parameter);
         parameter.color = new Color(1, 0.4f, 0.1f, 1);
         parameter.size = 30;
         fontTitle = generator.generateFont(parameter);
