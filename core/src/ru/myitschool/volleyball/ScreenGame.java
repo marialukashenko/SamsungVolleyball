@@ -428,7 +428,7 @@ public class ScreenGame implements Screen {
                 startGame = true;
             }
 
-            if (isWin && btnRerun.hit(iv.touch.x, iv.touch.y)) {
+            if (isWin && btnRerun.hit(iv.touch.x, iv.touch.y) && !iv.isOnLanPlayer2) {
                 create();
             }
 
