@@ -191,7 +191,6 @@ public class InputKeyboard {
         text = "";
         return t;
     }
-
     // класс отдельной кнопки виртуальной клавиатуры
     private class Key {
         float x, y;
