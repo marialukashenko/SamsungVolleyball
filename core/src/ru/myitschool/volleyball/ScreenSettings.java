@@ -69,6 +69,7 @@ public class ScreenSettings implements Screen {
                 updateButtons();
                 if(iv.isMusicOn) {
                     music.play();
+                    music.setLooping(true);
                 } else {
                     music.stop();
                 }
