@@ -314,17 +314,14 @@ public class ScreenGame implements Screen {
 
     @Override
     public void resize(int width, int height) {
-        // unused
     }
 
     @Override
     public void pause() {
-        // unused
     }
 
     @Override
     public void resume() {
-        // unused
     }
 
     @Override
@@ -360,7 +357,6 @@ public class ScreenGame implements Screen {
     class MyInput implements InputProcessor {
         @Override
         public boolean keyDown(int keycode) {
-            // левый игрок
             if(keycode == Input.Keys.A) {
                 person1.touch(0.1f, person1.getY());
             }
@@ -373,7 +369,6 @@ public class ScreenGame implements Screen {
             if(keycode == Input.Keys.S) {
                 person1.touch(person1.getX(), person1.getY());
             }
-            // правый игрок
             if(keycode == Input.Keys.LEFT) {
                 person2.touch(SCR_WIDTH/2+0.1f, person2.getY());
             }
