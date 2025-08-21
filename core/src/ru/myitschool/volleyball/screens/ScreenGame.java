@@ -88,10 +88,10 @@ public class ScreenGame implements Screen {
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnRerun = new TextButton(iv.fontLarge, iv.text.get("REPLAY")[iv.lang], 20, SCR_HEIGHT * 100 - 30);
 
-        block[0] = new StaticBody(iv.world, SCR_WIDTH / 2, 0, SCR_WIDTH, FLOOR *2, null); // пол
-        block[1] = new StaticBody(iv.world, 0, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null); // стена слева
-        block[2] = new StaticBody(iv.world, SCR_WIDTH, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null); // стена справа
-        block[3] = new StaticBody(iv.world, SCR_WIDTH / 2, SCR_HEIGHT + 0.4f, SCR_WIDTH, 0.3f, null); // потолок
+        block[0] = new StaticBody(iv.world, SCR_WIDTH / 2, 0, SCR_WIDTH, FLOOR *2, null);
+        block[1] = new StaticBody(iv.world, 0, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null);
+        block[2] = new StaticBody(iv.world, SCR_WIDTH, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null);
+        block[3] = new StaticBody(iv.world, SCR_WIDTH / 2, SCR_HEIGHT + 0.4f, SCR_WIDTH, 0.3f, null);
 
         person1 = new DynamicBodyPlayer(iv.world, 0, RADIUS_PERSON + FLOOR, RADIUS_PERSON, DynamicBodyPlayer.LEFT);
         person2 = new DynamicBodyPlayer(iv.world, 0, RADIUS_PERSON + FLOOR, RADIUS_PERSON, DynamicBodyPlayer.RIGHT);
@@ -527,7 +527,6 @@ public class ScreenGame implements Screen {
         ball = new DynamicBodyBall(iv.world, SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, iv.gameStyle);
         ball.body.setLinearVelocity(0, 0);
         ball.body.setAngularVelocity(0);
-        //ball.body.setTransform(SCR_WIDTH / 4 + (MathUtils.randomBoolean() ? 0 : SCR_WIDTH / 2), BALL_START_Y, 0);
         setPersonsPositionToStart();
     }
 

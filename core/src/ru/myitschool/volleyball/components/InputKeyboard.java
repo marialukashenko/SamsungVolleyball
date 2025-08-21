@@ -99,7 +99,6 @@ public class InputKeyboard {
         for (int i = 0; i < keys.size; i++) {
             drawImgKey(batch, i, keys.get(i).x, keys.get(i).y, keys.get(i).width, keys.get(i).height);
         }
-        // рисуем вводимый текст
         batch.draw(imgEditText, 2*keyWidth+x+keyWidth/2, y-keyHeight, width-5*keyWidth-padding, keyHeight);
         font.draw(batch, text, 2*keyWidth+x+keyWidth/2, keys.get(0).letterY+keyHeight, width-5*keyWidth-padding, Align.center, false);
     }
@@ -155,7 +154,7 @@ public class InputKeyboard {
                 if(text.length()==0) break;
                 endOfEdit = true;
                 break;
-            case '`': // caps lock
+            case '`':
                 if(letters.charAt(12) == 'Q') letters = LETTERS_EN_LOW;
                 else if(letters.charAt(12) == 'q') letters = LETTERS_EN_CAPS;
                 else if(letters.charAt(12) == 'Й') letters = LETTERS_RU_LOW;

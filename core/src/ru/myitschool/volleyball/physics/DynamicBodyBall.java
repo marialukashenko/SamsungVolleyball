@@ -84,7 +84,7 @@ public class DynamicBodyBall {
             fixtureDef.restitution = 0.6f;
             Fixture fixture = body.createFixture(fixtureDef);
             circle.dispose();
-        } else { // мяч
+        } else {
             r = 0.5f;
             CircleShape circle = new CircleShape();
             circle.setRadius(r);
