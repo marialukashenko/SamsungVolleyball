@@ -18,14 +18,20 @@ import com.badlogic.gdx.utils.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Главный класс игры
- */
+import ru.myitschool.volleyball.screens.ScreenAbout;
+import ru.myitschool.volleyball.screens.ScreenGame;
+import ru.myitschool.volleyball.screens.ScreenIntro;
+import ru.myitschool.volleyball.screens.ScreenNetwork;
+import ru.myitschool.volleyball.screens.ScreenPlayers;
+import ru.myitschool.volleyball.screens.ScreenRecords;
+import ru.myitschool.volleyball.screens.ScreenSettings;
+import ru.myitschool.volleyball.screens.ScreenStyle;
+
+
 public class VolleyBall extends Game {
     public static final float SCR_WIDTH = 12.8f;
     public static final float SCR_HEIGHT = 7.2f;
 
-    // системные объекты
     public SpriteBatch batch;
     public OrthographicCamera camera;
     public OrthographicCamera cameraForText;
@@ -33,14 +39,12 @@ public class VolleyBall extends Game {
     public Box2DDebugRenderer debugRenderer;
     public Vector3 touch;
 
-    // шрифты
     public BitmapFont fontNormal;
     public BitmapFont fontSmall;
     public BitmapFont fontLarge;
     public BitmapFont fontTitle;
     public BitmapFont fontMega;
 
-    // экраны
     private ScreenIntro screenIntro;
     private ScreenGame screenGame;
     private ScreenSettings screenSettings;
@@ -50,7 +54,6 @@ public class VolleyBall extends Game {
     private ScreenRecords screenRecords;
     private ScreenNetwork screenNetwork;
 
-    // стили
     public static final int STYLE_BEACH = 0;
     public static final int STYLE_CASTLE = 1;
     public static final int STYLE_STEAM = 2;
@@ -60,18 +63,15 @@ public class VolleyBall extends Game {
     public static final int NUM_STYLES = 6;
     public int gameStyle;
 
-    // флаги
     public boolean isSoundOn = true;
     public boolean isMusicOn = true;
     public boolean isOnLanPlayer1 = false;
     public boolean isOnLanPlayer2 = false;
 
-    // игроки
     public Player player1;
     public Player player2;
     public Player[] players = new Player[1000];
 
-    // тексты и локализация
     public Map<String, String[]> text = new HashMap<>();
     public int lang;
     public static final int LANG_EN = 0;
@@ -82,7 +82,6 @@ public class VolleyBall extends Game {
 
     @Override
     public void create() {
-        // создание системных объектов
         batch = new SpriteBatch();
         camera = new OrthographicCamera();
         cameraForText = new OrthographicCamera();
@@ -91,18 +90,15 @@ public class VolleyBall extends Game {
         touch = new Vector3();
         generateFont();
 
-        // создание мира box2D
         world = new World(new Vector2(0, -10), false);
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
 
-        // парсинг всех текстов с учётом локализации
         JsonValue json = new JsonReader().parse(Gdx.files.internal("text.json"));
         for (JsonValue j: json.iterator()) {
             text.put(j.name, json.get(j.name).asStringArray());
         }
 
-        // создание игроков и таблицы рекордов
         player1 = new Player("Noname1");
         player2 = new Player("Noname2");
         for (int i = 0; i < players.length; i++) {
@@ -112,7 +108,6 @@ public class VolleyBall extends Game {
         player1.getRecord(players);
         player2.getRecord(players);
 
-        // создание экранов
         screenSettings = new ScreenSettings(this);
         screenIntro = new ScreenIntro(this);
         screenStyle = new ScreenStyle(this);
@@ -170,7 +165,6 @@ public class VolleyBall extends Game {
         generator.dispose();
     }
 
-    // усыплялка
     public void sleep() {
         try {
             Thread.sleep(300);
@@ -178,7 +172,6 @@ public class VolleyBall extends Game {
         }
     }
 
-    // раздача экранов
     public ScreenIntro getScreenIntro() {
         return screenIntro;
     }

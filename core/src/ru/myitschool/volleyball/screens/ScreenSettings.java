@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.screens;
 
 import static ru.myitschool.volleyball.VolleyBall.*;
 
@@ -8,24 +8,22 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 
-/**
- * экран с настройками
- */
+import ru.myitschool.volleyball.components.ImageButton;
+import ru.myitschool.volleyball.components.TextButton;
+import ru.myitschool.volleyball.VolleyBall;
+
+
 public class ScreenSettings implements Screen {
     private final VolleyBall iv;
 
-    // изображения
     private final Texture imgBackGround;
     private final Texture imgBack;
 
-    // музыка
     Music music;
 
-    // кнопки
     private final TextButton btnMusic;
     private final TextButton btnSound;
     private final TextButton btnBackgrounds;
-    //private final TextButton btnPlayers;
     private final TextButton btnLanguage;
     private final ImageButton btnBack;
 
@@ -37,7 +35,6 @@ public class ScreenSettings implements Screen {
         btnMusic = new TextButton(iv.fontLarge, iv.text.get("MUSIC ON")[iv.lang], 550);
         btnSound = new TextButton(iv.fontLarge, iv.text.get("SOUND ON")[iv.lang], 450);
         btnBackgrounds = new TextButton(iv.fontLarge, iv.text.get("STYLE")[iv.lang], 350);
-        //btnPlayers = new TextButton(iv.fontLarge, iv.text.get("PLAYERS")[iv.lang], 300);
         btnLanguage = new TextButton(iv.fontLarge, iv.text.get("LANGUAGE")[iv.lang], 250);
         music = Gdx.audio.newMusic(Gdx.files.internal("volleyball_theme.mp3"));
         loadSettings();
@@ -77,33 +74,27 @@ public class ScreenSettings implements Screen {
             if (btnBackgrounds.hit(iv.touch.x, iv.touch.y)) {
                 iv.setScreen(iv.getScreenStyle());
             }
-            /*if (btnPlayers.hit(iv.touch.x, iv.touch.y)) {
-                iv.setScreen(iv.getScreenPlayers());
-            }*/
             if (btnLanguage.hit(iv.touch.x, iv.touch.y)) {
                 ++iv.lang;
                 if(iv.lang > LANG_ES){
-                    iv.lang = LANG_EN; // меняем лангуагу
+                    iv.lang = LANG_EN;
                 }
                 updateButtons();
             }
         }
 
-        //отрисовка
+
         iv.camera.update();
-        // рисуем картинки
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
-        // рисуем буквы
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         btnMusic.font.draw(iv.batch, btnMusic.text, btnMusic.x, btnMusic.y);
         btnSound.font.draw(iv.batch, btnSound.text, btnSound.x, btnSound.y);
         btnBackgrounds.font.draw(iv.batch, btnBackgrounds.text, btnBackgrounds.x, btnBackgrounds.y);
-        //btnPlayers.font.draw(iv.batch, btnPlayers.text, btnPlayers.x, btnPlayers.y);
         btnLanguage.font.draw(iv.batch, btnLanguage.text, btnLanguage.x, btnLanguage.y);
         iv.fontTitle.draw(iv.batch, iv.text.get("SETTINGS")[iv.lang], 20, SCR_HEIGHT*100-20);
         iv.batch.end();
@@ -137,7 +128,6 @@ public class ScreenSettings implements Screen {
         music.dispose();
     }
 
-    // сохраняем настройки
     public void saveSettings() {
         Preferences pref = Gdx.app.getPreferences("Settings iVolleyBall");
         pref.putBoolean("sound", iv.isSoundOn);
@@ -151,7 +141,6 @@ public class ScreenSettings implements Screen {
         pref.flush();
     }
 
-    // считываем настройки
     private void loadSettings() {
         Preferences pref = Gdx.app.getPreferences("Settings iVolleyBall");
         if(pref.contains("sound")) iv.isSoundOn = pref.getBoolean("sound", false);
@@ -165,12 +154,10 @@ public class ScreenSettings implements Screen {
         updateButtons();
     }
 
-    // обновляем кнопки
     void updateButtons(){
         btnSound.setText(iv.isSoundOn ? iv.text.get("SOUND ON")[iv.lang] : iv.text.get("SOUND OFF")[iv.lang], true);
         btnMusic.setText(iv.isMusicOn ? iv.text.get("MUSIC ON")[iv.lang] : iv.text.get("MUSIC OFF")[iv.lang], true);
         btnBackgrounds.setText(iv.text.get("STYLE")[iv.lang], true);
-        //btnPlayers.setText(iv.text.get("PLAYERS")[iv.lang], true);
         btnLanguage.setText(iv.text.get("LANGUAGE")[iv.lang], true);
     }
 }

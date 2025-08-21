@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.screens;
 
 import static ru.myitschool.volleyball.VolleyBall.*;
 
@@ -16,14 +16,19 @@ import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.TimeUtils;
 
-/**
- * главный экран игры
- */
+import ru.myitschool.volleyball.physics.DynamicBodyBall;
+import ru.myitschool.volleyball.physics.DynamicBodyPlayer;
+import ru.myitschool.volleyball.components.ImageButton;
+import ru.myitschool.volleyball.physics.StaticBody;
+import ru.myitschool.volleyball.components.TextButton;
+import ru.myitschool.volleyball.VolleyBall;
+import ru.myitschool.volleyball.server.MyResponse;
+
+
 public class ScreenGame implements Screen {
 
     private VolleyBall iv;
 
-    // ресурсы
     private Sound sndBallHit;
     private Sound sndGoal;
     private Sound sndWin;
@@ -37,16 +42,13 @@ public class ScreenGame implements Screen {
     private TextureRegion[] imgPerson1 = new TextureRegion[20];
     private TextureRegion[] imgPerson2 = new TextureRegion[20];
 
-    // статические тела
     private StaticBody[] block = new StaticBody[4];
     private StaticBody net;
     private StaticBody net2;
 
-    // динамические тела
     private DynamicBodyPlayer person1, person2;
     private DynamicBodyBall ball;
 
-    // всё, что связано с голами
     private long timeGoal;
     private final long timeGoalsInterval = 3000;
     private int countGoals1;
@@ -54,15 +56,13 @@ public class ScreenGame implements Screen {
     private boolean isGoal;
     private boolean isWin;
 
-    // константы
-    private static final float BALL_START_Y = 2.6f; // мяч стартует в этой точке
-    private static final float NET_HEIGHT = 4f; // высота сетки
-    private static final float FLOOR = 0.6f; // высота пола
-    private static final float RADIUS_PERSON = 0.6f; // радиус колобка
-    private static final float IMG_RESIZE = 1.6f; // коэффициент изменения размера картинки относительно размера шара
-    private static final float SHADOW_MARG = 0.5f; // смещение тени
+    private static final float BALL_START_Y = 2.6f;
+    private static final float NET_HEIGHT = 4f;
+    private static final float FLOOR = 0.6f;
+    private static final float RADIUS_PERSON = 0.6f;
+    private static final float IMG_RESIZE = 1.6f;
+    private static final float SHADOW_MARG = 0.5f;
 
-    // кнопки
     private ImageButton btnBack;
     private TextButton btnRerun;
 
@@ -81,7 +81,6 @@ public class ScreenGame implements Screen {
         imgShadow = new Texture("shadow.png");
         imgBack = new Texture("back.png");
 
-        // загрузка музыки
         sndBallHit = Gdx.audio.newSound(Gdx.files.internal("ball_hit.mp3"));
         sndGoal = Gdx.audio.newSound(Gdx.files.internal("goal.mp3"));
         sndWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
@@ -89,12 +88,11 @@ public class ScreenGame implements Screen {
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
         btnRerun = new TextButton(iv.fontLarge, iv.text.get("REPLAY")[iv.lang], 20, SCR_HEIGHT * 100 - 30);
 
-        // стены на игровом поле
         block[0] = new StaticBody(iv.world, SCR_WIDTH / 2, 0, SCR_WIDTH, FLOOR *2, null); // пол
         block[1] = new StaticBody(iv.world, 0, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null); // стена слева
         block[2] = new StaticBody(iv.world, SCR_WIDTH, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null); // стена справа
         block[3] = new StaticBody(iv.world, SCR_WIDTH / 2, SCR_HEIGHT + 0.4f, SCR_WIDTH, 0.3f, null); // потолок
-        // колобки
+
         person1 = new DynamicBodyPlayer(iv.world, 0, RADIUS_PERSON + FLOOR, RADIUS_PERSON, DynamicBodyPlayer.LEFT);
         person2 = new DynamicBodyPlayer(iv.world, 0, RADIUS_PERSON + FLOOR, RADIUS_PERSON, DynamicBodyPlayer.RIGHT);
     }
@@ -116,7 +114,6 @@ public class ScreenGame implements Screen {
         iv.debugRenderer.render(iv.world, iv.camera.combined);
 
 
-        // события
         person1.move();
         person2.move();
         if (startGame) {
@@ -177,17 +174,15 @@ public class ScreenGame implements Screen {
                 }
             }
         }
-        // если играем с компьютером
         if (iv.player1.isAi && !isWin && !isGoal) {
             person1.useAi(ball);
         }
         if (iv.player2.isAi && !isWin && !isGoal) {
             person2.useAi(ball);
         }
-        // события сетевой игры
         if(iv.isOnLanPlayer1 || iv.isOnLanPlayer2) {
             if (iv.getScreenNetwork().isServer) {
-                iv.getScreenNetwork().responseFromServer.text = "server";
+                iv.getScreenNetwork().responseFromServer.text = "ru/myitschool/volleyball/server";
                 iv.getScreenNetwork().responseFromServer.x = iv.touch.x;
                 iv.getScreenNetwork().responseFromServer.y = iv.touch.y;
                 setNetData(ball.body, person1.body, person2.body);
@@ -217,7 +212,6 @@ public class ScreenGame implements Screen {
             isWinRecorded = true;
         }
 
-        // отрисовка
         iv.camera.update();
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
@@ -397,11 +391,9 @@ public class ScreenGame implements Screen {
 
         @Override
         public boolean keyUp(int keycode) {
-            // левый игрок
             if(keycode == Input.Keys.A || keycode == Input.Keys.D) {
                 person1.touch(person1.getX(), person1.getY());
             }
-            // правый игрок
             if(keycode == Input.Keys.RIGHT || keycode == Input.Keys.LEFT) {
                 person2.touch(person2.getX(), person2.getY());
             }
@@ -512,7 +504,6 @@ public class ScreenGame implements Screen {
             net2 = null;
         }
 
-        // выбираем сетку в зависимости от стиля
         switch (iv.gameStyle) {
             case STYLE_BEACH:
                 net = new StaticBody(iv.world, SCR_WIDTH / 2, NET_HEIGHT /2+0.1f, 0.14f, NET_HEIGHT, null);

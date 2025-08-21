@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.screens;
 
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
@@ -7,9 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-/**
- * экран с таблицей рекордов
- */
+import ru.myitschool.volleyball.components.ImageButton;
+import ru.myitschool.volleyball.Player;
+import ru.myitschool.volleyball.components.TextButton;
+import ru.myitschool.volleyball.VolleyBall;
 
 public class ScreenRecords implements Screen {
     private final VolleyBall iv;
@@ -35,7 +36,6 @@ public class ScreenRecords implements Screen {
 
     @Override
     public void render(float delta) {
-        // обработка касаний экрана
         if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
@@ -48,17 +48,12 @@ public class ScreenRecords implements Screen {
             }
         }
 
-        // события
-
-        // отрисовка всей графики
         iv.camera.update();
-        // рисуем картинки
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
-        // рисуем буквы
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         iv.fontTitle.draw(iv.batch, iv.text.get("BEST PLAYERS")[iv.lang], 20, SCR_HEIGHT*100-20);
@@ -94,7 +89,6 @@ public class ScreenRecords implements Screen {
         imgBackGround.dispose();
     }
 
-    // обновлялка кнопок на случай смены локализации
     private void updateButtons(){
         btnClearTable.setText(iv.text.get("CLEAR RECORDS")[iv.lang], true);
     }

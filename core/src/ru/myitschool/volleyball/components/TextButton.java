@@ -1,11 +1,9 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.components;
 
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.utils.Align;
 
 public class TextButton {
     public BitmapFont font;
@@ -13,7 +11,6 @@ public class TextButton {
     public float x, y;
     public float width, height;
 
-    // вывод в координаты x, y
     public TextButton(BitmapFont font, String text, float x, float y) {
         this.font = font;
         this.text = text;
@@ -24,7 +21,6 @@ public class TextButton {
         height = gl.height;
     }
 
-    // вывод посередине экрана в координату y
     public TextButton(BitmapFont font, String text, float y) {
         this.font = font;
         this.text = text;

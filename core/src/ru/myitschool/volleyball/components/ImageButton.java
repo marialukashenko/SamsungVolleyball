@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.components;
 
 import com.badlogic.gdx.graphics.Texture;
 
@@ -15,7 +15,7 @@ public class ImageButton {
         this.width = width;
     }
 
-    boolean hit(float tx, float ty) {
+    public boolean hit(float tx, float ty) {
         return x < tx && tx < x + width && y + height > ty && ty > y;
     }
 }

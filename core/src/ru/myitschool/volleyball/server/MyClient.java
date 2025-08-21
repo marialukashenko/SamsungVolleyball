@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.server;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Client;
@@ -8,15 +8,11 @@ import com.esotericsoftware.kryonet.Listener;
 import java.io.IOException;
 import java.net.InetAddress;
 
-/**
- * Класс-клиент
- * отправляет запрос серверу и принимает от него ответ
- */
 
 public class MyClient {
-    Client client;
+    public Client client;
 
-    boolean isCantConnected;
+    public boolean isCantConnected;
     private final MyRequest request;
     private MyResponse response;
     private InetAddress address;
@@ -31,7 +27,7 @@ public class MyClient {
         try {
             client.connect(5000, address, 54555, 54777);
         } catch (IOException e) {
-            isCantConnected = true; // если не удалось подключиться
+            isCantConnected = true;
             e.printStackTrace();
         }
 
@@ -53,7 +49,7 @@ public class MyClient {
         return response;
     }
 
-    void send() {
+    public void send() {
         client.sendTCP(request);
     }
 

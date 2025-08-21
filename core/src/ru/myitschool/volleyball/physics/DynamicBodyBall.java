@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.physics;
 
 
 import com.badlogic.gdx.math.MathUtils;
@@ -11,21 +11,21 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
-/**
- * Динамические тела - мяч, кирпич, топор и т.д.
- */
+import ru.myitschool.volleyball.VolleyBall;
+
+
 public class DynamicBodyBall {
 
     public Body body;
     public float r = 0.4f;
 
-    DynamicBodyBall(World world, float x, float y, int type) {
+    public DynamicBodyBall(World world, float x, float y, int type) {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.position.set(x, y);
 
         body = world.createBody(bodyDef);
-        if(type == VolleyBall.STYLE_STEAM) { // кирпич
+        if(type == VolleyBall.STYLE_STEAM) {
             PolygonShape box = new PolygonShape();
             r = 0.6f;
             float width = 0.6f, height = 0.3f;
@@ -37,7 +37,7 @@ public class DynamicBodyBall {
             fixtureDef.restitution = 0.4f;
             Fixture fixture = body.createFixture(fixtureDef);
             box.dispose();
-        } else if (type == VolleyBall.STYLE_CASTLE) { // топор
+        } else if (type == VolleyBall.STYLE_CASTLE) {
             float[] verts = {-2, -2.2f, -3.5f, -1, -5, 3, -1, 4, 2, 4, 5, -4, 4, -5, -2, -2.2f};
             for (int i = 0; i < verts.length; i++) verts[i] /= 9;
             r = 0.6f;
@@ -50,7 +50,7 @@ public class DynamicBodyBall {
             fixtureDef.restitution = 0.5f;
             Fixture fixture = body.createFixture(fixtureDef);
             axe.dispose();
-        } else if (type == VolleyBall.STYLE_KITCHEN) { // чайник
+        } else if (type == VolleyBall.STYLE_KITCHEN) {
             float[] verts = {0,5, -5,0.5f, -1,-5, 2.5f,-4.5f, 5,0, 4.2f,2.2f};
             for (int i = 0; i < verts.length; i++) verts[i] /= 8;
             r = 0.6f;
@@ -63,7 +63,7 @@ public class DynamicBodyBall {
             fixtureDef.restitution = 0.4f;
             Fixture fixture = body.createFixture(fixtureDef);
             axe.dispose();
-        } else if (type == VolleyBall.STYLE_GRAVE) { // пентаграмма
+        } else if (type == VolleyBall.STYLE_GRAVE) {
             CircleShape circle = new CircleShape();
             r = 0.6f;
             circle.setRadius(r);
@@ -74,7 +74,7 @@ public class DynamicBodyBall {
             fixtureDef.restitution = 0.8f;
             Fixture fixture = body.createFixture(fixtureDef);
             circle.dispose();
-        } else if (type == VolleyBall.STYLE_WINTER) { // голова снеговика
+        } else if (type == VolleyBall.STYLE_WINTER) {
             CircleShape circle = new CircleShape();
             r = 0.55f;
             circle.setRadius(r);
@@ -99,36 +99,32 @@ public class DynamicBodyBall {
         }
     }
 
-    float getX() {
+    public float getX() {
         return body.getPosition().x;
     }
 
-    float getY() {
+    public float getY() {
         return body.getPosition().y;
     }
 
-    float scrX() {
+    public float scrX() {
         return body.getPosition().x - r;
     }
 
-    float scrY() {
+    public float scrY() {
         return body.getPosition().y - r;
     }
 
-    float width() {
+    public float width() {
         return r * 2;
     }
 
-    float height() {
+    public float height() {
         return r * 2;
     }
 
-    float getRotation() {
+    public float getRotation() {
         return body.getAngle() * MathUtils.radiansToDegrees;
 
-    }
-
-    Vector2 getCenter() {
-        return body.getPosition();
     }
 }

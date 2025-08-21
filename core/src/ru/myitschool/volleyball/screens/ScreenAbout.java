@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.screens;
 
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
@@ -7,9 +7,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-/**
- * класс с описанием игры
- */
+import ru.myitschool.volleyball.components.ImageButton;
+import ru.myitschool.volleyball.VolleyBall;
+
+
 public class ScreenAbout implements Screen {
     private final VolleyBall iv;
 
@@ -31,7 +32,6 @@ public class ScreenAbout implements Screen {
 
     @Override
     public void render(float delta) {
-        // обработка касаний экрана
         if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
@@ -41,17 +41,12 @@ public class ScreenAbout implements Screen {
             }
         }
 
-        // события
-
-        // отрисовка всей графики
         iv.camera.update();
-        // рисуем изображения
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
-        // рисуем тексты
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         iv.fontSmall.draw(iv.batch, iv.text.get("ABOUTTEXT")[iv.lang], 150, 600);

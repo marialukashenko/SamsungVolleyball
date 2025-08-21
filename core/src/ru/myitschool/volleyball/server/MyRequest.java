@@ -1,8 +1,6 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.server;
 
-/**
- * Класс-запрос от клиента-серверу
- */
+
 public class MyRequest {
     public String text = "";
     public float x;

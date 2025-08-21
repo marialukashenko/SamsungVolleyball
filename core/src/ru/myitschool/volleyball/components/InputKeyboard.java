@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.components;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -16,33 +16,33 @@ public class InputKeyboard {
     private String fontName = "minnie.otf";
     private String keysName = "keys.png";
 
-    private final float x, y; // координаты
-    private final float width, height; // ширина и высота всей клавиатуры
-    private final float keyWidth, keyHeight; // ширина и высота каждой кнопки
-    private final float padding; // расстояние между кнопками
-    private final int textLength; // длина вводимого текста
+    private final float x, y;
+    private final float width, height;
+    private final float keyWidth, keyHeight;
+    private final float padding;
+    private final int textLength;
 
     private BitmapFont font;
 
-    private String text = ""; // вводимый текст
+    private String text = "";
     private static final String LETTERS_EN_CAPS = "1234567890-~QWERTYUIOP+?^ASDFGHJKL;'`ZXCVBNM,. |";
     private static final String LETTERS_EN_LOW  = "1234567890_~qwertyuiop[]^asdfghjkl:'`zxcvbnm,. |";
     private static final String LETTERS_RU_CAPS = "1234567890-~ЙЦУКЕНГШЩЗХЪ^ФЫВАПРОЛДЖЭ`ЯЧСМИТЬБЮЁ|";
     private static final String LETTERS_RU_LOW  = "1234567890_~йцукенгшщзхъ^фывапролджэ`ячсмитьбюё|";
     private String letters = LETTERS_EN_CAPS;
 
-    private final Texture imgAtlasKeys; // все изображения кнопок
-    private final TextureRegion imgEditText; // поле ввода
-    private final TextureRegion imgKeyUP, imgKeyDown; // кнопка выпуклая/вдавленная
-    private final TextureRegion imgKeyBS, imgKeyEnter, imgKeyCL, imgKeySW; // картинки управляющих кноп
+    private final Texture imgAtlasKeys;
+    private final TextureRegion imgEditText;
+    private final TextureRegion imgKeyUP, imgKeyDown;
+    private final TextureRegion imgKeyBS, imgKeyEnter, imgKeyCL, imgKeySW;
 
-    private long timeStart, timeDuration = 150; // длительность надавливания кнопки
-    private int keyPressed = -1; // код нажатой кнопки
-    private final Array<Key> keys = new Array<>(); // список всех кноп
+    private long timeStart, timeDuration = 150;
+    private int keyPressed = -1;
+    private final Array<Key> keys = new Array<>();
 
     public InputKeyboard(float scrWidth, float scrHeight, int textLength){
         generateFont();
-        this.textLength = textLength; // количество вводимых символов
+        this.textLength = textLength;
 
         imgAtlasKeys = new Texture(keysName);
         imgKeyUP = new TextureRegion(imgAtlasKeys, 0, 0, 256, 256);
@@ -53,20 +53,18 @@ public class InputKeyboard {
         imgKeyCL = new TextureRegion(imgAtlasKeys, 256*5, 0, 256, 256);
         imgKeySW = new TextureRegion(imgAtlasKeys, 256*6, 0, 256, 256);
 
-        // задаём параметры клавиатуры
         scrWidth *= 100;
         scrHeight *= 100;
-        width = scrWidth/21f*20; // ширина и высота клавиатуры
+        width = scrWidth/21f*20;
         height = scrHeight/5f*3;
-        x = (scrWidth-width)/2; // координаты вывода клавиатуры
+        x = (scrWidth-width)/2;
         y = height+scrHeight/30f;
-        keyWidth = width/13; // ширина и высота каждой клавиши
+        keyWidth = width/13;
         keyHeight = height/5;
-        padding = 8; // отступы между кнопками
+        padding = 8;
         createKBD();
     }
 
-    // создание кнопок клавиатуры по рядам
     private void createKBD(){
         int j = 0;
         for (int i = 0; i < 12; i++, j++)
@@ -82,7 +80,6 @@ public class InputKeyboard {
             keys.add(new Key(i*keyWidth+x+keyWidth, y-keyHeight*5, keyWidth-padding, keyHeight-padding, letters.charAt(j)));
     }
 
-    // задаём/меняем раскладку символов на всех кнопках
     private void setCharsKBD() {
         int j = 0;
         for (int i = 0; i < 12; i++, j++)
@@ -98,9 +95,7 @@ public class InputKeyboard {
             keys.get(j).letter = letters.charAt(j);
     }
 
-    // рисуем клавиатуру и вводимый текст
     public void draw(SpriteBatch batch){
-        // рисуем кнопки
         for (int i = 0; i < keys.size; i++) {
             drawImgKey(batch, i, keys.get(i).x, keys.get(i).y, keys.get(i).width, keys.get(i).height);
         }
@@ -109,34 +104,32 @@ public class InputKeyboard {
         font.draw(batch, text, 2*keyWidth+x+keyWidth/2, keys.get(0).letterY+keyHeight, width-5*keyWidth-padding, Align.center, false);
     }
 
-    // рисуем каждую кнопку
     private void drawImgKey(SpriteBatch batch, int i, float x, float y, float width, float height){
         float dx, dy;
-        if(keyPressed == i){ // если нажата, то рисуем нажатую кнопку
+        if(keyPressed == i){
             batch.draw(imgKeyDown, x, y, width, height);
             dx = 2;
             dy = -2;
             if(TimeUtils.millis() - timeStart > timeDuration){
                 keyPressed = -1;
             }
-        } else { // рисуем отжатую кнопку
+        } else {
             dx = 0;
             dy = 0;
             batch.draw(imgKeyUP, x, y, width, height);
         }
 
-        // выводим символы на кнопки
         switch (letters.charAt(i)) {
-            case '~': batch.draw(imgKeyBS, x+dx, y+dy, width, height); break; // backspace
-            case '^': batch.draw(imgKeyEnter, x+dx, y+dy, width, height); break; // enter
-            case '`': batch.draw(imgKeyCL, x+dx, y+dy, width, height); break; // caps lock
-            case '|': batch.draw(imgKeySW, x+dx, y+dy, width, height); break; // ru/en switcher
-            default: // все прочие символы
+            case '~': batch.draw(imgKeyBS, x+dx, y+dy, width, height); break;
+            case '^': batch.draw(imgKeyEnter, x+dx, y+dy, width, height); break;
+            case '`': batch.draw(imgKeyCL, x+dx, y+dy, width, height); break;
+            case '|': batch.draw(imgKeySW, x+dx, y+dy, width, height); break;
+            default:
                 font.draw(batch, ""+keys.get(i).letter, keys.get(i).letterX+dx, keys.get(i).letterY+dy);
         }
     }
 
-    // проверяем, куда нажали
+
     public boolean endOfEdit(float tx, float ty){
         for (int i = 0; i < keys.size; i++) {
             if(!keys.get(i).hit(tx, ty).equals("")){
@@ -145,7 +138,6 @@ public class InputKeyboard {
                 timeStart = TimeUtils.millis();
             }
         }
-        // окончание редактирования ввода (нажата кнопка enter)
         if(endOfEdit){
             endOfEdit = false;
             return true;
@@ -153,13 +145,13 @@ public class InputKeyboard {
         return false;
     }
 
-    // обработка нажатия кнопок
+
     private void setText(int i){
         switch (letters.charAt(i)) {
-            case '~': // backspace
+            case '~':
                 if(text.length()>0) text = text.substring(0, text.length() - 1);
                 break;
-            case '^': // enter
+            case '^':
                 if(text.length()==0) break;
                 endOfEdit = true;
                 break;
@@ -170,14 +162,14 @@ public class InputKeyboard {
                 else if(letters.charAt(12) == 'й') letters = LETTERS_RU_CAPS;
                 setCharsKBD();
                 break;
-            case '|': // ru/en switcher
+            case '|':
                 if(letters.charAt(12) == 'й') letters = LETTERS_EN_LOW;
                 else if(letters.charAt(12) == 'Й') letters = LETTERS_EN_CAPS;
                 else if(letters.charAt(12) == 'q') letters = LETTERS_RU_LOW;
                 else if(letters.charAt(12) == 'Q') letters = LETTERS_RU_CAPS;
                 setCharsKBD();
                 break;
-            default: // ввод символов
+            default:
                 if(text.length()< textLength) text += letters.charAt(i);
                 if(text.length() == 1 && letters == LETTERS_EN_CAPS) letters = LETTERS_EN_LOW;
                 if(text.length() == 1 && letters == LETTERS_RU_CAPS) letters = LETTERS_RU_LOW;
@@ -185,18 +177,16 @@ public class InputKeyboard {
         }
     }
 
-    // выдача отредактированного текста
     public String getText() {
         String t = text;
         text = "";
         return t;
     }
-    // класс отдельной кнопки виртуальной клавиатуры
     private class Key {
         float x, y;
         float width, height;
-        char letter; // символ на кнопке
-        float letterX, letterY; // координаты вывода символа
+        char letter;
+        float letterX, letterY;
 
         private Key (float x, float y, float width, float height, char letter) {
             this.x = x;

@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.screens;
 
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
@@ -8,15 +8,16 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
 
-/**
- * главное меню игры
- */
+import ru.myitschool.volleyball.components.TextButton;
+import ru.myitschool.volleyball.VolleyBall;
+
+
 public class ScreenIntro implements Screen {
     private final VolleyBall iv;
 
     private final Texture imgBackGround;
 
-    // кнопки
+
     private final TextButton btnPlay;
     private final TextButton btnSettings;
     private final TextButton btnRecords;
@@ -41,7 +42,6 @@ public class ScreenIntro implements Screen {
 
     @Override
     public void render(float delta) {
-        // обработка касаний экрана
         if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
@@ -62,15 +62,11 @@ public class ScreenIntro implements Screen {
                 Gdx.app.exit();
             }
         }
-
-        // отрисовка всей графики
         iv.camera.update();
-        //рисуем картинки
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.end();
-        // рисуем буквы
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         btnPlay.font.draw(iv.batch, btnPlay.text, btnPlay.x, btnPlay.y);
@@ -107,7 +103,6 @@ public class ScreenIntro implements Screen {
         imgBackGround.dispose();
     }
 
-    // обновлялка кнопок на случай смены локализации
     private void updateButtons(){
         btnPlay.setText(iv.text.get("PLAY")[iv.lang], true);
         btnSettings.setText(iv.text.get("SETTINGS")[iv.lang], true);

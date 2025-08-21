@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.screens;
 
 import static ru.myitschool.volleyball.VolleyBall.SCR_HEIGHT;
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
@@ -8,23 +8,19 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Align;
 
-import java.net.InetAddress;
-import java.net.NetworkInterface;
-import java.net.SocketException;
-import java.util.Enumeration;
+import ru.myitschool.volleyball.components.ImageButton;
+import ru.myitschool.volleyball.components.InputKeyboard;
+import ru.myitschool.volleyball.components.TextButton;
+import ru.myitschool.volleyball.VolleyBall;
 
-/**
- * настройка и выбор игроков
- */
+
 public class ScreenPlayers implements Screen {
     private final VolleyBall iv;
 
-    // изображения
     private final Texture imgBackGround;
     private final Texture imgBack;
     private final Texture imgSelector;
 
-    // кнопки
     private final ImageButton btnBack;
     private final TextButton btnName1;
     private final TextButton btnName2;
@@ -33,7 +29,6 @@ public class ScreenPlayers implements Screen {
     private final TextButton btnNetwork;
     private final TextButton btnPVP;
 
-    // экранная клавиатура
     private final InputKeyboard inputKeyboard;
     private boolean isEnterName1;
     private boolean isEnterName2;
@@ -49,7 +44,6 @@ public class ScreenPlayers implements Screen {
         btnName2 = new TextButton(iv.fontNormal, iv.player2.name, 0, 400);
         btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, btnName2.y);
 
-        // создаём кнопки и обновляем их содержимое
         btnTypePlayer1 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 100, 300);
         btnTypePlayer2 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 0, 300);
         btnPVP = new TextButton(iv.fontMega, iv.text.get("PVP")[iv.lang], 600);
@@ -58,7 +52,6 @@ public class ScreenPlayers implements Screen {
 
         updateButtons();
 
-        // создаём экранную клавиатуру
         inputKeyboard = new InputKeyboard(SCR_WIDTH, SCR_HEIGHT, 8);
     }
 
@@ -69,11 +62,9 @@ public class ScreenPlayers implements Screen {
 
     @Override
     public void render(float delta) {
-        // обработка касаний экрана
         if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
-            // если НЕ включена экранная клавиатура, то все остальные кнопки работают
             if(!isEnterName1 && !isEnterName2) {
                 if (btnBack.hit(iv.touch.x, iv.touch.y)) {
                     iv.setScreen(iv.getScreenIntro());
@@ -104,7 +95,6 @@ public class ScreenPlayers implements Screen {
                     }
                 }
             }
-            // если включена экранная клавиатура, то все остальные кнопки не работают
             else if (isEnterName1 && inputKeyboard.endOfEdit(iv.touch.x, iv.touch.y)) {
                 iv.player1.name = inputKeyboard.getText();
                 btnName1.setText(iv.player1.name, false);
@@ -117,15 +107,12 @@ public class ScreenPlayers implements Screen {
             }
         }
 
-        // отрисовка всей графики
         iv.camera.update();
-        // рисуем картинки
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
         iv.batch.draw(btnBack.img, btnBack.x, btnBack.y, btnBack.width, btnBack.height);
         iv.batch.end();
-        // рисуем буквы
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 1")[iv.lang], 100, 500, SCR_WIDTH*100-100, Align.left, false);
@@ -140,7 +127,6 @@ public class ScreenPlayers implements Screen {
 
         iv.batch.draw(imgSelector, btnPVP.x-20, btnPVP.y-btnPVP.height*1.5f, btnPVP.width+40, btnPVP.height*2);
         btnPVP.font.draw(iv.batch, btnPVP.text, btnPVP.x, btnPVP.y);
-        //iv.fontTitle.draw(iv.batch, iv.text.get("PLAYERS")[iv.lang], 20, SCR_HEIGHT*100-20);
         if(isEnterName1 || isEnterName2){
             inputKeyboard.draw(iv.batch);
         }
@@ -175,7 +161,6 @@ public class ScreenPlayers implements Screen {
         inputKeyboard.dispose();
     }
 
-    // обновляем надписи на кнопках
     private void updateButtons(){
         if(iv.player1.isAi) {
             btnTypePlayer1.setText(iv.text.get("COMPUTER")[iv.lang], false);
@@ -187,7 +172,6 @@ public class ScreenPlayers implements Screen {
         } else {
             btnTypePlayer2.setText(iv.text.get("HUMAN")[iv.lang], false);
         }
-        // переставляем правую кнопку в зависимости от длины слова
         btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, btnTypePlayer2.y);
         btnNetwork.setText(iv.text.get("NETWORK")[iv.lang], true);
         btnPVP.setText(iv.text.get("PVP")[iv.lang], true);

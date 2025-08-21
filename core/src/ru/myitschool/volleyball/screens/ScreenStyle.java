@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.screens;
 
 import static ru.myitschool.volleyball.VolleyBall.*;
 
@@ -6,19 +6,18 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 
-/**
- * выбор стиля игры
- */
+import ru.myitschool.volleyball.components.ImageButton;
+import ru.myitschool.volleyball.VolleyBall;
+
+
 public class ScreenStyle implements Screen {
     private final VolleyBall iv;
 
-    // картинки
     private final Texture imgBackGround;
     private final Texture imgBack;
     private final Texture imgSelector;
     private final Texture[] imgBtnBackground = new Texture[NUM_STYLES];
 
-    // кнопки
     private final ImageButton btnBack;
     private final ImageButton[] btnBackground = new ImageButton[NUM_STYLES];
 
@@ -43,7 +42,6 @@ public class ScreenStyle implements Screen {
 
     @Override
     public void render(float delta) {
-        // обработка касаний экрана
         if (Gdx.input.justTouched()) {
             iv.touch.set(Gdx.input.getX(), Gdx.input.getY(), 0);
             iv.camera.unproject(iv.touch);
@@ -60,9 +58,7 @@ public class ScreenStyle implements Screen {
             }
         }
 
-        // отрисовка всей графики
         iv.camera.update();
-        // рисуем картинки
         iv.batch.setProjectionMatrix(iv.camera.combined);
         iv.batch.begin();
         iv.batch.draw(imgBackGround, 0, 0, SCR_WIDTH, SCR_HEIGHT);
@@ -72,7 +68,6 @@ public class ScreenStyle implements Screen {
             iv.batch.draw(btnBackground[i].img, btnBackground[i].x, btnBackground[i].y, btnBackground[i].width, btnBackground[i].height);
         }
         iv.batch.end();
-        // рисуем буквы
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
         iv.fontTitle.draw(iv.batch, iv.text.get("STYLE")[iv.lang], 20, SCR_HEIGHT*100-20);

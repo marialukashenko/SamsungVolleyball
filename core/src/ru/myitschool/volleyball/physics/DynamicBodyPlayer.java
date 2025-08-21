@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.physics;
 
 import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 
@@ -12,25 +12,20 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
-/**
- * Динамические тела - игроки
- */
+
 public class DynamicBodyPlayer {
     public Body body;
     public float r;
-    private float lowLevel; // пол
-    // состояния
+    private float lowLevel;
     private static final int GO = 0;
     private static final int JUMP = 1;
     private static final int FALL = 2;
     private static final int STAY = 3;
     private int state;
 
-    // время и интервал прыжка
     private long timeStartJump;
     private static final long TIME_JUMP = 200;
 
-    // всё про фазы
     private long timeLastFaza;
     private static final long TIME_FAZA_INTERVAL = 50;
     public int faza;
@@ -71,7 +66,6 @@ public class DynamicBodyPlayer {
         circle.dispose();
     }
 
-    // касание колобка
     public void touch(float tx, float ty) {
         if (state != GO && state != STAY) return;
         targetX = tx;
@@ -116,12 +110,10 @@ public class DynamicBodyPlayer {
         body.setAngularVelocity(0);
     }
 
-    // определяем, рядом ли объект
     private boolean near(float x1, float x2, float dx){
         return x1 > x2-dx && x1 < x2+dx;
     }
 
-    // смена фазы
     private void changeFaza() {
         if (state == GO) {
             if (Math.abs(body.getLinearVelocity().x) < 0.01) {
@@ -175,7 +167,6 @@ public class DynamicBodyPlayer {
         return (getX() - b.getX()) * (getX() - b.getX()) + (getY() - b.getY()) * (getY() - b.getY()) <= (r + b.r) * (r + b.r);
     }
 
-    // компьютерный интеллект
     public void useAi(DynamicBodyBall ball) {
         if (state == GO && (getX() < SCR_WIDTH/2 && ball.getX()<SCR_WIDTH/2 || getX()>SCR_WIDTH/2 && ball.getX()>SCR_WIDTH/2)) {
             Vector2 ballPosition = ball.body.getPosition();

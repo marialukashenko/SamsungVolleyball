@@ -1,4 +1,4 @@
-package ru.myitschool.volleyball;
+package ru.myitschool.volleyball.server;
 
 import com.esotericsoftware.kryo.Kryo;
 import com.esotericsoftware.kryonet.Connection;
@@ -7,13 +7,10 @@ import com.esotericsoftware.kryonet.Server;
 
 import java.io.IOException;
 
-/**
- * Класс - сервер
- * принимает запрос от клиента и отправляет ему ответ
- */
+
 
 public class MyServer {
-    Server server;
+    public Server server;
     private MyRequest request;
 
     public MyServer(final MyResponse response) {
