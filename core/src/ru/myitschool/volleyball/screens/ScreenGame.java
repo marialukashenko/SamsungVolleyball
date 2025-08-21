@@ -33,14 +33,16 @@ public class ScreenGame implements Screen {
     private Sound sndGoal;
     private Sound sndWin;
     private Texture imgBackGround;
-    private Texture imgBall;
     private Texture imgShadow;
-    private Texture imgNet;
+    private Texture imgNetAtlas;
+    private TextureRegion imgNet;
     private Texture imgBack;
     private Texture imgPersonAtlas1;
     private Texture imgPersonAtlas2;
     private TextureRegion[] imgPerson1 = new TextureRegion[20];
     private TextureRegion[] imgPerson2 = new TextureRegion[20];
+    private Texture imgBallAtlas;
+    private TextureRegion imgBall;
 
     private StaticBody[] block = new StaticBody[4];
     private StaticBody net;
@@ -225,7 +227,7 @@ public class ScreenGame implements Screen {
         iv.batch.draw(imgShadow, person1.scrX()+SHADOW_MARG/2, FLOOR /2, person1.width() * IMG_RESIZE - SHADOW_MARG, person1.height() / 4);
         iv.batch.draw(imgShadow, person2.scrX()+SHADOW_MARG/2, FLOOR /2, person2.width() * IMG_RESIZE - SHADOW_MARG, person2.height() / 4);
 
-        iv.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation(), 0, 0, 200, 200, false, false);
+        iv.batch.draw(imgBall, ball.scrX(), ball.scrY(), ball.r, ball.r, ball.width(), ball.height(), 1, 1, ball.getRotation());
         iv.batch.draw(imgPerson1[person1.faza], person1.scrX(), person1.scrY(), person1.width() * IMG_RESIZE/2, person1.height() * IMG_RESIZE/2,
                 person1.width() * IMG_RESIZE, person1.height() * IMG_RESIZE, person1.isFlip ? -1 : 1, 1, 0);
         iv.batch.draw(imgPerson2[person2.faza], person2.scrX(), person2.scrY(), person2.width() * IMG_RESIZE/2, person2.height() * IMG_RESIZE/2,
@@ -342,11 +344,11 @@ public class ScreenGame implements Screen {
 
     @Override
     public void dispose() {
-        imgBall.dispose();
+        imgBallAtlas.dispose();
         imgPersonAtlas1.dispose();
         imgPersonAtlas2.dispose();
         imgBackGround.dispose();
-        imgNet.dispose();
+        imgNetAtlas.dispose();
         imgBack.dispose();
         imgShadow.dispose();
         sndBallHit.dispose();
@@ -459,15 +461,15 @@ public class ScreenGame implements Screen {
     private void loadPersons() {
         if(imgPersonAtlas1!=null) imgPersonAtlas1.dispose();
         if(imgPersonAtlas2!=null) imgPersonAtlas2.dispose();
-        imgPersonAtlas1 = new Texture("colobatlas"+iv.gameStyle+"0.png");
-        imgPersonAtlas2 = new Texture("colobatlas"+iv.gameStyle+"1.png");
+        imgPersonAtlas1 = new Texture("colobs0.png");
+        imgPersonAtlas2 = new Texture("colobs1.png");
         for (int i = 0; i < imgPerson1.length / 2; i++) {
-            imgPerson1[i] = new TextureRegion(imgPersonAtlas1, i * 250, 0, 250, 250);
-            imgPerson1[i + imgPerson1.length / 2] = new TextureRegion(imgPersonAtlas1, i * 250, 250, 250, 250);
+            imgPerson1[i] = new TextureRegion(imgPersonAtlas1, i * 250, iv.gameStyle * 500, 250, 250);
+            imgPerson1[i + imgPerson1.length / 2] = new TextureRegion(imgPersonAtlas1, i * 250, iv.gameStyle * 500 + 250, 250, 250);
         }
         for (int i = 0; i < imgPerson2.length / 2; i++) {
-            imgPerson2[i] = new TextureRegion(imgPersonAtlas2, i * 250, 0, 250, 250);
-            imgPerson2[i + imgPerson2.length / 2] = new TextureRegion(imgPersonAtlas2, i * 250, 250, 250, 250);
+            imgPerson2[i] = new TextureRegion(imgPersonAtlas2, i * 250, iv.gameStyle * 500, 250, 250);
+            imgPerson2[i + imgPerson2.length / 2] = new TextureRegion(imgPersonAtlas2, i * 250, iv.gameStyle * 500 + 250, 250, 250);
         }
     }
 
@@ -482,10 +484,13 @@ public class ScreenGame implements Screen {
         Gdx.input.setInputProcessor(myInput);
         if(imgBackGround!=null) imgBackGround.dispose();
         imgBackGround = new Texture("background" + iv.gameStyle + ".jpg");
-        if(imgBall!=null) imgBall.dispose();
-        imgBall = new Texture("ball" + iv.gameStyle + ".png");
-        if(imgNet!=null) imgNet.dispose();
-        imgNet = new Texture("net" + iv.gameStyle + ".png");
+        if(imgBallAtlas!=null) imgBallAtlas.dispose();
+        imgBallAtlas = new Texture("balls.png");
+        imgBall = new TextureRegion(imgBallAtlas, iv.gameStyle * 200, 0, 200, 200);
+        if(imgNetAtlas!=null) imgNetAtlas.dispose();
+        imgNetAtlas = new Texture("nets.png");
+        if(iv.gameStyle == STYLE_WINTER) imgNet = new TextureRegion(imgNetAtlas, 1000, 0, 400, 700);
+        else imgNet = new TextureRegion(imgNetAtlas, iv.gameStyle * 200, 0, 200, 700);
         loadPersons();
 
         if(ball!=null) iv.world.destroyBody(ball.body);
