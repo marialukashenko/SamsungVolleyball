@@ -25,16 +25,20 @@ public class InputKeyboard {
     private BitmapFont font;
 
     private String text = "";
+    private static final char KEY_BACKSPACE = '~';
+    private static final char KEY_ENTER = '^';
+    private static final char KEY_CAPS_LOCK = '`';
+    private static final char KEY_SWITCH_LANGUAGE = '|';
     private static final String LETTERS_EN_CAPS = "1234567890-~QWERTYUIOP+?^ASDFGHJKL;'`ZXCVBNM,. |";
     private static final String LETTERS_EN_LOW  = "1234567890_~qwertyuiop[]^asdfghjkl:'`zxcvbnm,. |";
     private static final String LETTERS_RU_CAPS = "1234567890-~ЙЦУКЕНГШЩЗХЪ^ФЫВАПРОЛДЖЭ`ЯЧСМИТЬБЮЁ|";
     private static final String LETTERS_RU_LOW  = "1234567890_~йцукенгшщзхъ^фывапролджэ`ячсмитьбюё|";
     private String letters = LETTERS_EN_CAPS;
 
-    private final Texture imgAtlasKeys;
-    private final TextureRegion imgEditText;
-    private final TextureRegion imgKeyUP, imgKeyDown;
-    private final TextureRegion imgKeyBS, imgKeyEnter, imgKeyCL, imgKeySW;
+    private Texture imgAtlasKeys;
+    private TextureRegion imgEditText;
+    private TextureRegion imgKeyUP, imgKeyDown;
+    private TextureRegion imgKeyBS, imgKeyEnter, imgKeyCL, imgKeySW;
 
     private long timeStart, timeDuration = 150;
     private int keyPressed = -1;
@@ -44,14 +48,7 @@ public class InputKeyboard {
         generateFont();
         this.textLength = textLength;
 
-        imgAtlasKeys = new Texture(keysName);
-        imgKeyUP = new TextureRegion(imgAtlasKeys, 0, 0, 256, 256);
-        imgKeyDown = new TextureRegion(imgAtlasKeys, 256, 0, 256, 256);
-        imgEditText = new TextureRegion(imgAtlasKeys, 256*2, 0, 256, 256);
-        imgKeyBS = new TextureRegion(imgAtlasKeys, 256*3, 0, 256, 256);
-        imgKeyEnter = new TextureRegion(imgAtlasKeys, 256*4, 0, 256, 256);
-        imgKeyCL = new TextureRegion(imgAtlasKeys, 256*5, 0, 256, 256);
-        imgKeySW = new TextureRegion(imgAtlasKeys, 256*6, 0, 256, 256);
+        initializeGraphics();
 
         scrWidth *= 100;
         scrHeight *= 100;
@@ -63,6 +60,17 @@ public class InputKeyboard {
         keyHeight = height/5;
         padding = 8;
         createKBD();
+    }
+
+    private void initializeGraphics(){
+        imgAtlasKeys = new Texture(keysName);
+        imgKeyUP = new TextureRegion(imgAtlasKeys, 0, 0, 256, 256);
+        imgKeyDown = new TextureRegion(imgAtlasKeys, 256, 0, 256, 256);
+        imgEditText = new TextureRegion(imgAtlasKeys, 256*2, 0, 256, 256);
+        imgKeyBS = new TextureRegion(imgAtlasKeys, 256*3, 0, 256, 256);
+        imgKeyEnter = new TextureRegion(imgAtlasKeys, 256*4, 0, 256, 256);
+        imgKeyCL = new TextureRegion(imgAtlasKeys, 256*5, 0, 256, 256);
+        imgKeySW = new TextureRegion(imgAtlasKeys, 256*6, 0, 256, 256);
     }
 
     private void createKBD(){
@@ -119,10 +127,18 @@ public class InputKeyboard {
         }
 
         switch (letters.charAt(i)) {
-            case '~': batch.draw(imgKeyBS, x+dx, y+dy, width, height); break;
-            case '^': batch.draw(imgKeyEnter, x+dx, y+dy, width, height); break;
-            case '`': batch.draw(imgKeyCL, x+dx, y+dy, width, height); break;
-            case '|': batch.draw(imgKeySW, x+dx, y+dy, width, height); break;
+            case KEY_BACKSPACE:
+                batch.draw(imgKeyBS, x+dx, y+dy, width, height);
+                break;
+            case KEY_ENTER:
+                batch.draw(imgKeyEnter, x+dx, y+dy, width, height);
+                break;
+            case KEY_CAPS_LOCK:
+                batch.draw(imgKeyCL, x+dx, y+dy, width, height);
+                break;
+            case KEY_SWITCH_LANGUAGE:
+                batch.draw(imgKeySW, x+dx, y+dy, width, height);
+                break;
             default:
                 font.draw(batch, ""+keys.get(i).letter, keys.get(i).letterX+dx, keys.get(i).letterY+dy);
         }
