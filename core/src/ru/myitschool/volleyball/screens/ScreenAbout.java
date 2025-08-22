@@ -49,8 +49,8 @@ public class ScreenAbout implements Screen {
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
-        iv.fontSmall.draw(iv.batch, iv.text.get("ABOUTTEXT")[iv.lang], 150, 600);
-        iv.fontTitle.draw(iv.batch, iv.text.get("ABOUT")[iv.lang], 20, SCR_HEIGHT*100-20);
+        iv.fontSmall.draw(iv.batch, iv.myBundle.get("about_text"), 150, 600);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("about"), 20, SCR_HEIGHT*100-20);
         iv.batch.end();
 
     }

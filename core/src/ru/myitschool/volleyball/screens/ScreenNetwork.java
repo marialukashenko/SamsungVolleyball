@@ -68,13 +68,13 @@ public class ScreenNetwork implements Screen {
         btnName2 = new TextButton(iv.fontNormal, iv.player2.name, 0, 500);
         btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, btnName2.y);
 
-        btnPVP = new TextButton(iv.fontTitle, iv.text.get("PVP")[iv.lang], 450);
+        btnPVP = new TextButton(iv.fontTitle, iv.myBundle.get("pvp"), 450);
 
-        btnNetwork = new TextButton(iv.fontTitle, iv.text.get("NETWORK")[iv.lang], 350);
-        btnCreateServer = new TextButton(iv.fontSmall, iv.text.get("Start Server")[iv.lang], 100, 250);
-        btnStopServer = new TextButton(iv.fontSmall, iv.text.get("Stop Server")[iv.lang], 100, 100);
-        btnCreateClient = new TextButton(iv.fontSmall, iv.text.get("Start Client")[iv.lang], 100, 250);
-        btnStopClient = new TextButton(iv.fontSmall, iv.text.get("Stop Client")[iv.lang], 100, 100);
+        btnNetwork = new TextButton(iv.fontTitle, iv.myBundle.get("network"), 350);
+        btnCreateServer = new TextButton(iv.fontSmall, iv.myBundle.get("start_server"), 100, 250);
+        btnStopServer = new TextButton(iv.fontSmall, iv.myBundle.get("stop_server"), 100, 100);
+        btnCreateClient = new TextButton(iv.fontSmall, iv.myBundle.get("start_client"), 100, 250);
+        btnStopClient = new TextButton(iv.fontSmall, iv.myBundle.get("stop_client"), 100, 100);
         btnCreateClient.setXY(SCR_WIDTH*100-100-btnCreateClient.width, btnCreateClient.y);
         btnStopClient.setXY(SCR_WIDTH*100-100-btnStopClient.width, btnStopServer.y);
 
@@ -85,8 +85,8 @@ public class ScreenNetwork implements Screen {
 
         requestFromClient = new MyRequest();
         responseFromServer = new MyResponse();
-        infoOfConnection = "waiting for connection";
-        ipAddressOfServer = "server not started";
+        infoOfConnection = "waiting_for_connection";
+        ipAddressOfServer = "server_not_started";
     }
 
     @Override
@@ -116,22 +116,22 @@ public class ScreenNetwork implements Screen {
                     server = new MyServer(responseFromServer);
                     ipAddressOfServer = detectIP();
                     isServer = true;
-                    infoOfConnection = "waiting for client connection";
+                    infoOfConnection = "waiting_for_client_connection";
                 }
                 if (btnCreateClient.hit(iv.touch.x, iv.touch.y) && !isServer && !isClient) {
                     isClient = true;
                     client = new MyClient(requestFromClient);
                     ipAddressOfServer = client.getIp().getHostAddress();
                     if (ipAddressOfServer.startsWith("192")) {
-                        infoOfConnection = "connected to the server";
+                        infoOfConnection = "connected_to_the_server";
                         iv.isOnLanPlayer2 = true;
                     } else {
-                        infoOfConnection = "waiting for a connection to the server";
+                        infoOfConnection = "waiting_for_a_connection_to_the_server";
                     }
                     if (client.isCantConnected) {
                         isClient = false;
                         client = null;
-                        ipAddressOfServer = "Server not found";
+                        ipAddressOfServer = "server_not_found";
                     }
                 }
 
@@ -164,7 +164,7 @@ public class ScreenNetwork implements Screen {
             responseFromServer.name = iv.player1.name;
             requestFromClient = server.getRequest();
             if(requestFromClient.text.equals("client")){
-                infoOfConnection = "client connected";
+                infoOfConnection = "client_connected";
                 iv.isOnLanPlayer1 = true;
                 iv.player2.name = requestFromClient.name;
             }
@@ -176,7 +176,7 @@ public class ScreenNetwork implements Screen {
             client.send();
             responseFromServer = client.getResponse();
             if(responseFromServer.text.equals("ru/myitschool/volleyball/server")){
-                infoOfConnection = "connected to the server";
+                infoOfConnection = "connected_to_the_server";
                 iv.isOnLanPlayer2 = true;
                 iv.player1.name = responseFromServer.name;
                 iv.gameStyle = responseFromServer.gameStyle;
@@ -194,17 +194,17 @@ public class ScreenNetwork implements Screen {
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
-        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 1")[iv.lang], 100, 550, SCR_WIDTH*100-100, Align.left, false);
-        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 2")[iv.lang], 0, 550, SCR_WIDTH*100-100, Align.right, false);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("player_1"), 100, 550, SCR_WIDTH*100-100, Align.left, false);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("player_2"), 0, 550, SCR_WIDTH*100-100, Align.right, false);
         btnName1.font.draw(iv.batch, btnName1.text, btnName1.x, btnName1.y);
         btnName2.font.draw(iv.batch, btnName2.text, btnName2.x, btnName2.y);
 
         btnNetwork.font.draw(iv.batch, btnNetwork.text, btnNetwork.x, btnNetwork.y);
 
         btnCreateServer.font.draw(iv.batch, btnCreateServer.text, btnCreateServer.x, btnCreateServer.y);
-        iv.fontSmall.draw(iv.batch, iv.text.get("Server's IP: ")[iv.lang] + ipAddressOfServer, 0, btnCreateServer.y-80, SCR_WIDTH*100, Align.center, false);
+        iv.fontSmall.draw(iv.batch, iv.myBundle.get("servers_ip") + " " + iv.myBundle.get(ipAddressOfServer), 0, btnCreateServer.y-80, SCR_WIDTH*100, Align.center, false);
         btnCreateClient.font.draw(iv.batch, btnCreateClient.text, btnCreateClient.x, btnCreateClient.y);
-        iv.fontSmall.draw(iv.batch, iv.text.get(infoOfConnection)[iv.lang], 0, btnCreateServer.y-160, SCR_WIDTH*100, Align.center, false);
+        iv.fontSmall.draw(iv.batch, iv.myBundle.get(infoOfConnection), 0, btnCreateServer.y-160, SCR_WIDTH*100, Align.center, false);
 
         iv.batch.draw(imgSelector, btnPVP.x-20, btnPVP.y-btnPVP.height*1.5f, btnPVP.width+40, btnPVP.height*2);
         btnPVP.font.draw(iv.batch, btnPVP.text, btnPVP.x, btnPVP.y);
@@ -240,12 +240,12 @@ public class ScreenNetwork implements Screen {
     }
 
     private void updateButtons(){
-        btnNetwork.setText(iv.text.get("NETWORK")[iv.lang], true);
-        btnPVP.setText(iv.text.get("PVP")[iv.lang], true);
-        btnCreateServer.setText(iv.text.get("Start Server")[iv.lang], false);
-        btnStopServer.setText(iv.text.get("Stop Server")[iv.lang], false);
-        btnCreateClient.setText(iv.text.get("Start Client")[iv.lang], false);
-        btnStopClient.setText(iv.text.get("Stop Client")[iv.lang], false);
+        btnNetwork.setText(iv.myBundle.get("network"), true);
+        btnPVP.setText(iv.myBundle.get("pvp"), true);
+        btnCreateServer.setText(iv.myBundle.get("start_server"), false);
+        btnStopServer.setText(iv.myBundle.get("stop_server"), false);
+        btnCreateClient.setText(iv.myBundle.get("start_client"), false);
+        btnStopClient.setText(iv.myBundle.get("stop_client"), false);
     }
 
     public String detectIP() {

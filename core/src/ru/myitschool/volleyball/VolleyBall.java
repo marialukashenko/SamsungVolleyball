@@ -2,6 +2,7 @@ package ru.myitschool.volleyball;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -12,10 +13,12 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2D;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.I18NBundle;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map;
 
 import ru.myitschool.volleyball.interfaces.ScreenManager;
@@ -75,6 +78,9 @@ public class VolleyBall extends Game implements ScreenManager {
 
     public Map<String, String[]> text = new HashMap<>();
     public int lang;
+    public FileHandle baseFileHandle;
+    public Locale locale;
+    public I18NBundle myBundle;
     public static final int LANG_EN = 0;
     public static final int LANG_RU = 1;
     public static final int LANG_DE = 2;
@@ -99,6 +105,8 @@ public class VolleyBall extends Game implements ScreenManager {
         for (JsonValue j: json.iterator()) {
             text.put(j.name, json.get(j.name).asStringArray());
         }
+
+        internationalization();
 
         player1 = new Player("Noname1");
         player2 = new Player("Noname2");
@@ -129,6 +137,16 @@ public class VolleyBall extends Game implements ScreenManager {
         fontLarge.dispose();
         world.dispose();
         debugRenderer.dispose();
+    }
+
+    public void internationalization(){
+        baseFileHandle = Gdx.files.internal("i18n/MyBundle");
+        if(lang == LANG_EN) locale = new Locale("en");
+        else if (lang == LANG_RU) locale = new Locale("ru");
+        else if (lang == LANG_DE) locale = new Locale("de");
+        else if (lang == LANG_PO) locale = new Locale("ru_PO");
+        else if (lang == LANG_ES) locale = new Locale("es");
+        myBundle = I18NBundle.createBundle(baseFileHandle, locale);
     }
 
     private void generateFont() {

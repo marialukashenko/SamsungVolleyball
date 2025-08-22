@@ -88,7 +88,7 @@ public class ScreenGame implements Screen {
         sndWin = Gdx.audio.newSound(Gdx.files.internal("win.mp3"));
 
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 1, SCR_HEIGHT - 0.9f, 0.6f, 0.6f);
-        btnRerun = new TextButton(iv.fontLarge, iv.text.get("REPLAY")[iv.lang], 20, SCR_HEIGHT * 100 - 30);
+        btnRerun = new TextButton(iv.fontLarge, iv.myBundle.get("replay"), 20, SCR_HEIGHT * 100 - 30);
 
         block[0] = new StaticBody(iv.world, SCR_WIDTH / 2, 0, SCR_WIDTH, FLOOR *2, null);
         block[1] = new StaticBody(iv.world, 0, VolleyBall.SCR_HEIGHT / 2, 0.3f, 1000, null);
@@ -103,7 +103,7 @@ public class ScreenGame implements Screen {
     public void show() {
         timeShowGame = TimeUtils.millis();
         create();
-        btnRerun.setText(iv.text.get("REPLAY")[iv.lang], false);
+        btnRerun.setText(iv.myBundle.get("replay"), false);
     }
 
     @Override
@@ -203,11 +203,11 @@ public class ScreenGame implements Screen {
 
         if(isWin && !isWinRecorded) {
             if(countGoals1 > countGoals2) {
-                winner = iv.player1.name + iv.text.get("WINS")[iv.lang];
+                winner = iv.player1.name + " " + iv.myBundle.get("wins");
                 iv.player1.wins++;
                 iv.player1.addWinToRecord(iv.players);
             } else {
-                winner = iv.player2.name + iv.text.get("WINS")[iv.lang];
+                winner = iv.player2.name + " " + iv.myBundle.get("wins");
                 iv.player2.wins++;
                 iv.player2.addWinToRecord(iv.players);
             }
@@ -241,7 +241,7 @@ public class ScreenGame implements Screen {
         iv.fontNormal.draw(iv.batch, countGoals1 + "", 0, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.right, true);
         iv.fontNormal.draw(iv.batch, countGoals2 + "", SCR_WIDTH * 100 / 2 + 50, SCR_HEIGHT * 100 - 40, SCR_WIDTH * 100 / 2 - 50, Align.left, true);
         if (isGoal && !isWin) {
-            iv.fontLarge.draw(iv.batch, iv.text.get("GOAL")[iv.lang], 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
+            iv.fontLarge.draw(iv.batch, iv.myBundle.get("goal"), 0, SCR_HEIGHT * 100 / 2, SCR_WIDTH * 100, Align.center, true);
             NameChanged = false;
         }
         if (isWin) {

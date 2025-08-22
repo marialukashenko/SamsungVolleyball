@@ -28,11 +28,11 @@ public class ScreenIntro implements Screen {
         iv = volleyBall;
 
         imgBackGround = new Texture("screenbgintro.jpg");
-        btnPlay = new TextButton(iv.fontLarge, iv.text.get("PLAY")[iv.lang], 550);
-        btnSettings = new TextButton(iv.fontLarge, iv.text.get("SETTINGS")[iv.lang], 450);
-        btnRecords = new TextButton(iv.fontLarge, iv.text.get("BEST PLAYERS")[iv.lang], 350);
-        btnAbout = new TextButton(iv.fontLarge, iv.text.get("ABOUT")[iv.lang], 250);
-        btnExit = new TextButton(iv.fontLarge, iv.text.get("EXIT")[iv.lang], 150);
+        btnPlay = new TextButton(iv.fontLarge, iv.myBundle.get("play"), 550);
+        btnSettings = new TextButton(iv.fontLarge, iv.myBundle.get("settings"), 450);
+        btnRecords = new TextButton(iv.fontLarge, iv.myBundle.get("best_players"), 350);
+        btnAbout = new TextButton(iv.fontLarge, iv.myBundle.get("about"), 250);
+        btnExit = new TextButton(iv.fontLarge, iv.myBundle.get("exit"), 150);
     }
 
     @Override
@@ -73,7 +73,7 @@ public class ScreenIntro implements Screen {
         btnRecords.font.draw(iv.batch, btnRecords.text, btnRecords.x, btnRecords.y);
         btnAbout.font.draw(iv.batch, btnAbout.text, btnAbout.x, btnAbout.y);
         btnExit.font.draw(iv.batch, btnExit.text, btnExit.x, btnExit.y);
-        iv.fontTitle.draw(iv.batch, iv.text.get("INCREDIBLE VOLLEYBALL")[iv.lang], 0, SCR_HEIGHT*100-20, SCR_WIDTH*100, Align.center, false);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("incredible_volleyball"), 0, SCR_HEIGHT*100-20, SCR_WIDTH*100, Align.center, false);
         iv.batch.end();
     }
 
@@ -103,11 +103,11 @@ public class ScreenIntro implements Screen {
     }
 
     private void updateButtons(){
-        btnPlay.setText(iv.text.get("PLAY")[iv.lang], true);
-        btnSettings.setText(iv.text.get("SETTINGS")[iv.lang], true);
-        btnRecords.setText(iv.text.get("BEST PLAYERS")[iv.lang], true);
-        btnAbout.setText(iv.text.get("ABOUT")[iv.lang], true);
-        btnExit.setText(iv.text.get("EXIT")[iv.lang], true);
+        btnPlay.setText(iv.myBundle.get("play"), true);
+        btnSettings.setText(iv.myBundle.get("settings"), true);
+        btnRecords.setText(iv.myBundle.get("best_players"), true);
+        btnAbout.setText(iv.myBundle.get("about"), true);
+        btnExit.setText(iv.myBundle.get("exit"), true);
     }
 }
 

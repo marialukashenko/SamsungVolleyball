@@ -7,6 +7,9 @@ import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.utils.I18NBundle;
+
+import java.util.Locale;
 
 import ru.myitschool.volleyball.components.ImageButton;
 import ru.myitschool.volleyball.components.TextButton;
@@ -79,6 +82,7 @@ public class ScreenSettings implements Screen {
                 if(iv.lang > LANG_ES){
                     iv.lang = LANG_EN;
                 }
+                iv.internationalization();
                 updateButtons();
             }
         }
@@ -152,9 +156,11 @@ public class ScreenSettings implements Screen {
         if(pref.contains("isai1")) iv.player1.isAi = pref.getBoolean("isai1", false);
         if(pref.contains("isai2")) iv.player2.isAi = pref.getBoolean("isai2", false);
         updateButtons();
+
     }
 
     void updateButtons(){
+        iv.internationalization();
         btnSound.setText(iv.isSoundOn ? iv.text.get("SOUND ON")[iv.lang] : iv.text.get("SOUND OFF")[iv.lang], true);
         btnMusic.setText(iv.isMusicOn ? iv.text.get("MUSIC ON")[iv.lang] : iv.text.get("MUSIC OFF")[iv.lang], true);
         btnBackgrounds.setText(iv.text.get("STYLE")[iv.lang], true);
