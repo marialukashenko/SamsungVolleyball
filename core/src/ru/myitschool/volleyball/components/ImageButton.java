@@ -2,7 +2,9 @@ package ru.myitschool.volleyball.components;
 
 import com.badlogic.gdx.graphics.Texture;
 
-public class ImageButton {
+import ru.myitschool.volleyball.interfaces.Button;
+
+public class ImageButton implements Button {
     public Texture img;
     public float x, y;
     public float width, height;
@@ -15,6 +17,7 @@ public class ImageButton {
         this.width = width;
     }
 
+    @Override
     public boolean hit(float tx, float ty) {
         return x < tx && tx < x + width && y + height > ty && ty > y;
     }

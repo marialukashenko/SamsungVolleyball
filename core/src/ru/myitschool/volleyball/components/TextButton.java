@@ -5,7 +5,9 @@ import static ru.myitschool.volleyball.VolleyBall.SCR_WIDTH;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
-public class TextButton {
+import ru.myitschool.volleyball.interfaces.Button;
+
+public class TextButton implements Button {
     public BitmapFont font;
     public String text;
     public float x, y;
@@ -45,6 +47,7 @@ public class TextButton {
         this.y = y;
     }
 
+    @Override
     public boolean hit(float tx, float ty) {
         return x / 100f < tx && tx < (x + width) / 100f && (y - height) / 100f < ty && ty < y / 100f;
     }
