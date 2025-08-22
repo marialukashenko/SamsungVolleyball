@@ -12,8 +12,10 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.TimeUtils;
 
+import ru.myitschool.volleyball.interfaces.DynamicBody;
 
-public class DynamicBodyPlayer {
+
+public class DynamicBodyPlayer implements DynamicBody {
     public Body body;
     public float r;
     private float lowLevel;
@@ -135,26 +137,32 @@ public class DynamicBodyPlayer {
         }
     }
 
+    @Override
     public float getX() {
         return body.getPosition().x;
     }
 
+    @Override
     public float getY() {
         return body.getPosition().y;
     }
 
+    @Override
     public float scrX() {
         return body.getPosition().x - r - 0.35f;
     }
 
+    @Override
     public float scrY() {
         return body.getPosition().y - r - 0.25f;
     }
 
+    @Override
     public float width() {
         return r * 2;
     }
 
+    @Override
     public float height() {
         return r * 2;
     }

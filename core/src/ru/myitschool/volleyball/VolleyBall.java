@@ -18,6 +18,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import java.util.HashMap;
 import java.util.Map;
 
+import ru.myitschool.volleyball.interfaces.ScreenManager;
 import ru.myitschool.volleyball.screens.ScreenAbout;
 import ru.myitschool.volleyball.screens.ScreenGame;
 import ru.myitschool.volleyball.screens.ScreenIntro;
@@ -28,7 +29,7 @@ import ru.myitschool.volleyball.screens.ScreenSettings;
 import ru.myitschool.volleyball.screens.ScreenStyle;
 
 
-public class VolleyBall extends Game {
+public class VolleyBall extends Game implements ScreenManager {
     public static final float SCR_WIDTH = 12.8f;
     public static final float SCR_HEIGHT = 7.2f;
 
@@ -172,34 +173,42 @@ public class VolleyBall extends Game {
         }
     }
 
+    @Override
     public ScreenIntro getScreenIntro() {
         return screenIntro;
     }
 
+    @Override
     public ScreenGame getScreenGame() {
         return screenGame;
     }
 
+    @Override
     public ScreenSettings getScreenSettings() {
         return screenSettings;
     }
 
+    @Override
     public ScreenAbout getScreenAbout() {
         return screenAbout;
     }
 
+    @Override
     public ScreenStyle getScreenStyle() {
         return screenStyle;
     }
 
+    @Override
     public ScreenPlayers getScreenPlayers() {
         return screenPlayers;
     }
 
+    @Override
     public ScreenRecords getScreenRecords() {
         return screenRecords;
     }
 
+    @Override
     public ScreenNetwork getScreenNetwork() {
         return screenNetwork;
     }

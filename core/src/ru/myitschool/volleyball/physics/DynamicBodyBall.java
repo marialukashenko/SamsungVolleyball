@@ -11,9 +11,10 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 
 import ru.myitschool.volleyball.VolleyBall;
+import ru.myitschool.volleyball.interfaces.DynamicBody;
 
 
-public class DynamicBodyBall {
+public class DynamicBodyBall implements DynamicBody {
 
     public Body body;
     public float r = 0.4f;
@@ -98,26 +99,32 @@ public class DynamicBodyBall {
         }
     }
 
+    @Override
     public float getX() {
         return body.getPosition().x;
     }
 
+    @Override
     public float getY() {
         return body.getPosition().y;
     }
 
+    @Override
     public float scrX() {
         return body.getPosition().x - r;
     }
 
+    @Override
     public float scrY() {
         return body.getPosition().y - r;
     }
 
+    @Override
     public float width() {
         return r * 2;
     }
 
+    @Override
     public float height() {
         return r * 2;
     }
