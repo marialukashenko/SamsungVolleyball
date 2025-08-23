@@ -75,8 +75,6 @@ public class VolleyBall extends Game implements ScreenManager {
     public Player player1;
     public Player player2;
     public Player[] players = new Player[1000];
-
-    public Map<String, String[]> text = new HashMap<>();
     public int lang;
     public FileHandle baseFileHandle;
     public Locale locale;
@@ -100,11 +98,6 @@ public class VolleyBall extends Game implements ScreenManager {
         world = new World(new Vector2(0, -10), false);
         Box2D.init();
         debugRenderer = new Box2DDebugRenderer();
-
-        JsonValue json = new JsonReader().parse(Gdx.files.internal("text.json"));
-        for (JsonValue j: json.iterator()) {
-            text.put(j.name, json.get(j.name).asStringArray());
-        }
 
         internationalization();
 
