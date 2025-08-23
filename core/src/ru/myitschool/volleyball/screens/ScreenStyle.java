@@ -70,7 +70,7 @@ public class ScreenStyle implements Screen {
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
-        iv.fontTitle.draw(iv.batch, iv.text.get("STYLE")[iv.lang], 20, SCR_HEIGHT*100-20);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("style"), 20, SCR_HEIGHT*100-20);
         iv.batch.end();
     }
 

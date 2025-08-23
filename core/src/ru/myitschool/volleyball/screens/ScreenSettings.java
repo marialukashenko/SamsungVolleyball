@@ -35,10 +35,10 @@ public class ScreenSettings implements Screen {
         imgBackGround = new Texture("screenbgsettings.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 0.8f, SCR_HEIGHT - 0.8f, 0.6f, 0.6f);
-        btnMusic = new TextButton(iv.fontLarge, iv.text.get("MUSIC ON")[iv.lang], 550);
-        btnSound = new TextButton(iv.fontLarge, iv.text.get("SOUND ON")[iv.lang], 450);
-        btnBackgrounds = new TextButton(iv.fontLarge, iv.text.get("STYLE")[iv.lang], 350);
-        btnLanguage = new TextButton(iv.fontLarge, iv.text.get("LANGUAGE")[iv.lang], 250);
+        btnMusic = new TextButton(iv.fontLarge, iv.myBundle.get("music_on"), 550);
+        btnSound = new TextButton(iv.fontLarge, iv.myBundle.get("sound_on"), 450);
+        btnBackgrounds = new TextButton(iv.fontLarge, iv.myBundle.get("style"), 350);
+        btnLanguage = new TextButton(iv.fontLarge, iv.myBundle.get("language"), 250);
         music = Gdx.audio.newMusic(Gdx.files.internal("volleyball_theme.mp3"));
         loadSettings();
         if(iv.isMusicOn) {
@@ -100,7 +100,7 @@ public class ScreenSettings implements Screen {
         btnSound.font.draw(iv.batch, btnSound.text, btnSound.x, btnSound.y);
         btnBackgrounds.font.draw(iv.batch, btnBackgrounds.text, btnBackgrounds.x, btnBackgrounds.y);
         btnLanguage.font.draw(iv.batch, btnLanguage.text, btnLanguage.x, btnLanguage.y);
-        iv.fontTitle.draw(iv.batch, iv.text.get("SETTINGS")[iv.lang], 20, SCR_HEIGHT*100-20);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("settings"), 20, SCR_HEIGHT*100-20);
         iv.batch.end();
     }
 
@@ -161,10 +161,10 @@ public class ScreenSettings implements Screen {
 
     void updateButtons(){
         iv.internationalization();
-        btnSound.setText(iv.isSoundOn ? iv.text.get("SOUND ON")[iv.lang] : iv.text.get("SOUND OFF")[iv.lang], true);
-        btnMusic.setText(iv.isMusicOn ? iv.text.get("MUSIC ON")[iv.lang] : iv.text.get("MUSIC OFF")[iv.lang], true);
-        btnBackgrounds.setText(iv.text.get("STYLE")[iv.lang], true);
-        btnLanguage.setText(iv.text.get("LANGUAGE")[iv.lang], true);
+        btnSound.setText(iv.isSoundOn ? iv.myBundle.get("sound_on") : iv.myBundle.get("sound_off"), true);
+        btnMusic.setText(iv.isMusicOn ? iv.myBundle.get("music_on") : iv.myBundle.get("music_off"), true);
+        btnBackgrounds.setText(iv.myBundle.get("style"), true);
+        btnLanguage.setText(iv.myBundle.get("language"), true);
     }
 }
 

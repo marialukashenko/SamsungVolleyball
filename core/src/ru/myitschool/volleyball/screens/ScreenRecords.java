@@ -25,7 +25,7 @@ public class ScreenRecords implements Screen {
         imgBackGround = new Texture("screenbgrecords.jpg");
         imgBack = new Texture("back.png");
         btnBack = new ImageButton(imgBack, SCR_WIDTH - 0.8f, SCR_HEIGHT - 0.8f, 0.6f, 0.6f);
-        btnClearTable = new TextButton(iv.fontNormal, iv.text.get("CLEAR RECORDS")[iv.lang], 500, 50);
+        btnClearTable = new TextButton(iv.fontNormal, iv.myBundle.get("clear_records"), 500, 50);
     }
 
     @Override
@@ -56,8 +56,8 @@ public class ScreenRecords implements Screen {
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
-        iv.fontTitle.draw(iv.batch, iv.text.get("BEST PLAYERS")[iv.lang], 20, SCR_HEIGHT*100-20);
-        iv.fontNormal.draw(iv.batch, iv.text.get("BEST PLAYERS")[iv.lang], 300, 600);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("best_players"), 20, SCR_HEIGHT*100-20);
+        iv.fontNormal.draw(iv.batch, iv.myBundle.get("best_players"), 300, 600);
         iv.fontSmall.draw(iv.batch, Player.tableOfRecordsToString(iv.players, iv.fontSmall), 300, 550);
         btnClearTable.font.draw(iv.batch, btnClearTable.text, btnClearTable.x, btnClearTable.y);
         iv.batch.end();
@@ -90,7 +90,7 @@ public class ScreenRecords implements Screen {
     }
 
     private void updateButtons(){
-        btnClearTable.setText(iv.text.get("CLEAR RECORDS")[iv.lang], true);
+        btnClearTable.setText(iv.myBundle.get("clear_records"), true);
     }
 }
 

@@ -144,7 +144,7 @@ public class VolleyBall extends Game implements ScreenManager {
         if(lang == LANG_EN) locale = new Locale("en");
         else if (lang == LANG_RU) locale = new Locale("ru");
         else if (lang == LANG_DE) locale = new Locale("de");
-        else if (lang == LANG_PO) locale = new Locale("ru_PO");
+        else if (lang == LANG_PO) locale = new Locale("ru", "PO");
         else if (lang == LANG_ES) locale = new Locale("es");
         myBundle = I18NBundle.createBundle(baseFileHandle, locale);
     }

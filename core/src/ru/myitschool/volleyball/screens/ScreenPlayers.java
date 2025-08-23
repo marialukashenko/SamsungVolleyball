@@ -44,11 +44,11 @@ public class ScreenPlayers implements Screen {
         btnName2 = new TextButton(iv.fontNormal, iv.player2.name, 0, 400);
         btnName2.setXY(SCR_WIDTH*100-100-btnName2.width, btnName2.y);
 
-        btnTypePlayer1 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 100, 300);
-        btnTypePlayer2 = new TextButton(iv.fontNormal, iv.text.get("HUMAN")[iv.lang], 0, 300);
-        btnPVP = new TextButton(iv.fontMega, iv.text.get("PVP")[iv.lang], 600);
+        btnTypePlayer1 = new TextButton(iv.fontNormal, iv.myBundle.get("human"), 100, 300);
+        btnTypePlayer2 = new TextButton(iv.fontNormal, iv.myBundle.get("human"), 0, 300);
+        btnPVP = new TextButton(iv.fontMega, iv.myBundle.get("pvp"), 600);
 
-        btnNetwork = new TextButton(iv.fontTitle, iv.text.get("NETWORK")[iv.lang], 100);
+        btnNetwork = new TextButton(iv.fontTitle, iv.myBundle.get("network"), 100);
 
         updateButtons();
 
@@ -115,11 +115,11 @@ public class ScreenPlayers implements Screen {
         iv.batch.end();
         iv.batch.setProjectionMatrix(iv.cameraForText.combined);
         iv.batch.begin();
-        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 1")[iv.lang], 100, 500, SCR_WIDTH*100-100, Align.left, false);
-        iv.fontTitle.draw(iv.batch, iv.text.get("PLAYER 2")[iv.lang], 0, 500, SCR_WIDTH*100-100, Align.right, false);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("player_1"), 100, 500, SCR_WIDTH*100-100, Align.left, false);
+        iv.fontTitle.draw(iv.batch, iv.myBundle.get("player_2"), 0, 500, SCR_WIDTH*100-100, Align.right, false);
         btnName1.font.draw(iv.batch, btnName1.text, btnName1.x, btnName1.y);
         btnName2.font.draw(iv.batch, btnName2.text, btnName2.x, btnName2.y);
-        iv.fontNormal.draw(iv.batch, iv.text.get("VS")[iv.lang], 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
+        iv.fontNormal.draw(iv.batch, iv.myBundle.get("vs"), 0, btnTypePlayer1.y, SCR_WIDTH*100, Align.center, false);
         btnTypePlayer1.font.draw(iv.batch, btnTypePlayer1.text, btnTypePlayer1.x, btnTypePlayer1.y);
         btnTypePlayer2.font.draw(iv.batch, btnTypePlayer2.text, btnTypePlayer2.x, btnTypePlayer2.y);
 
@@ -160,17 +160,17 @@ public class ScreenPlayers implements Screen {
 
     private void updateButtons(){
         if(iv.player1.isAi) {
-            btnTypePlayer1.setText(iv.text.get("COMPUTER")[iv.lang], false);
+            btnTypePlayer1.setText(iv.myBundle.get("computer"), false);
         } else {
-            btnTypePlayer1.setText(iv.text.get("HUMAN")[iv.lang], false);
+            btnTypePlayer1.setText(iv.myBundle.get("human"), false);
         }
         if(iv.player2.isAi) {
-            btnTypePlayer2.setText(iv.text.get("COMPUTER")[iv.lang], false);
+            btnTypePlayer2.setText(iv.myBundle.get("computer"), false);
         } else {
-            btnTypePlayer2.setText(iv.text.get("HUMAN")[iv.lang], false);
+            btnTypePlayer2.setText(iv.myBundle.get("human"), false);
         }
         btnTypePlayer2.setXY(SCR_WIDTH*100-100-btnTypePlayer2.width, btnTypePlayer2.y);
-        btnNetwork.setText(iv.text.get("NETWORK")[iv.lang], true);
-        btnPVP.setText(iv.text.get("PVP")[iv.lang], true);
+        btnNetwork.setText(iv.myBundle.get("network"), true);
+        btnPVP.setText(iv.myBundle.get("pvp"), true);
     }
 }
